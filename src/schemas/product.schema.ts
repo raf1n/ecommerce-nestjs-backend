@@ -43,9 +43,6 @@ export class Product {
 
   @Prop({ required: true })
   seoDescription: string;
-
-  @Prop({ slug: "title", unique: true })
-  slug: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
