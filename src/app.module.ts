@@ -5,6 +5,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
 import { UsersModule } from "./modules/users/users.module";
 import { ProductsModule } from "./modules/products/products.module";
+import { WishlistModule } from "./modules/wishlist/wishlist.module";
+import { CartModule } from "./modules/cart/cart.module";
 
 @Module({
   imports: [
@@ -12,6 +14,8 @@ import { ProductsModule } from "./modules/products/products.module";
     MongooseModule.forRoot(process.env.DATABASE_URL ?? ""),
     UsersModule,
     ProductsModule,
+    WishlistModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],
