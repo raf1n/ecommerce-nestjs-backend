@@ -7,10 +7,10 @@ export type UserDocument = User & Document;
 @Schema({ timestamps: true })
 export class User {
   @Prop()
-  firstName: string;
+  fullName: string;
 
-  @Prop()
-  lastName: string;
+  // @Prop()
+  // lastName: string;
 
   @Prop()
   avatar: string;
