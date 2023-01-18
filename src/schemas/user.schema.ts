@@ -10,6 +10,9 @@ export class User {
   fullName: string;
 
   @Prop()
+  googleFullName: string;
+
+  @Prop()
   avatar: string;
 
   @Prop({ required: true })

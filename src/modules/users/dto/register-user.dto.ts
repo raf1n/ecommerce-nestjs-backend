@@ -10,6 +10,7 @@ export class RegisterUserDto {
     lastName: string
     @IsString({ message: 'should be string' })
     email: string
+
     // @IsString({ message: 'should be string' })
     // password: string
 }

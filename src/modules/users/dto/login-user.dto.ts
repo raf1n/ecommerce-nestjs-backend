@@ -16,7 +16,7 @@ export class LoginUserDto {
 
     @IsString({ message: 'should be string' })
     avatar: string
-    
+
     @IsString({ message: 'should be string' })
     userRole: string
 
