@@ -9,18 +9,17 @@ export class User {
   @Prop()
   fullName: string;
 
-  // @Prop()
-  // lastName: string;
-
   @Prop()
   avatar: string;
 
   @Prop({ required: true })
   email: string;
 
+  @Prop({ required: true })
+  tokenType: string;
 
   @Prop({ required: true })
-  userType: string;
+  userRole: string;
 
   @Prop({ slug: "title", unique: true })
   slug: string;
