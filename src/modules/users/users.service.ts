@@ -62,7 +62,8 @@ export class UsersService {
   // }
 
    async login(loginUserDto: LoginUserDto): Promise<{ slug: string | undefined, access_token: string | null, userId?: string | null }> {
-    const { token, tokenType } = loginUserDto;
+    console.log('loginUserDto',loginUserDto);
+     const { token, tokenType } = loginUserDto;
     let isVerified = false;
     const accessToken = null;
 
@@ -88,12 +89,14 @@ export class UsersService {
     // console.log(`isVerified: ${isVerified}`);
 
     if (isVerified) {
-      const { email, fullName } = loginUserDto;
+      const { email, fullName,tokenType,userRole } = loginUserDto;
 
-      // console.log(`email: ${email}`);
-      // console.log(`fullName: ${fullName}`);
+      console.log(`email: ${email}`);
+      console.log(`fullName: ${fullName}`);
+      console.log(`tokenType: ${tokenType}`);
+      console.log(`userRole: ${userRole}`);
 
-      const user = await this.userModel.findOne({ email: email });
+      const user = await this.userModel.findOne({ email: email,tokenType:tokenType,userRole:userRole });
 
       if (user?.avatar) {
         delete loginUserDto.avatar
@@ -102,6 +105,7 @@ export class UsersService {
       if (user) {
         loginUserDto['slug'] = user.slug
       }
+      
       else {
         loginUserDto['slug'] = UtilSlug.getUniqueId(fullName)
       }
