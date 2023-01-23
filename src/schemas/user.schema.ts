@@ -22,7 +22,7 @@ export class User {
   tokenType: string;
 
   @Prop({ required: true })
-  userRole: string;
+  role: string;
 
   @Prop({ slug: "title", unique: true })
   slug: string;

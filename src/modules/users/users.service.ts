@@ -89,11 +89,11 @@ export class UsersService {
     // console.log(`isVerified: ${isVerified}`);
 
     if (isVerified) {
-      const { email, fullName, userRole } = loginUserDto;
+      const { email, fullName, role } = loginUserDto;
 
       console.log(`email: ${email}`);
       console.log(`fullName: ${fullName}`);
-      console.log(`userRole: ${userRole}`);
+      console.log(`role: ${role}`);
 
       const user = await this.userModel.findOne({ email: email });
 
