@@ -11,10 +11,10 @@ export class Product {
   @Prop({ required: true })
   catSlug: string;
 
-  @Prop({ required: true })
+  @Prop()
   subCatSlug: string;
 
-  @Prop({ required: true })
+  @Prop()
   brandSlug: string;
 
   @Prop({ required: true })
@@ -29,7 +29,7 @@ export class Product {
   @Prop({ required: true })
   imageURL: Array<string>;
 
-  @Prop()
+  @Prop({ required: true })
   offerPrice: number;
 
   // @Prop({ required: true })
