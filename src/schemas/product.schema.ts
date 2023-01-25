@@ -8,13 +8,13 @@ export class Product {
   @Prop({ required: true })
   productName: string;
 
-  @Prop({ required: true, default: "category_slug_1" })
+  @Prop({ required: true })
   catSlug: string;
 
-  @Prop({ required: true, default: "sub_category_slug_1" })
+  @Prop({ required: true })
   subCatSlug: string;
 
-  @Prop({ required: true, default: "brand_1" })
+  @Prop({ required: true })
   brandSlug: string;
 
   @Prop({ required: true })
@@ -29,20 +29,35 @@ export class Product {
   @Prop({ required: true })
   imageURL: Array<string>;
 
-  @Prop({ required: true })
-  discount: string;
+  @Prop()
+  offerPrice: number;
 
-  @Prop({ required: true })
-  sellerSlug: string;
+  // @Prop({ required: true })
+  // sellerSlug: string;
 
   @Prop({ required: true })
   stock: number;
+
+  @Prop({ required: true })
+  weight: number;
 
   @Prop({ required: true })
   seoTitle: string;
 
   @Prop({ required: true })
   seoDescription: string;
+
+  @Prop({ required: true })
+  isTopProduct: boolean;
+
+  @Prop({ required: true })
+  isNewArrival: boolean;
+
+  @Prop({ required: true })
+  isBestProduct: boolean;
+
+  @Prop({ required: true })
+  isFeatured: boolean;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

@@ -11,10 +11,16 @@ export class ProductsService {
     @InjectModel(Product.name) private readonly model: Model<ProductDocument>
   ) {}
 
-  async create(createProductDto: CreateProductDto): Promise<string> {
+  async create(createProductDto: CreateProductDto): Promise<object> {
     const result = await new this.model(createProductDto).save();
     if (result) {
-      return "success";
+      return {
+        message: "success",
+      };
+    } else {
+      return {
+        message: "error",
+      };
     }
   }
   async findAll(): Promise<ProductDocument[]> {
@@ -29,13 +35,14 @@ export class ProductsService {
     id: string,
     updateProductDto: UpdateProductDto
   ): Promise<string> {
-    const result = await this.model.findByIdAndUpdate(id, updateProductDto);
+    // const result = await this.model.findByIdAndUpdate(id, updateProductDto);
+    const result = await this.model.findOneAndUpdate(updateProductDto);
     if (result) {
       return "updated";
     }
   }
 
   async delete(id: string): Promise<Product> {
-    return await this.model.findByIdAndDelete(id);
+    return await this.model.findOneAndDelete();
   }
 }
