@@ -1,6 +1,5 @@
 export class CreateProductDto {
-  slug: string;
-  id: string;
+  // id: string;
   productName: string;
   catSlug: string;
   subCatSlug: string;

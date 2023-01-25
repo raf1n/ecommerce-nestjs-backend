@@ -8,13 +8,13 @@ export class Product {
   @Prop({ required: true })
   productName: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: "category_slug_1" })
   catSlug: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, default: "sub_category_slug_1" })
   subCatSlug: string;
 
-  @Prop()
+  @Prop({ required: true, default: "brand_1" })
   brandSlug: string;
 
   @Prop({ required: true })
