@@ -17,12 +17,12 @@ export class ProductsService {
       return "success";
     }
   }
-  findAll() {
-    return `This action returns all products`;
+  async findAll(): Promise<ProductDocument[]> {
+    return this.model.find();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} product`;
+  async findOne(id: string) {
+    return this.model.findById(id);
   }
 
   async update(
