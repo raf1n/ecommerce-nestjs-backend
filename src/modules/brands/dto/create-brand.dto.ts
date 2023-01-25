@@ -1,19 +1,23 @@
-import { IsArray, IsOptional, IsString } from "class-validator"
+import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator"
 
 export class CreateBrandDto {
-  @IsString({ message: 'should be string' })
-  logo_url: string;
+  @IsNotEmpty({ message: "logo can not be empty"})
+  @IsString({ message: 'logo should be string' })
+  logo: string;
 
-  @IsString({ message: 'should be string' })
+  @IsNotEmpty({ message: "name can not be empty"})
+  @IsString({ message: 'name should be string' })
   name: string;
 
-  @IsString({ message: 'should be string' })
+  @IsNotEmpty({ message: "status can not be empty"})
+  @IsString({ message: 'status should be string' })
   status: string;
 
-  @IsArray({ message: 'should be array of string' })
+  @IsNotEmpty({ message: "cat_slug can not be empty"})
+  @IsArray({ message: 'cat_slug should be array of string' })
   cat_slug: Array<string>;
 
-  @IsArray({ message: 'should be array of string' })
+  @IsArray({ message: 'sub_cat_slug should be array of string' })
   @IsOptional()
   sub_cat_slug: Array<string>;
 }

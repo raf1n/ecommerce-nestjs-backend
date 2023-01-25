@@ -6,10 +6,10 @@ export type BrandDocument = Brand & Document;
 @Schema({ timestamps: true })
 export class Brand {
   @Prop({ default: "brand_slug_1"})
-  brand_slug: string;
+  slug: string;
 
   @Prop()
-  logo_url: string;
+  logo: string;
 
   @Prop()
   name: string;
