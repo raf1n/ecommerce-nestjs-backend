@@ -22,13 +22,13 @@ export class BrandsController {
     return this.brandsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBrandDto: UpdateBrandDto) {
-    return this.brandsService.update(+id, updateBrandDto);
+  @Patch(':slug')
+  update(@Param('slug') slug: string, @Body() updateBrandDto: UpdateBrandDto) {
+    return this.brandsService.update(slug, updateBrandDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.brandsService.remove(+id);
+  @Delete(':slug')
+  remove(@Param('slug') slug: string) {
+    return this.brandsService.remove(slug);
   }
 }
