@@ -1,6 +1,6 @@
 import { User } from './entities/user.entity';
 import { Injectable } from '@nestjs/common';
-import {RegisterUserDto } from './dto/register-user.dto';
+import { RegisterUserDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDocument } from 'src/schemas/user.schema';
 import { Model } from 'mongoose';
@@ -12,7 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 const admin = require("firebase-admin");
 
 // const serviceAccount = require('../../utils/ecommerce-3dcd5-firebase-adminsdk-8iryd-a787e6184a.json');
-const firebaseParam={
+const firebaseParam = {
   "type": "service_account",
   "project_id": "ecommerce-3dcd5",
   "private_key_id": "a787e6184a0cab923957c36b1952599ef3560c5a",
@@ -25,7 +25,7 @@ const firebaseParam={
   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-8iryd%40ecommerce-3dcd5.iam.gserviceaccount.com"
 }
 admin.initializeApp({
-    credential: admin.credential.cert(firebaseParam)
+  credential: admin.credential.cert(firebaseParam)
 });
 
 @Injectable()
@@ -37,7 +37,7 @@ export class UsersService {
     private jwtService: JwtService
     // eslint-disable-next-line no-empty-function
   ) { }
-  async register(registerUserDto: RegisterUserDto) { 
+  async register(registerUserDto: RegisterUserDto) {
     const portfolio = await this.userModel.create({
       firstName: registerUserDto.firstName,
       lastName: registerUserDto.lastName,
@@ -58,10 +58,11 @@ export class UsersService {
   //   else {
   //     return 'Invalid Username or Password'
   //   }
-   
+
   // }
 
-   async login(loginUserDto: LoginUserDto): Promise<{ slug: string | undefined, access_token: string | null, userId?: string | null }> {
+  async login(loginUserDto: LoginUserDto): Promise<{ slug: string | undefined, access_token: string | null, userId?: string | null }> {
+    console.log('loginUserDto', loginUserDto);
     const { token, tokenType } = loginUserDto;
     let isVerified = false;
     const accessToken = null;
@@ -77,21 +78,22 @@ export class UsersService {
       try {
         const decodedUser = await admin.auth().verifyIdToken(token);// 73-9 token verify hole bhitorer data gulo return korbe
         if (decodedUser?.uid) {
-          isVerified=true
-     }
-    }
-    catch {
+          isVerified = true
+        }
+      }
+      catch {
 
-    }
+      }
     }
 
     // console.log(`isVerified: ${isVerified}`);
 
     if (isVerified) {
-      const { email, fullName } = loginUserDto;
+      const { email, fullName, role } = loginUserDto;
 
-      // console.log(`email: ${email}`);
-      // console.log(`fullName: ${fullName}`);
+      console.log(`email: ${email}`);
+      console.log(`fullName: ${fullName}`);
+      console.log(`role: ${role}`);
 
       const user = await this.userModel.findOne({ email: email });
 
@@ -99,9 +101,14 @@ export class UsersService {
         delete loginUserDto.avatar
       }
 
+      if (user?.fullName) {
+        delete loginUserDto.fullName
+      }
+
       if (user) {
         loginUserDto['slug'] = user.slug
       }
+
       else {
         loginUserDto['slug'] = UtilSlug.getUniqueId(fullName)
       }
@@ -114,7 +121,7 @@ export class UsersService {
             ...loginUserDto,
           }
         },
-        { upsert: true, new: true}
+        { upsert: true, new: true }
       );
       const accessToken = this.jwtService.sign({
         _id: creatUser._id as string,

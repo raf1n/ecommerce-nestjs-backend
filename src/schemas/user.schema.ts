@@ -7,10 +7,10 @@ export type UserDocument = User & Document;
 @Schema({ timestamps: true })
 export class User {
   @Prop()
-  firstName: string;
+  fullName: string;
 
   @Prop()
-  lastName: string;
+  googleFullName: string;
 
   @Prop()
   avatar: string;
@@ -18,9 +18,11 @@ export class User {
   @Prop({ required: true })
   email: string;
 
+  @Prop({ required: true })
+  tokenType: string;
 
   @Prop({ required: true })
-  userType: string;
+  role: string;
 
   @Prop({ slug: "title", unique: true })
   slug: string;

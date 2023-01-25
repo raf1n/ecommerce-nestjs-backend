@@ -10,13 +10,13 @@ export class UsersController {
 
   @Post('/sign_up')
   async register(@Body() registerUserDto: RegisterUserDto) {
-    console.log('hello',registerUserDto)
+    console.log('hello', registerUserDto)
     return await this.usersService.register(registerUserDto);
   }
 
   @Post("/login")
   async Login(@Body() loginUserDto: LoginUserDto) {
-    console.log('hello1234',loginUserDto)
+    console.log('hello1234', loginUserDto)
     return await this.usersService.login(loginUserDto);
   }
 

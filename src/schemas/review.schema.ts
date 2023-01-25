@@ -1,23 +1,29 @@
+// slug: string;
+// buyer_slug: string;
+// product_slug: string;
+// review_description: string;
+// rating: number;
+
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
 export type ReviewDocument = Review & Document;
 
-@Schema({ timestamps: true })
+@Schema()
 export class Review {
-  @Prop({ required: true })
+  @Prop()
   slug: string;
 
-  @Prop({ required: true })
+  @Prop()
   buyer_slug: string;
 
-  @Prop({ required: true })
+  @Prop()
   product_slug: string;
 
-  @Prop({ required: true })
+  @Prop()
   review_description: string;
 
-  @Prop({ required: true })
+  @Prop()
   rating: number;
 }
 
