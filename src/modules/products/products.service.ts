@@ -29,15 +29,13 @@ export class ProductsService {
     id: string,
     updateProductDto: UpdateProductDto
   ): Promise<string> {
-    const result = await this.model
-      .findByIdAndUpdate(id, updateProductDto)
-      .exec();
+    const result = await this.model.findByIdAndUpdate(id, updateProductDto);
     if (result) {
       return "updated";
     }
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} product`;
+  async delete(id: string): Promise<Product> {
+    return await this.model.findByIdAndDelete(id);
   }
 }
