@@ -19,9 +19,9 @@ export class BrandsController {
     return this.brandsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.brandsService.findOne(+id);
+  @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.brandsService.findOne(slug);
   }
 
   @Patch(':slug')
