@@ -33,8 +33,9 @@ export class BrandsService {
     return trimmedBrands;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} brand`;
+  async findOne(slug: string): Promise<Brand> {
+    const singleBrand = await this.brandModel.findOne({ slug: slug })
+    return singleBrand;
   }
 
   async update(
