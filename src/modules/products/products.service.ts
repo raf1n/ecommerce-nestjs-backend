@@ -4,13 +4,12 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
-import { filter } from "rxjs";
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel(Product.name) private readonly model: Model<ProductDocument>
-  ) {}
+  ) { }
 
   async create(createProductDto: CreateProductDto): Promise<object> {
     const result = await new this.model(createProductDto).save();
