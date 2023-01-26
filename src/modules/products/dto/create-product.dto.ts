@@ -4,6 +4,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  isBoolean,
 } from "class-validator";
 
 export class CreateProductDto {
@@ -62,4 +63,7 @@ export class CreateProductDto {
 
   @IsBoolean()
   isFeatured: boolean;
+
+  @IsBoolean()
+  isPopular: boolean;
 }

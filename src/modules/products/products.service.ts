@@ -4,6 +4,7 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
+import { filter } from "rxjs";
 
 @Injectable()
 export class ProductsService {
@@ -27,22 +28,26 @@ export class ProductsService {
     return this.model.find();
   }
 
-  async findOne(id: string) {
-    return this.model.findById(id);
+  async findOne(slug: string) {
+    return this.model.findOne({ slug });
   }
 
   async update(
-    id: string,
+    slug: string,
     updateProductDto: UpdateProductDto
   ): Promise<string> {
     // const result = await this.model.findByIdAndUpdate(id, updateProductDto);
-    const result = await this.model.findOneAndUpdate(updateProductDto);
+    const result = await this.model.findOneAndUpdate(
+      { slug },
+      updateProductDto,
+      { new: true }
+    );
     if (result) {
       return "updated";
     }
   }
 
-  async delete(id: string): Promise<Product> {
-    return await this.model.findOneAndDelete();
+  async delete(slug: string): Promise<Product> {
+    return await this.model.findOneAndDelete({ slug });
   }
 }

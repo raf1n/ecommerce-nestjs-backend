@@ -5,6 +5,9 @@ export type ProductDocument = Product & Document;
 
 @Schema({ timestamps: true })
 export class Product {
+  @Prop({ required: true, default: "product_slug_1" })
+  slug: string;
+
   @Prop({ required: true })
   productName: string;
 
@@ -32,9 +35,6 @@ export class Product {
   @Prop({ required: true })
   offerPrice: number;
 
-  // @Prop({ required: true })
-  // sellerSlug: string;
-
   @Prop({ required: true })
   stock: number;
 
@@ -58,6 +58,9 @@ export class Product {
 
   @Prop({ required: true })
   isFeatured: boolean;
+
+  @Prop({ required: true })
+  isPopular: boolean;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
