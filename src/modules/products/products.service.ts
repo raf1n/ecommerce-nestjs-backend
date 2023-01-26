@@ -25,7 +25,8 @@ export class ProductsService {
     }
   }
   async findAll(): Promise<ProductDocument[]> {
-    return this.model.find();
+    const allProductData = await this.model.find();
+    return allProductData;
   }
 
   async findOne(slug: string) {
