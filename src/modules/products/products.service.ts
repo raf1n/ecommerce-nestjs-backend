@@ -5,15 +5,18 @@ import { UpdateProductDto } from "./dto/update-product.dto";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
 import { filter } from "rxjs";
+import { QueryDto } from "./dto/query.dto";
 
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Product.name) private readonly model: Model<ProductDocument>
+    @InjectModel(Product.name) private readonly portductModel: Model<ProductDocument>
+    // @InjectModel(Portfolio.name)
+    // private portfolioModel: Model<PortfolioDocument>,
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<object> {
-    const result = await new this.model(createProductDto).save();
+    const result = await new this.portductModel(createProductDto).save();
     if (result) {
       return {
         message: "success",
@@ -24,12 +27,21 @@ export class ProductsService {
       };
     }
   }
-  async findAll(): Promise<ProductDocument[]> {
-    return this.model.find();
+  async findAll(query: QueryDto)
+    // : Promise<ProductDocument[]>
+  {
+    // let limit: number = parseInt(query.limit) || 3
+    // const page: number = parseInt(query.page) || 1
+    const featuredProducts = await this.portductModel.find({ isFeatured: true })
+    // .limit(limit)
+    .sort({ createdAt: "asc" })
+    .exec();
+    console.log('usersPortfolios', featuredProducts);
+    return {featuredProducts}
   }
 
   async findOne(slug: string) {
-    return this.model.findOne({ slug });
+    return this.portductModel.findOne({ slug });
   }
 
   async update(
@@ -37,7 +49,7 @@ export class ProductsService {
     updateProductDto: UpdateProductDto
   ): Promise<string> {
     // const result = await this.model.findByIdAndUpdate(id, updateProductDto);
-    const result = await this.model.findOneAndUpdate(
+    const result = await this.portductModel.findOneAndUpdate(
       { slug },
       updateProductDto,
       { new: true }
@@ -48,6 +60,6 @@ export class ProductsService {
   }
 
   async delete(slug: string): Promise<Product> {
-    return await this.model.findOneAndDelete({ slug });
+    return await this.portductModel.findOneAndDelete({ slug });
   }
 }
