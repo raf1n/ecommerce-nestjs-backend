@@ -5,13 +5,16 @@ export type ProductDocument = Product & Document;
 
 @Schema({ timestamps: true })
 export class Product {
+  @Prop({ required: true, default: "product_slug_1" })
+  slug: string;
+
   @Prop({ required: true })
   productName: string;
 
   @Prop({ required: true })
   catSlug: string;
 
-  @Prop({ required: true })
+  @Prop()
   subCatSlug: string;
 
   @Prop()
@@ -30,19 +33,34 @@ export class Product {
   imageURL: Array<string>;
 
   @Prop({ required: true })
-  discount: string;
-
-  @Prop({ required: true })
-  sellerSlug: string;
+  offerPrice: number;
 
   @Prop({ required: true })
   stock: number;
+
+  @Prop({ required: true })
+  weight: number;
 
   @Prop({ required: true })
   seoTitle: string;
 
   @Prop({ required: true })
   seoDescription: string;
+
+  @Prop({ required: true })
+  isTopProduct: boolean;
+
+  @Prop({ required: true })
+  isNewArrival: boolean;
+
+  @Prop({ required: true })
+  isBestProduct: boolean;
+
+  @Prop({ required: true })
+  isFeatured: boolean;
+
+  @Prop({ required: true })
+  isPopular: boolean;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
