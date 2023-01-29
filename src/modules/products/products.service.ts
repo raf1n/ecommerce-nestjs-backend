@@ -8,11 +8,11 @@ import { Model } from "mongoose";
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Product.name) private readonly model: Model<ProductDocument>
+    @InjectModel(Product.name) private readonly productModel: Model<ProductDocument>
   ) { }
 
   async create(createProductDto: CreateProductDto): Promise<object> {
-    const result = await new this.model(createProductDto).save();
+    const result = await new this.productModel(createProductDto).save();
     if (result) {
       return {
         message: "success",
@@ -24,12 +24,12 @@ export class ProductsService {
     }
   }
   async findAll(): Promise<ProductDocument[]> {
-    const allProductData = await this.model.find();
+    const allProductData = await this.productModel.find();
     return allProductData;
   }
 
   async findOne(slug: string) {
-    return this.model.findOne({ slug });
+    return this.productModel.findOne({ slug });
   }
 
   async update(
@@ -37,7 +37,7 @@ export class ProductsService {
     updateProductDto: UpdateProductDto
   ): Promise<string> {
     // const result = await this.model.findByIdAndUpdate(id, updateProductDto);
-    const result = await this.model.findOneAndUpdate(
+    const result = await this.productModel.findOneAndUpdate(
       { slug },
       updateProductDto,
       { new: true }
@@ -48,6 +48,6 @@ export class ProductsService {
   }
 
   async delete(slug: string): Promise<Product> {
-    return await this.model.findOneAndDelete({ slug });
+    return await this.productModel.findOneAndDelete({ slug });
   }
 }
