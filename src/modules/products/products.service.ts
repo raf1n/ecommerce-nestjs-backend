@@ -37,6 +37,7 @@ export class ProductsService {
   async findAll(
     query: QueryDto // : Promise<ProductDocument[]>
   ) {
+    const allProductData = await this.productModel.find();
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
     const featuredProducts = await this.productModel
@@ -45,7 +46,39 @@ export class ProductsService {
       .sort({ createdAt: "asc" })
       .exec();
     console.log("usersPortfolios", featuredProducts);
-    return { featuredProducts };
+
+    const topProducts = await this.productModel
+      .find({ isTopProduct: true })
+      // .limit(limit)
+      .sort({ createdAt: "asc" })
+      .exec();
+
+    const newProducts = await this.productModel
+      .find({ isNewArrival: true })
+      // .limit(limit)
+      .sort({ createdAt: "asc" })
+      .exec();
+
+    const bestProducts = await this.productModel
+      .find({ isBestProduct: true })
+      // .limit(limit)
+      .sort({ createdAt: "asc" })
+      .exec();
+
+    const popularProducts = await this.productModel
+      .find({ isPopular: true })
+      // .limit(limit)
+      .sort({ createdAt: "asc" })
+      .exec();
+
+    return {
+      featuredProducts,
+      topProducts,
+      popularProducts,
+      bestProducts,
+      newProducts,
+      allProductData,
+    };
   }
 
   async findOne(slug: string) {
