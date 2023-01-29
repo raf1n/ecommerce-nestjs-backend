@@ -17,6 +17,7 @@ export class ProductsService {
     const result = await new this.productModel(createProductDto).save();
     if (result) {
       return {
+        data: result,
         message: "success",
       };
     } else {
@@ -37,16 +38,14 @@ export class ProductsService {
   async update(
     slug: string,
     updateProductDto: UpdateProductDto
-  ): Promise<string> {
+  ): Promise<Product> {
     // const result = await this.model.findByIdAndUpdate(id, updateProductDto);
     const result = await this.productModel.findOneAndUpdate(
-      { slug },
+      { slug: slug },
       updateProductDto,
       { new: true }
     );
-    if (result) {
-      return "updated";
-    }
+    return result;
   }
 
   async delete(slug: string): Promise<Product> {
