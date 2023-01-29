@@ -5,6 +5,7 @@ import { UpdateProductDto } from "./dto/update-product.dto";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
 import { filter } from "rxjs";
+import { QueryDto } from "./dto/query.dto";
 
 @Injectable()
 export class ProductsService {
@@ -26,9 +27,25 @@ export class ProductsService {
       };
     }
   }
-  async findAll(): Promise<ProductDocument[]> {
-    const allProductData = await this.productModel.find();
-    return allProductData;
+  // async findAll(): Promise<ProductDocument[]> {
+  //   const allProductData = await this.productModel.find();
+  //   return allProductData;
+  // }
+
+  // async findOne(slug: string) {
+  //   return this.productModel.findOne({ slug });
+  async findAll(
+    query: QueryDto // : Promise<ProductDocument[]>
+  ) {
+    // let limit: number = parseInt(query.limit) || 3
+    // const page: number = parseInt(query.page) || 1
+    const featuredProducts = await this.productModel
+      .find({ isFeatured: true })
+      // .limit(limit)
+      .sort({ createdAt: "asc" })
+      .exec();
+    console.log("usersPortfolios", featuredProducts);
+    return { featuredProducts };
   }
 
   async findOne(slug: string) {
