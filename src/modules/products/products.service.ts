@@ -10,16 +10,9 @@ import { QueryDto } from "./dto/query.dto";
 @Injectable()
 export class ProductsService {
   constructor(
-<<<<<<< HEAD
-    @InjectModel(Product.name) private readonly portductModel: Model<ProductDocument>
-    // @InjectModel(Portfolio.name)
-    // private portfolioModel: Model<PortfolioDocument>,
-  ) { }
-=======
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>
-  ) {}
->>>>>>> 29df7fbe191d44d5ccf5867483d89ccbb83a505b
+  ) { }
 
   async create(createProductDto: CreateProductDto): Promise<object> {
     const result = await new this.productModel(createProductDto).save();
@@ -34,19 +27,6 @@ export class ProductsService {
       };
     }
   }
-<<<<<<< HEAD
-  async findAll(query: QueryDto)
-  // : Promise<ProductDocument[]>
-  {
-    // let limit: number = parseInt(query.limit) || 3
-    // const page: number = parseInt(query.page) || 1
-    const featuredProducts = await this.portductModel.find({ isFeatured: true })
-      // .limit(limit)
-      .sort({ createdAt: "asc" })
-      .exec();
-    console.log('usersPortfolios', featuredProducts);
-    return { featuredProducts }
-=======
   // async findAll(): Promise<ProductDocument[]> {
   //   const allProductData = await this.productModel.find();
   //   return allProductData;
@@ -99,7 +79,6 @@ export class ProductsService {
       newProducts,
       allProductData,
     };
->>>>>>> 29df7fbe191d44d5ccf5867483d89ccbb83a505b
   }
 
   async findOne(slug: string) {
