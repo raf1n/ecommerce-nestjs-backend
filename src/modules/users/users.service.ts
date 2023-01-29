@@ -61,7 +61,7 @@ export class UsersService {
 
   // }
 
-  async login(loginUserDto: LoginUserDto): Promise<{ slug: string | undefined, access_token: string | null, userId?: string | null }> {
+  async login(loginUserDto: Partial<LoginUserDto>): Promise<{ slug: string | undefined, access_token: string | null, userId?: string | null, role:string|null }> {
     console.log('loginUserDto', loginUserDto);
     const { token, tokenType } = loginUserDto;
     let isVerified = false;
@@ -132,12 +132,14 @@ export class UsersService {
         slug: loginUserDto['slug'],
         access_token: accessToken,
         userId: creatUser._id as string,
+        role: creatUser.role as string
       };
     }
 
     return {
       slug: loginUserDto['slug'],
       access_token: accessToken,
+      role: null
     };
   }
 
