@@ -70,6 +70,12 @@ export class ProductsService {
       .sort({ createdAt: "asc" })
       .exec();
 
+    const stockOutProducts = await this.productModel
+      .find({ stock: 0 })
+      .sort({ createdAt: "asc" });
+    const sellerProducts = await this.productModel
+      .find({ addedBy: "seller" })
+      .sort({ createdAt: "asc" });
     return {
       featuredProducts,
       topProducts,
@@ -77,6 +83,8 @@ export class ProductsService {
       bestProducts,
       newProducts,
       allProductData,
+      stockOutProducts,
+      sellerProducts,
     };
   }
 
