@@ -18,8 +18,12 @@ export class BrandsService {
     return createdBrand;
   }
 
-  async findAll(): Promise<NewBrand[]> {
-    const allBrands = await this.brandModel.find();
+  async findAll(query: any): Promise<NewBrand[]> {
+
+    const allBrands = await this.brandModel
+      .find({ name: new RegExp(query.search, 'i') })
+      .sort({ [query.sortBy]: query.sortType });
+
     const trimmedBrands = allBrands.map((brand) => {
       const newBrand = {
         sn: 1,
@@ -29,12 +33,13 @@ export class BrandsService {
         status: brand.status,
       };
       return newBrand;
+      
     });
     return trimmedBrands;
   }
 
   async findOne(slug: string): Promise<Brand> {
-    const singleBrand = await this.brandModel.findOne({ slug: slug })
+    const singleBrand = await this.brandModel.findOne({ slug: slug });
     return singleBrand;
   }
 
