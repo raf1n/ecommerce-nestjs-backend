@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { SubCategoriesService } from './sub-categories.service';
-import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
-import { UpdateSubCategoryDto } from './dto/update-sub-category.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from "@nestjs/common";
+import { SubCategoriesService } from "./sub-categories.service";
+import { CreateSubCategoryDto } from "./dto/create-sub-category.dto";
+import { UpdateSubCategoryDto } from "./dto/update-sub-category.dto";
 
-@Controller('sub-categories')
+@Controller("sub-categories")
 export class SubCategoriesController {
   constructor(private readonly subCategoriesService: SubCategoriesService) {}
 
@@ -17,18 +25,21 @@ export class SubCategoriesController {
     return this.subCategoriesService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subCategoriesService.findOne(+id);
+  @Get(":slug")
+  findOne(@Param("slug") slug: string) {
+    return this.subCategoriesService.findOne(slug);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubCategoryDto: UpdateSubCategoryDto) {
-    return this.subCategoriesService.update(+id, updateSubCategoryDto);
+  @Patch(":slug")
+  update(
+    @Param("slug") slug: string,
+    @Body() updateSubCategoryDto: UpdateSubCategoryDto
+  ) {
+    return this.subCategoriesService.update(slug, updateSubCategoryDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subCategoriesService.remove(+id);
+  @Delete(":slug")
+  remove(@Param("slug") slug: string) {
+    return this.subCategoriesService.delete(slug);
   }
 }

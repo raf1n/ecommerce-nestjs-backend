@@ -13,6 +13,9 @@ export class SubCategories {
 
   @Prop()
   subcat_name: string;
+
+  @Prop({ required: true })
+  subcat_status: string;
 }
 
 export const SubCategoriesSchema = SchemaFactory.createForClass(SubCategories);

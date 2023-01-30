@@ -21,19 +21,20 @@ export class CategoriesController {
     console.log(createCategoryDto);
     return this.categoriesService.create(createCategoryDto);
   }
-  @Get()
-  async index() {
-    return await this.categoriesService.findAll();
-  }
-
   // @Get()
-  // findAll() {
-  //   return this.categoriesService.findAll();
+  // async index() {
+  //   return await this.categoriesService.findAll();
   // }
 
-  @Get(":id")
-  async find(@Param("id") id: string) {
-    return await this.categoriesService.findOne(id);
+  @Get()
+  findAll() {
+    return this.categoriesService.findAll();
+  }
+
+  @Get(":slug")
+  async find(@Param("slug") slug: string) {
+    console.log(slug);
+    return this.categoriesService.findOne(slug);
   }
 
   // @Get(":id")
@@ -41,16 +42,16 @@ export class CategoriesController {
   //   return this.categoriesService.findOne(id);
   // }
 
-  @Patch(":id")
+  @Patch(":slug")
   update(
-    @Param("id") id: string,
+    @Param("slug") slug: string,
     @Body() updateCategoryDto: UpdateCategoryDto
   ) {
-    return this.categoriesService.update(id, updateCategoryDto);
+    return this.categoriesService.update(slug, updateCategoryDto);
   }
 
-  @Delete(":id")
-  delete(@Param("id") id: string) {
-    return this.categoriesService.delete(id);
+  @Delete(":slug")
+  delete(@Param("slug") slug: string) {
+    return this.categoriesService.delete(slug);
   }
 }
