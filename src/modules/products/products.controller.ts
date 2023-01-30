@@ -25,7 +25,6 @@ export class ProductsController {
 
   @Get()
   async findAll(@Query() queries: QueryDto, @Request() req: Request) {
-    console.log("queries", queries);
     return await this.productsService.findAll(queries);
   }
 

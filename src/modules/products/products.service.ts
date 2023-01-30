@@ -45,7 +45,6 @@ export class ProductsService {
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
-    console.log("usersPortfolios", featuredProducts);
 
     const topProducts = await this.productModel
       .find({ isTopProduct: true })

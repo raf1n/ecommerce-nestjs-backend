@@ -5,4 +5,6 @@ import { IsString } from "class-validator";
 export class UpdateProductDto extends PartialType(CreateProductDto) {
   //   @IsString()
   //   slug: string;
+  @IsString()
+  approvalStatus: string;
 }

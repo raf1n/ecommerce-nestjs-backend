@@ -61,6 +61,12 @@ export class Product {
 
   @Prop({ required: true })
   isPopular: boolean;
+
+  @Prop({ required: true })
+  addedBy: string;
+
+  @Prop()
+  approvalStatus: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
