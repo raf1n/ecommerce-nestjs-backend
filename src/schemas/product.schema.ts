@@ -65,7 +65,7 @@ export class Product {
   @Prop({ required: true })
   addedBy: string;
 
-  @Prop()
+  @Prop({ default: "pending" })
   approvalStatus: string;
 }
 
