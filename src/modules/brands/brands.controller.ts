@@ -4,6 +4,7 @@ import { BrandsService } from './brands.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
 import { NewBrand } from './entities/brand.entity';
+import { SearchSortDto } from './../../utils/all-queries.dto';
 
 @Controller('brands')
 export class BrandsController {
@@ -15,7 +16,7 @@ export class BrandsController {
   }
 
   @Get()
-  findAll(@Query( ) query: {sortBy: string, sortType: string, search: string}): Promise<NewBrand[]> {
+  findAll(@Query( ) query: SearchSortDto): Promise<NewBrand[]> {
     console.log(query)
     return this.brandsService.findAll(query);
   }
