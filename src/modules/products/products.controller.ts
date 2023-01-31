@@ -13,6 +13,7 @@ import { ProductsService } from "./products.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { QueryDto } from "./dto/query.dto";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Controller("products")
 export class ProductsController {
@@ -26,6 +27,15 @@ export class ProductsController {
   @Get()
   async findAll(@Query() queries: QueryDto, @Request() req: Request) {
     return await this.productsService.findAll(queries);
+  }
+
+  @Get("/admin")
+  async findAllAdminProduct(
+    @Query() query: SearchSortDto,
+    @Request() req: Request
+  ) {
+    console.log(query);
+    return await this.productsService.findAllAdminProducts(query);
   }
 
   @Get(":slug")

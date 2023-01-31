@@ -35,7 +35,7 @@ export class ProductsService {
   // async findOne(slug: string) {
   //   return this.productModel.findOne({ slug });
   async findAll(
-    query: QueryDto // : Promise<ProductDocument[]>
+    query: any // : Promise<ProductDocument[]>
   ) {
     const allProductData = await this.productModel.find();
     // let limit: number = parseInt(query.limit) || 3
@@ -70,12 +70,6 @@ export class ProductsService {
       .sort({ createdAt: "asc" })
       .exec();
 
-    const stockOutProducts = await this.productModel
-      .find({ stock: 0 })
-      .sort({ createdAt: "asc" });
-    const sellerProducts = await this.productModel
-      .find({ addedBy: "seller" })
-      .sort({ createdAt: "asc" });
     return {
       featuredProducts,
       topProducts,
@@ -83,11 +77,32 @@ export class ProductsService {
       bestProducts,
       newProducts,
       allProductData,
+    };
+  }
+
+  async findAllAdminProducts(
+    query: any // : Promise<ProductDocument[]>
+  ) {
+    console.log({ query, as: "as" });
+    const allProductData = await this.productModel
+      .find({ productName: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
+    // let limit: number = parseInt(query.limit) || 3
+    // const page: number = parseInt(query.page) || 1
+
+    const stockOutProducts = await this.productModel
+      .find({ stock: 0, productName: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
+
+    const sellerProducts = await this.productModel
+      .find({ addedBy: "seller", productName: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
+    return {
+      allProductData,
       stockOutProducts,
       sellerProducts,
     };
   }
-
   async findOne(slug: string) {
     return this.productModel.findOne({ slug });
   }
