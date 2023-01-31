@@ -26,7 +26,35 @@ export class SubCategoriesService {
           from: "categories",
           localField: "cat_slug",
           foreignField: "cat_slug",
-          as: "mufez"
+          as: "mufez",
+        },
+      },
+      // {
+      //   $group: { _id: "$_id", categories: { $push: "$$ROOT" } },
+      // },
+      // {
+      //   $addFields: {
+      //     cat_name: "$mufez.cat_slug",
+      //   },
+      // },
+      // {
+      //   $unset: {},
+      // },
+      // {
+      //   $replaceRoot: {
+      //     newRoot: {
+      //       $mergeObjects: [{ $arrayElemAt: ["$mufez", 0] }, "$$ROOT"],
+      //     },
+      //   },
+      // },
+      {
+        $project: {
+          _id: 0,
+          slug: 1,
+          cat_slug: 1,
+          subcat_name: 1,
+          subcat_status: 1,
+          cat_name: "$mufez.cat_name",
         },
       },
     ]);
