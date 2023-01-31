@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Brand } from 'src/schemas/brand.schema';
 import { BrandsService } from './brands.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
+import { NewBrand } from './entities/brand.entity';
+import { SearchSortDto } from './../../utils/all-queries.dto';
 
 @Controller('brands')
 export class BrandsController {
@@ -13,22 +16,23 @@ export class BrandsController {
   }
 
   @Get()
-  findAll() {
-    return this.brandsService.findAll();
+  findAll(@Query( ) query: SearchSortDto): Promise<NewBrand[]> {
+    console.log(query)
+    return this.brandsService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.brandsService.findOne(+id);
+  @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.brandsService.findOne(slug);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBrandDto: UpdateBrandDto) {
-    return this.brandsService.update(+id, updateBrandDto);
+  @Patch(':slug')
+  update(@Param('slug') slug: string, @Body() updateBrandDto: UpdateBrandDto) {
+    return this.brandsService.update(slug, updateBrandDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.brandsService.remove(+id);
+  @Delete(':slug')
+  remove(@Param('slug') slug: string) {
+    return this.brandsService.remove(slug);
   }
 }
