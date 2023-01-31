@@ -20,7 +20,17 @@ export class SubCategoriesService {
   // }
 
   async findAll(): Promise<SubCategoriesService[]> {
-    return await this.subCategoryModel.find();
+    return await this.subCategoryModel.aggregate([
+      {
+        $lookup: {
+          from: "categories",
+          localField: "cat_slug",
+          foreignField: "cat_slug",
+          as: "mufez"
+        },
+      },
+    ]);
+    // return await this.subCategoryModel.find();
   }
 
   async findOne(slug: string) {
