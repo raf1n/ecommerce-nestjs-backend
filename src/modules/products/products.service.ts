@@ -91,7 +91,18 @@ export class ProductsService {
   async findOne(slug: string) {
     return this.productModel.findOne({ slug });
   }
-
+  // async findWithSeller(slug: string) {
+  //   return this.productModel.aggregate([
+  //     {
+  //       $lookup: {
+  //         from: "sellers",
+  //         localField: slug,
+  //         foreignField: slug,
+  //         as: "seller_product",
+  //       },
+  //     },
+  //   ]);
+  // }
   async update(
     slug: string,
     updateProductDto: UpdateProductDto
