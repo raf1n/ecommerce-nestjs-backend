@@ -19,9 +19,8 @@ export class BrandsService {
   }
 
   async findAll(query: any): Promise<NewBrand[]> {
-
     const allBrands = await this.brandModel
-      .find({ name: new RegExp(query.search, 'i') })
+      .find({ name: new RegExp(query.search, "i") })
       .sort({ [query.sortBy]: query.sortType });
 
     const trimmedBrands = allBrands.map((brand) => {
@@ -33,7 +32,6 @@ export class BrandsService {
         status: brand.status,
       };
       return newBrand;
-      
     });
     return trimmedBrands;
   }

@@ -5,6 +5,8 @@ export class SearchSortDto {
   @IsOptional()
   sortBy: string;
 
+  // [sortyBy: string]: string;
+
   @IsString()
   @IsOptional()
   sortType: string;

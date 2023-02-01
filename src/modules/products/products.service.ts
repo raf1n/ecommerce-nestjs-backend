@@ -1,3 +1,4 @@
+import { serviceHandler } from "./../../utils/ServiceHandler";
 import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -83,10 +84,14 @@ export class ProductsService {
   async findAllAdminProducts(
     query: any // : Promise<ProductDocument[]>
   ) {
-    console.log({ query, as: "as" });
-    const allProductData = await this.productModel
-      .find({ productName: new RegExp(query.search, "i") })
-      .sort({ [query.sortBy]: query.sortType });
+    // const allProductData = await this.productModel
+    //   .find({ productName: new RegExp(query.search, "i") })
+    //   .sort({ [query.sortBy]: query.sortType });
+    const allProductData = await serviceHandler.queryHandler(
+      this.productModel,
+      query
+    );
+
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
 
@@ -97,10 +102,19 @@ export class ProductsService {
     const sellerProducts = await this.productModel
       .find({ addedBy: "seller", productName: new RegExp(query.search, "i") })
       .sort({ [query.sortBy]: query.sortType });
+
+    const sellerPendingProducts = await this.productModel
+      .find({
+        addedBy: "seller",
+        approvalStatus: "pending",
+        productName: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
     return {
       allProductData,
       stockOutProducts,
       sellerProducts,
+      sellerPendingProducts,
     };
   }
   async findOne(slug: string) {
