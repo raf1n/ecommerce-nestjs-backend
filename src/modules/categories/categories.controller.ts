@@ -7,7 +7,8 @@ import {
   Param,
   Delete,
 } from "@nestjs/common";
-import { Put } from "@nestjs/common/decorators";
+import { Put, Query, Request } from "@nestjs/common/decorators";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 import { CategoriesService } from "./categories.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
@@ -29,6 +30,15 @@ export class CategoriesController {
   @Get()
   findAll() {
     return this.categoriesService.findAll();
+  }
+
+  @Get("/admin")
+  async findAllAdminCategories(
+    @Query() query: SearchSortDto,
+    @Request() req: Request
+  ) {
+    console.log(query);
+    return await this.categoriesService.findAllAdminCategories(query);
   }
 
   @Get(":slug")

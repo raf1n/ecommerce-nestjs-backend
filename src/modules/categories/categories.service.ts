@@ -18,6 +18,16 @@ export class CategoriesService {
     return await this.categoryModel.find().exec();
   }
 
+  async findAllAdminCategories(query: any) {
+    const allCategoriesData = await this.categoryModel
+      .find({
+        cat_name: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
+
+    return allCategoriesData;
+  }
+
   async findOne(slug: string) {
     console.log(slug);
     const categoryFind = await this.categoryModel.findOne({ cat_slug: slug });
