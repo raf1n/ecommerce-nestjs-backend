@@ -120,18 +120,47 @@ export class ProductsService {
   async findOne(slug: string) {
     return this.productModel.findOne({ slug });
   }
-  // async findWithSeller(slug: string) {
+  //................
+  // async findWithSeller(sellerSlug: string) {
   //   return this.productModel.aggregate([
   //     {
   //       $lookup: {
   //         from: "sellers",
-  //         localField: slug,
-  //         foreignField: slug,
-  //         as: "seller_product",
+  //         localField: "seller_slug",
+  //         foreignField: "seller_slug",
+  //         as: "sellerproduct",
+  //       },
+  //     },
+  //     {
+  //       $unwind: "$sellerproduct",
+  //     },
+  //     {
+  //       $project: {
+  //         _id: 0,
+  //         productName: "$productName",
+  //         name: "$sellerproduct.shop_name",
+  //         sellerSlug: "$sellerproduct.seller_slug",
+  //       },
+  //     },
+  //     {
+  //       $match: {
+  //         slug: "$sellerproduct.seller_slug",
+  //       },
+  //     },
+  //     {
+  //       $group: {
+  //         _id: "$sellerproduct.slug",
+  //       },
+  //     },
+  //     {
+  //       $project: {
+  //         product_name: 1,
+  //         shop_name: 1,
   //       },
   //     },
   //   ]);
   // }
+  //...............
   async update(
     slug: string,
     updateProductDto: UpdateProductDto

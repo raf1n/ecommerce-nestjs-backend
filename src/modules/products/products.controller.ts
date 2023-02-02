@@ -28,7 +28,15 @@ export class ProductsController {
   async findAll(@Query() queries: QueryDto, @Request() req: Request) {
     return await this.productsService.findAll(queries);
   }
-
+  //..............
+  // @Get("/seller")
+  // async findAllSellerWithProduct(
+  //   @Param("slug") slug: string,
+  //   @Request() req: Request
+  // ) {
+  //   return await this.productsService.findWithSeller(slug);
+  // }
+  //..............
   @Get("/admin")
   async findAllAdminProduct(
     @Query() query: SearchSortDto,
