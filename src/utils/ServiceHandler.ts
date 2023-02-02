@@ -13,29 +13,41 @@ import { SearchSortDto } from "./all-queries.dto";
 //     return allBrands;
 //   }
 // }
-export class serviceHandler {
-  static async queryHandler<T>(
-    model: Model<T>,
-    query: { search: string; sort: { [key: string]: SortOrder } }
-  ): Promise<Array<T>> {
-    const allBrands = await model
-      .find({ name: new RegExp(query.search, "i") })
-      .sort(query.sort);
-    return allBrands;
-  }
-}
+// export class serviceHandler {
+//   static async queryHandler<T>(
+//     model: Model<T>,
+//     query: { search: string; sort: { [key: string]: SortOrder } }
+//   ): Promise<Array<T>> {
+//     const allBrands = await model
+//       .find({ name: new RegExp(query.search, "i") })
+//       .sort(query.sort);
+//     return allBrands;
+//   }
+// }
 // interface s<T> {
 //   [sortBy: string]: T;
 //   search: T;
 //   sortType: T;
 // }
 // export class serviceHandler {
-//   static async queryHandler<
-//     T extends { sortType: string; search: string; sortBy: string }
-//   >(model: Model<T>, query: s<T>): Promise<Array<T>> {
+//   static async queryHandler<T extends s>(
+//     model: Model<T>,
+//     query: s<T>
+//   ): Promise<Array<T>> {
 //     const allDatas = await model
 //       .find({ name: new RegExp(query.search, "i") })
 //       .sort({ [query.sortBy]: query.sortType });
 //     return allDatas;
+//   }
+// }
+// export class serviceHandler {
+//   static async queryHandler<T>(
+//     model: Model<T>,
+//     query: { search: string; sort: { [key: string]: SortOrder } }
+//   ): Promise<Array<T>> {
+//     const allBrands = await model
+//       .find({ name: new RegExp(query.search, "i") })
+//       .sort(query.sort);
+//     return allBrands;
 //   }
 // }

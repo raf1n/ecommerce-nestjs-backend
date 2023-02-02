@@ -1,4 +1,4 @@
-import { serviceHandler } from "./../../utils/ServiceHandler";
+import { ServiceHandler } from "./../../utils/ServiceHandler";
 import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -87,7 +87,7 @@ export class ProductsService {
     // const allProductData = await this.productModel
     //   .find({ productName: new RegExp(query.search, "i") })
     //   .sort({ [query.sortBy]: query.sortType });
-    const allProductData = await serviceHandler.queryHandler(
+    const allProductData = await ServiceHandler.queryHandler(
       this.productModel,
       query
     );

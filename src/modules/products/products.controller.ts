@@ -42,7 +42,6 @@ export class ProductsController {
     @Query() query: SearchSortDto,
     @Request() req: Request
   ) {
-    console.log(query);
     return await this.productsService.findAllAdminProducts(query);
   }
 
