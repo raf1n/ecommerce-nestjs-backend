@@ -41,11 +41,28 @@ export class PopularCategoriesService {
     return `This action returns a #${id} popularCategory`;
   }
 
-  update(id: number, updatePopularCategoryDto: UpdatePopularCategoryDto) {
-    return `This action updates a #${id} popularCategory`;
+  // update(slug: string, updatePopularCategoryDto: UpdatePopularCategoryDto) {
+  //   return `This action updates a #${slug} popularCategory`;
+  // }
+
+  async update(
+    slug: string,
+    updatePopularCategoryDto: UpdatePopularCategoryDto
+  ): Promise<UpdatePopularCategoryDto> {
+    return await this.popularCategoryModel.findOneAndUpdate(
+      { slug },
+      updatePopularCategoryDto,
+      {
+        new: true,
+      }
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} popularCategory`;
+  async delete(slug: string): Promise<PopularCategory> {
+    return await this.popularCategoryModel.findOneAndDelete({ slug }).exec();
+  }
+
+  remove(slug: string) {
+    return `This action removes a #${slug} popularCategory`;
   }
 }

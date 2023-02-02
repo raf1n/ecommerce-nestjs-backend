@@ -32,16 +32,16 @@ export class PopularCategoriesController {
     return this.popularCategoriesService.findOne(+id);
   }
 
-  @Patch(":id")
+  @Patch(":slug")
   update(
-    @Param("id") id: string,
+    @Param("slug") slug: string,
     @Body() updatePopularCategoryDto: UpdatePopularCategoryDto
   ) {
-    return this.popularCategoriesService.update(+id, updatePopularCategoryDto);
+    return this.popularCategoriesService.update(slug, updatePopularCategoryDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.popularCategoriesService.remove(+id);
+  @Delete(":slug")
+  delete(@Param("slug") slug: string) {
+    return this.popularCategoriesService.delete(slug);
   }
 }
