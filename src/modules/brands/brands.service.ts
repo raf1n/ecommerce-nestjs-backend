@@ -26,18 +26,18 @@ export class BrandsService {
     //   .find({ name: new RegExp(query.search, "i") })
     //   .sort({ [query.sortBy]: query.sortType });
 
-    const key = query.sortBy;
-    const newQuery: ISearchSortQuery = {
+    let newQuery: ISearchSortQuery = {
       search: query.search,
       sort: {
         // key: query.sortType,
-        [`${key}`]: query.sortType,
+        [`${query.sortBy}`]: query.sortType,
       },
     };
 
     const allBrands = await ServiceHandler.queryHandler(
       this.brandModel,
-      newQuery
+      newQuery,
+      {}
     );
 
     const trimmedBrands = allBrands.map((brand) => {

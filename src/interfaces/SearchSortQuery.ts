@@ -5,5 +5,5 @@ import { SortOrder } from "mongoose";
 
 export interface ISearchSortQuery {
   search: string;
-   sort: { [key: string]: SortOrder }
+  sort: { [x: string]: SortOrder | any };
 }

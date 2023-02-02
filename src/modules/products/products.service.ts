@@ -7,6 +7,8 @@ import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
 import { filter } from "rxjs";
 import { QueryDto } from "./dto/query.dto";
+import { ISearchSortQuery } from "src/interfaces/SearchSortQuery";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Injectable()
 export class ProductsService {
@@ -82,34 +84,52 @@ export class ProductsService {
   }
 
   async findAllAdminProducts(
-    query: any // : Promise<ProductDocument[]>
+    query: SearchSortDto // : Promise<ProductDocument[]>
   ) {
     // const allProductData = await this.productModel
     //   .find({ productName: new RegExp(query.search, "i") })
     //   .sort({ [query.sortBy]: query.sortType });
+    // const allProductData = await ServiceHandler.queryHandler(
+    //   this.productModel,
+    //   query
+    // );
+
+    let newQuery: ISearchSortQuery = {
+      search: query.search,
+      sort: {
+        // key: query.sortType,
+        [`${query.sortBy}`]: query.sortType,
+      },
+    };
+
     const allProductData = await ServiceHandler.queryHandler(
       this.productModel,
-      query
+      newQuery
     );
-
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
 
-    const stockOutProducts = await this.productModel
-      .find({ stock: 0, productName: new RegExp(query.search, "i") })
-      .sort({ [query.sortBy]: query.sortType });
+    // const stockOutProducts = await this.productModel
+    //   .find({ stock: 0, productName: new RegExp(query.search, "i") })
+    //   .sort({ [query.sortBy]: query.sortType });
+    const stockOutProducts = await ServiceHandler.queryHandler(
+      this.productModel,
+      newQuery
+    );
 
-    const sellerProducts = await this.productModel
-      .find({ addedBy: "seller", productName: new RegExp(query.search, "i") })
-      .sort({ [query.sortBy]: query.sortType });
-
-    const sellerPendingProducts = await this.productModel
-      .find({
-        addedBy: "seller",
-        approvalStatus: "pending",
-        productName: new RegExp(query.search, "i"),
-      })
-      .sort({ [query.sortBy]: query.sortType });
+    // const sellerProducts = await this.productModel
+    //   .find({ addedBy: "seller", productName: new RegExp(query.search, "i") })
+    //   .sort({ [query.sortBy]: query.sortType });
+    const sellerProducts = await ServiceHandler.queryHandler(
+      this.productModel,
+      newQuery,
+      { addedBy: "seller" }
+    );
+    const sellerPendingProducts = await ServiceHandler.queryHandler(
+      this.productModel,
+      newQuery,
+      { addedBy: "seller", approvalStatus: "pending" }
+    );
     return {
       allProductData,
       stockOutProducts,
