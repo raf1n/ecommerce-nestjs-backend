@@ -1,3 +1,4 @@
+// import { serviceHandler } from "./../../utils/ServiceHandler";
 import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -35,7 +36,7 @@ export class ProductsService {
   // async findOne(slug: string) {
   //   return this.productModel.findOne({ slug });
   async findAll(
-    query: QueryDto // : Promise<ProductDocument[]>
+    query: any // : Promise<ProductDocument[]>
   ) {
     const allProductData = await this.productModel.find();
     // let limit: number = parseInt(query.limit) || 3
@@ -45,7 +46,6 @@ export class ProductsService {
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
-    console.log("usersPortfolios", featuredProducts);
 
     const topProducts = await this.productModel
       .find({ isTopProduct: true })
@@ -81,6 +81,43 @@ export class ProductsService {
     };
   }
 
+  async findAllAdminProducts(
+    query: any // : Promise<ProductDocument[]>
+  ) {
+    const allProductData = await this.productModel
+      .find({ productName: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
+
+    // const allProductData = await serviceHandler.queryHandler(
+    //   this.productModel,
+    //   query
+    // );
+
+    // let limit: number = parseInt(query.limit) || 3
+    // const page: number = parseInt(query.page) || 1
+
+    const stockOutProducts = await this.productModel
+      .find({ stock: 0, productName: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
+
+    const sellerProducts = await this.productModel
+      .find({ addedBy: "seller", productName: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
+
+    const sellerPendingProducts = await this.productModel
+      .find({
+        addedBy: "seller",
+        approvalStatus: "pending",
+        productName: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
+    return {
+      allProductData,
+      stockOutProducts,
+      sellerProducts,
+      sellerPendingProducts,
+    };
+  }
   async findOne(slug: string) {
     return this.productModel.findOne({ slug });
   }

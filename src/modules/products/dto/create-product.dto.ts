@@ -66,4 +66,7 @@ export class CreateProductDto {
 
   @IsBoolean()
   isPopular: boolean;
+
+  @IsString()
+  addedBy: boolean;
 }

@@ -3,16 +3,25 @@ import { Document } from "mongoose";
 
 export type BrandDocument = Brand & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Brand {
-  @Prop()
+  @Prop({ default: "brand_slug_1"})
   slug: string;
+
+  @Prop()
+  logo: string;
+
+  @Prop()
+  name: string;
+
+  @Prop()
+  status: string;
 
   @Prop()
   cat_slug: Array<string>;
 
   @Prop()
-  subcat_slug: Array<string>;
+  sub_cat_slug: Array<string>;
 }
 
 export const BrandSchema = SchemaFactory.createForClass(Brand);
