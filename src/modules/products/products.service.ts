@@ -1,4 +1,4 @@
-import { ServiceHandler } from "./../../utils/ServiceHandler";
+// import { serviceHandler } from "./../../utils/ServiceHandler";
 import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -7,8 +7,6 @@ import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
 import { filter } from "rxjs";
 import { QueryDto } from "./dto/query.dto";
-import { ISearchSortQuery } from "src/interfaces/SearchSortQuery";
-import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Injectable()
 export class ProductsService {
@@ -84,52 +82,35 @@ export class ProductsService {
   }
 
   async findAllAdminProducts(
-    query: SearchSortDto // : Promise<ProductDocument[]>
+    query: any // : Promise<ProductDocument[]>
   ) {
-    // const allProductData = await this.productModel
-    //   .find({ productName: new RegExp(query.search, "i") })
-    //   .sort({ [query.sortBy]: query.sortType });
-    // const allProductData = await ServiceHandler.queryHandler(
+    const allProductData = await this.productModel
+      .find({ productName: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
+
+    // const allProductData = await serviceHandler.queryHandler(
     //   this.productModel,
     //   query
     // );
 
-    let newQuery: ISearchSortQuery = {
-      search: query.search,
-      sort: {
-        // key: query.sortType,
-        [`${query.sortBy}`]: query.sortType,
-      },
-    };
-
-    const allProductData = await ServiceHandler.queryHandler(
-      this.productModel,
-      newQuery
-    );
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
 
-    // const stockOutProducts = await this.productModel
-    //   .find({ stock: 0, productName: new RegExp(query.search, "i") })
-    //   .sort({ [query.sortBy]: query.sortType });
-    const stockOutProducts = await ServiceHandler.queryHandler(
-      this.productModel,
-      newQuery
-    );
+    const stockOutProducts = await this.productModel
+      .find({ stock: 0, productName: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
 
-    // const sellerProducts = await this.productModel
-    //   .find({ addedBy: "seller", productName: new RegExp(query.search, "i") })
-    //   .sort({ [query.sortBy]: query.sortType });
-    const sellerProducts = await ServiceHandler.queryHandler(
-      this.productModel,
-      newQuery,
-      { addedBy: "seller" }
-    );
-    const sellerPendingProducts = await ServiceHandler.queryHandler(
-      this.productModel,
-      newQuery,
-      { addedBy: "seller", approvalStatus: "pending" }
-    );
+    const sellerProducts = await this.productModel
+      .find({ addedBy: "seller", productName: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
+
+    const sellerPendingProducts = await this.productModel
+      .find({
+        addedBy: "seller",
+        approvalStatus: "pending",
+        productName: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
     return {
       allProductData,
       stockOutProducts,
@@ -140,47 +121,7 @@ export class ProductsService {
   async findOne(slug: string) {
     return this.productModel.findOne({ slug });
   }
-  //................
-  // async findWithSeller(sellerSlug: string) {
-  //   return this.productModel.aggregate([
-  //     {
-  //       $lookup: {
-  //         from: "sellers",
-  //         localField: "seller_slug",
-  //         foreignField: "seller_slug",
-  //         as: "sellerproduct",
-  //       },
-  //     },
-  //     {
-  //       $unwind: "$sellerproduct",
-  //     },
-  //     {
-  //       $project: {
-  //         _id: 0,
-  //         productName: "$productName",
-  //         name: "$sellerproduct.shop_name",
-  //         sellerSlug: "$sellerproduct.seller_slug",
-  //       },
-  //     },
-  //     {
-  //       $match: {
-  //         slug: "$sellerproduct.seller_slug",
-  //       },
-  //     },
-  //     {
-  //       $group: {
-  //         _id: "$sellerproduct.slug",
-  //       },
-  //     },
-  //     {
-  //       $project: {
-  //         product_name: 1,
-  //         shop_name: 1,
-  //       },
-  //     },
-  //   ]);
-  // }
-  //...............
+
   async update(
     slug: string,
     updateProductDto: UpdateProductDto

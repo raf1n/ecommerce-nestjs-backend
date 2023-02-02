@@ -21,7 +21,7 @@ export class BrandsService {
     return createdBrand;
   }
 
-  async findAll(query: SearchSortDto): Promise<NewBrand[]> {
+  async findAll(query: any): Promise<NewBrand[]> {
     // const allBrands = await this.brandModel
     //   .find({ name: new RegExp(query.search, "i") })
     //   .sort({ [query.sortBy]: query.sortType });
@@ -36,8 +36,7 @@ export class BrandsService {
 
     const allBrands = await ServiceHandler.queryHandler(
       this.brandModel,
-      newQuery,
-      {}
+      newQuery
     );
 
     const trimmedBrands = allBrands.map((brand) => {
