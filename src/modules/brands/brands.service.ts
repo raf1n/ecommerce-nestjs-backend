@@ -5,6 +5,9 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Brand, BrandDocument } from "src/schemas/brand.schema";
 import { Model } from "mongoose";
 import { NewBrand } from "./entities/brand.entity";
+import { ServiceHandler } from "src/utils/ServiceHandler";
+import { SearchSortDto } from "src/utils/all-queries.dto";
+import { ISearchSortQuery } from "src/interfaces/SearchSortQuery";
 
 @Injectable()
 export class BrandsService {
@@ -18,10 +21,24 @@ export class BrandsService {
     return createdBrand;
   }
 
-  async findAll(query: any): Promise<NewBrand[]> {
-    const allBrands = await this.brandModel
-      .find({ name: new RegExp(query.search, "i") })
-      .sort({ [query.sortBy]: query.sortType });
+  async findAll(query: SearchSortDto): Promise<NewBrand[]> {
+    // const allBrands = await this.brandModel
+    //   .find({ name: new RegExp(query.search, "i") })
+    //   .sort({ [query.sortBy]: query.sortType });
+    
+    const key = query.sortBy;
+    const newQuery: ISearchSortQuery = {
+      search: query.search,
+      sort: {
+        // key: query.sortType,
+        [`${key}`]: query.sortType
+      },
+    };
+
+    const allBrands = await ServiceHandler.queryHandler(
+      this.brandModel,
+      newQuery
+    );
 
     const trimmedBrands = allBrands.map((brand) => {
       const newBrand = {

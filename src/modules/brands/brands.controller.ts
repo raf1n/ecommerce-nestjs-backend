@@ -16,8 +16,7 @@ export class BrandsController {
   }
 
   @Get()
-  findAll(@Query( ) query: SearchSortDto): Promise<NewBrand[]> {
-    console.log(query)
+  findAll(@Query() query: SearchSortDto): Promise<NewBrand[]> {
     return this.brandsService.findAll(query);
   }
 
