@@ -3,8 +3,4 @@ import { CreatePopularCategoryDto } from "./create-popular_category.dto";
 
 export class UpdatePopularCategoryDto extends PartialType(
   CreatePopularCategoryDto
-) {
-  slug: string;
-  cat_name: string;
-  image: string;
-}
+) {}

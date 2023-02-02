@@ -1,1 +1,5 @@
-export class CreatePopularCategoryDto {}
+export class CreatePopularCategoryDto {
+  slug: string;
+  cat_name: string;
+  image: string;
+}
