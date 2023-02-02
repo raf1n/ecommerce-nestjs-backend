@@ -19,47 +19,70 @@ export class SubCategoriesService {
   //   return "This action adds a new subCategory";
   // }
 
-  async findAll(): Promise<SubCategoriesService[]> {
-    return await this.subCategoryModel.aggregate([
-      {
-        $lookup: {
-          from: "categories",
-          localField: "cat_slug",
-          foreignField: "cat_slug",
-          as: "mufez",
+  async findAllAdminSubCategories(query: any): Promise<SubCategoriesService[]> {
+    const xx = await this.subCategoryModel
+      .aggregate([
+        {
+          $match: {
+            subcat_name: new RegExp(query.search, "i"),
+          },
         },
-      },
-      // {
-      //   $group: { _id: "$_id", categories: { $push: "$$ROOT" } },
-      // },
-      // {
-      //   $addFields: {
-      //     cat_name: "$mufez.cat_slug",
-      //   },
-      // },
-      // {
-      //   $unset: {},
-      // },
-      // {
-      //   $replaceRoot: {
-      //     newRoot: {
-      //       $mergeObjects: [{ $arrayElemAt: ["$mufez", 0] }, "$$ROOT"],
-      //     },
-      //   },
-      // },
-      {
-        $project: {
-          _id: 0,
-          slug: 1,
-          cat_slug: 1,
-          subcat_name: 1,
-          subcat_status: 1,
-          cat_name: "$mufez.cat_name",
+        {
+          $lookup: {
+            from: "categories",
+            localField: "cat_slug",
+            foreignField: "cat_slug",
+            as: "mufez",
+          },
         },
-      },
-    ]);
+        {
+          $unwind: "$mufez",
+        },
+
+        // {
+        //   $group: { _id: "$_id", categories: { $push: "$$ROOT" } },
+        // },
+        // {
+        //   $addFields: {
+        //     cat_name: "$mufez.cat_slug",
+        //   },
+        // },
+        // {
+        //   $unset: {},
+        // },
+        // {
+        //   $replaceRoot: {
+        //     newRoot: {
+        //       $mergeObjects: [{ $arrayElemAt: ["$mufez", 0] }, "$$ROOT"],
+        //     },
+        //   },
+        // },
+        {
+          $project: {
+            _id: 0,
+            slug: 1,
+            cat_slug: 1,
+            subcat_name: 1,
+            subcat_status: 1,
+            cat_name: "$mufez.cat_name",
+            // $mufez.cat_name
+          },
+        },
+      ])
+      .sort({ [query.sortBy]: query.sortType });
+
+    console.log(xx);
+    return xx;
     // return await this.subCategoryModel.find();
   }
+
+  // async findAllAdminSubCategories(query: any) {
+  //   const allSubCategoriesData = await this.subCategoryModel
+  //     .find({ subcat_name: new RegExp(query.search, "i") })
+  //     .sort({ [query.sortBy]: query.sortType });
+
+  //   return allSubCategoriesData;
+  // }
 
   async findOne(slug: string) {
     console.log(slug);

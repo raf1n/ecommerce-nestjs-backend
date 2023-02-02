@@ -10,6 +10,8 @@ import {
 import { SubCategoriesService } from "./sub-categories.service";
 import { CreateSubCategoryDto } from "./dto/create-sub-category.dto";
 import { UpdateSubCategoryDto } from "./dto/update-sub-category.dto";
+import { Query, Request } from "@nestjs/common/decorators";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Controller("sub-categories")
 export class SubCategoriesController {
@@ -20,9 +22,18 @@ export class SubCategoriesController {
     return this.subCategoriesService.create(createSubCategoryDto);
   }
 
-  @Get()
-  findAll() {
-    return this.subCategoriesService.findAll();
+  // @Get()
+  // findAll() {
+  //   return this.subCategoriesService.findAll();
+  // }
+
+  @Get("/admin")
+  async findAllAdminSubCategories(
+    @Query() query: SearchSortDto,
+    @Request() req: Request
+  ) {
+    console.log(query);
+    return await this.subCategoriesService.findAllAdminSubCategories(query);
   }
 
   @Get(":slug")

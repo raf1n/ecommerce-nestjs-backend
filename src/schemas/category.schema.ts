@@ -11,7 +11,7 @@ export class Category {
   @Prop({ required: true })
   cat_name: string;
 
-  @Prop({ required: true })
+  @Prop()
   cat_image: string;
 
   @Prop({ required: true })
