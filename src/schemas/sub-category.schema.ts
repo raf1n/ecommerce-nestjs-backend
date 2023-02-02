@@ -9,10 +9,16 @@ export class SubCategories {
   slug: string;
 
   @Prop()
-  cat_name: string;
+  cat_slug: string;
+
+  // @Prop()
+  // cat_name: string;
 
   @Prop()
   subcat_name: string;
+
+  @Prop({ required: true })
+  subcat_status: string;
 }
 
 export const SubCategoriesSchema = SchemaFactory.createForClass(SubCategories);

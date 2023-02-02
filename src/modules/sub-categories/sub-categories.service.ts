@@ -1,24 +1,131 @@
-import { Injectable } from '@nestjs/common';
-import { CreateSubCategoryDto } from './dto/create-sub-category.dto';
-import { UpdateSubCategoryDto } from './dto/update-sub-category.dto';
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import {
+  SubCategories,
+  SubCategoriesDocument,
+} from "src/schemas/sub-category.schema";
+import { CreateSubCategoryDto } from "./dto/create-sub-category.dto";
+import { UpdateSubCategoryDto } from "./dto/update-sub-category.dto";
 
 @Injectable()
 export class SubCategoriesService {
-  create(createSubCategoryDto: CreateSubCategoryDto) {
-    return 'This action adds a new subCategory';
+  constructor(
+    @InjectModel(SubCategories.name)
+    private readonly subCategoryModel: Model<SubCategoriesDocument>
+  ) {}
+
+  // create(createSubCategoryDto: CreateSubCategoryDto) {
+  //   return "This action adds a new subCategory";
+  // }
+
+  async findAllAdminSubCategories(query: any): Promise<SubCategoriesService[]> {
+    const xx = await this.subCategoryModel
+      .aggregate([
+        {
+          $match: {
+            subcat_name: new RegExp(query.search, "i"),
+          },
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "cat_slug",
+            foreignField: "cat_slug",
+            as: "mufez",
+          },
+        },
+        {
+          $unwind: "$mufez",
+        },
+
+        // {
+        //   $group: { _id: "$_id", categories: { $push: "$$ROOT" } },
+        // },
+        // {
+        //   $addFields: {
+        //     cat_name: "$mufez.cat_slug",
+        //   },
+        // },
+        // {
+        //   $unset: {},
+        // },
+        // {
+        //   $replaceRoot: {
+        //     newRoot: {
+        //       $mergeObjects: [{ $arrayElemAt: ["$mufez", 0] }, "$$ROOT"],
+        //     },
+        //   },
+        // },
+        {
+          $project: {
+            _id: 0,
+            slug: 1,
+            cat_slug: 1,
+            subcat_name: 1,
+            subcat_status: 1,
+            cat_name: "$mufez.cat_name",
+            // $mufez.cat_name
+          },
+        },
+      ])
+      .sort({ [query.sortBy]: query.sortType });
+
+    console.log(xx);
+    return xx;
+    // return await this.subCategoryModel.find();
   }
 
-  findAll() {
-    return `This action returns all subCategories`;
+  // async findAllAdminSubCategories(query: any) {
+  //   const allSubCategoriesData = await this.subCategoryModel
+  //     .find({ subcat_name: new RegExp(query.search, "i") })
+  //     .sort({ [query.sortBy]: query.sortType });
+
+  //   return allSubCategoriesData;
+  // }
+
+  async findOne(slug: string) {
+    console.log(slug);
+    const subCategoryFind = await this.subCategoryModel.findOne({ slug: slug });
+    console.log(subCategoryFind);
+    return subCategoryFind;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} subCategory`;
+  async create(createSubCategoryDto: CreateSubCategoryDto): Promise<object> {
+    const result = await new this.subCategoryModel(createSubCategoryDto).save();
+    if (result) {
+      return { message: "Success" };
+    }
   }
 
-  update(id: number, updateSubCategoryDto: UpdateSubCategoryDto) {
-    return `This action updates a #${id} subCategory`;
+  async update(
+    slug: string,
+    updateSubCategoryDto: UpdateSubCategoryDto
+  ): Promise<UpdateSubCategoryDto> {
+    return await this.subCategoryModel.findOneAndUpdate(
+      { slug },
+      updateSubCategoryDto,
+      {
+        new: true,
+      }
+    );
   }
+
+  async delete(slug: string): Promise<SubCategories> {
+    return await this.subCategoryModel.findOneAndDelete({ slug }).exec();
+  }
+
+  // findAll() {
+  //   return `This action returns all subCategories`;
+  // }
+
+  // findOne(id: number) {
+  //   return `This action returns a #${id} subCategory`;
+  // }
+
+  // update(id: number, updateSubCategoryDto: UpdateSubCategoryDto) {
+  //   return `This action updates a #${id} subCategory`;
+  // }
 
   remove(id: number) {
     return `This action removes a #${id} subCategory`;
