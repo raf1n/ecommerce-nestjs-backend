@@ -1,7 +1,8 @@
 import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator"
 
 export class CreateBrandDto {
-  @IsNotEmpty({ message: "logo can not be empty"})
+  // @IsNotEmpty({ message: "logo can not be empty"})
+  @IsOptional()
   @IsString({ message: 'logo should be string' })
   logo: string;
 

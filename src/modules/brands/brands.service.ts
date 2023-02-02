@@ -3,7 +3,7 @@ import { CreateBrandDto } from "./dto/create-brand.dto";
 import { UpdateBrandDto } from "./dto/update-brand.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Brand, BrandDocument } from "src/schemas/brand.schema";
-import { Model } from "mongoose";
+import { Model, SortOrder } from "mongoose";
 import { NewBrand } from "./entities/brand.entity";
 import { ServiceHandler } from "src/utils/ServiceHandler";
 import { SearchSortDto } from "src/utils/all-queries.dto";
@@ -17,28 +17,29 @@ export class BrandsService {
 
   async create(createBrandDto: CreateBrandDto) {
     const createdBrand = await this.brandModel.create(createBrandDto);
-    // console.log(createdBrand)
     return createdBrand;
   }
 
-  async findAll(query: SearchSortDto): Promise<NewBrand[]> {
-    // const allBrands = await this.brandModel
-    //   .find({ name: new RegExp(query.search, "i") })
-    //   .sort({ [query.sortBy]: query.sortType });
-    
-    const key = query.sortBy;
-    const newQuery: ISearchSortQuery = {
-      search: query.search,
-      sort: {
-        // key: query.sortType,
-        [`${key}`]: query.sortType
-      },
-    };
+  async findAll(query: any): Promise<NewBrand[]> {
+    const allBrands = await this.brandModel
+      .find({ name: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
 
-    const allBrands = await ServiceHandler.queryHandler(
-      this.brandModel,
-      newQuery
-    );
+    // const sortType: SortOrder | string = query.sortType;
+
+    // const key = query.sortBy;
+    // const newQuery: ISearchSortQuery = {
+    //   search: query.search,
+    //   sort: {
+    //     // key: query.sortType,
+    //     [`${key}`]: sortType
+    //   },
+    // };
+
+    // const allBrands = await ServiceHandler.queryHandler(
+    //   this.brandModel,
+    //   newQuery
+    // );
 
     const trimmedBrands = allBrands.map((brand) => {
       const newBrand = {
@@ -62,7 +63,6 @@ export class BrandsService {
     slug: string,
     updateBrandDto: UpdateBrandDto
   ): Promise<BrandDocument> {
-    // console.log({ slug, updateBrandDto })
     const updatedBrand = await this.brandModel.findOneAndUpdate(
       { slug: slug },
       updateBrandDto,
