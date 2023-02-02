@@ -1,11 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { CreateWishlistDto } from './dto/create-wishlist.dto';
-import { UpdateWishlistDto } from './dto/update-wishlist.dto';
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { WishlistDocument } from "src/schemas/wishlist.schema";
+import { CreateWishlistDto } from "./dto/create-wishlist.dto";
+import { UpdateWishlistDto } from "./dto/update-wishlist.dto";
 
 @Injectable()
 export class WishlistService {
+  constructor(
+    @InjectModel(WishlistService.name)
+    private readonly model: Model<WishlistDocument>
+  ) {}
   create(createWishlistDto: CreateWishlistDto) {
-    return 'This action adds a new wishlist';
+    return "This action adds a new wishlist";
   }
 
   findAll() {

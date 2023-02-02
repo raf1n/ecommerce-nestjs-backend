@@ -13,6 +13,7 @@ import { ReviewsModule } from "./modules/reviews/reviews.module";
 import { BrandsModule } from "./modules/brands/brands.module";
 import { OrdersModule } from "./modules/orders/orders.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
+import { PopularCategoriesModule } from "./modules/popular_categories/popular_categories.module";
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { PaymentsModule } from "./modules/payments/payments.module";
     MongooseModule.forRoot(process.env.DATABASE_URL ?? ""),
     UsersModule,
     ProductsModule,
+    PopularCategoriesModule,
     WishlistModule,
     CartModule,
     CategoriesModule,

@@ -8,34 +8,54 @@ import { UpdateCategoryDto } from "./dto/update-category.dto";
 @Injectable()
 export class CategoriesService {
   constructor(
-    @InjectModel(Category.name) private readonly model: Model<CategoryDocument>
+    @InjectModel(Category.name)
+    private readonly categoryModel: Model<CategoryDocument>
   ) {}
   // create(createCategoryDto: CreateCategoryDto) {
   //   return 'This action adds a new category';
   // }
   async findAll(): Promise<Category[]> {
-    return await this.model.find().exec();
+    return await this.categoryModel.find().exec();
   }
 
-  async findOne(id: string): Promise<Category> {
-    return await this.model.findById(id).exec();
+  async findAllAdminCategories(query: any) {
+    const allCategoriesData = await this.categoryModel
+      .find({
+        cat_name: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
+
+    return allCategoriesData;
+  }
+
+  async findOne(slug: string) {
+    console.log(slug);
+    const categoryFind = await this.categoryModel.findOne({ cat_slug: slug });
+    console.log(categoryFind);
+    return categoryFind;
   }
   async create(createCategoryDto: CreateCategoryDto): Promise<object> {
-    const result = await new this.model(createCategoryDto).save();
+    const result = await new this.categoryModel(createCategoryDto).save();
     if (result) {
       return { message: "Success" };
     }
   }
 
   async update(
-    id: string,
+    slug: string,
     updateCategoryDto: UpdateCategoryDto
   ): Promise<UpdateCategoryDto> {
-    return await this.model.findByIdAndUpdate(id, updateCategoryDto);
+    return await this.categoryModel.findOneAndUpdate(
+      { slug },
+      updateCategoryDto,
+      {
+        new: true,
+      }
+    );
   }
 
-  async delete(id: string): Promise<Category> {
-    return await this.model.findByIdAndDelete(id).exec();
+  async delete(slug: string): Promise<Category> {
+    return await this.categoryModel.findOneAndDelete({ slug }).exec();
   }
 
   // findAll() {

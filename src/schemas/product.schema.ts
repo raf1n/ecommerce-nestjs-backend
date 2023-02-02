@@ -32,7 +32,7 @@ export class Product {
   @Prop({ required: true })
   imageURL: Array<string>;
 
-  @Prop({ required: true })
+  @Prop()
   offerPrice: number;
 
   @Prop({ required: true })
@@ -41,26 +41,32 @@ export class Product {
   @Prop({ required: true })
   weight: number;
 
-  @Prop({ required: true })
+  @Prop()
   seoTitle: string;
 
-  @Prop({ required: true })
+  @Prop()
   seoDescription: string;
 
-  @Prop({ required: true })
+  @Prop()
   isTopProduct: boolean;
 
-  @Prop({ required: true })
+  @Prop()
   isNewArrival: boolean;
 
-  @Prop({ required: true })
+  @Prop()
   isBestProduct: boolean;
 
-  @Prop({ required: true })
+  @Prop()
   isFeatured: boolean;
 
-  @Prop({ required: true })
+  @Prop()
   isPopular: boolean;
+
+  @Prop()
+  addedBy: string;
+
+  @Prop({ default: "pending" })
+  approvalStatus: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
