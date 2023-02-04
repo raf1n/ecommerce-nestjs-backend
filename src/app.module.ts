@@ -10,10 +10,10 @@ import { CartModule } from "./modules/cart/cart.module";
 import { CategoriesModule } from "./modules/categories/categories.module";
 import { SubCategoriesModule } from "./modules/sub-categories/sub-categories.module";
 import { ReviewsModule } from "./modules/reviews/reviews.module";
-import { Brand } from "./modules/brands/entities/brand.entity";
 import { BrandsModule } from "./modules/brands/brands.module";
 import { OrdersModule } from "./modules/orders/orders.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
+import { PopularCategoriesModule } from "./modules/popular_categories/popular_categories.module";
 
 @Module({
   imports: [
@@ -21,6 +21,7 @@ import { PaymentsModule } from "./modules/payments/payments.module";
     MongooseModule.forRoot(process.env.DATABASE_URL ?? ""),
     UsersModule,
     ProductsModule,
+    PopularCategoriesModule,
     WishlistModule,
     CartModule,
     CategoriesModule,

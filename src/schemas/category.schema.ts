@@ -3,13 +3,22 @@ import { Document } from "mongoose";
 
 export type CategoryDocument = Category & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Category {
-  @Prop()
-  slug: string;
+  @Prop({ default: "category_slug_1", required: true })
+  cat_slug: string;
+
+  @Prop({ required: true })
+  cat_name: string;
 
   @Prop()
-  cat_name: string;
+  cat_image: string;
+
+  @Prop({ required: true })
+  cat_status: string;
+
+  @Prop({ required: true })
+  cat_icon: string;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
