@@ -14,6 +14,7 @@ import { BrandsModule } from "./modules/brands/brands.module";
 import { OrdersModule } from "./modules/orders/orders.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
 import { PopularCategoriesModule } from "./modules/popular_categories/popular_categories.module";
+import { AddressesModule } from "./modules/addresses/addresses.module";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { PopularCategoriesModule } from "./modules/popular_categories/popular_ca
     BrandsModule,
     OrdersModule,
     PaymentsModule,
+    AddressesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
