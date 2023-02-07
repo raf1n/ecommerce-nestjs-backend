@@ -1,22 +1,34 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { WishlistDocument } from "src/schemas/wishlist.schema";
+import { WishlistDocument, Wishlist } from "src/schemas/wishlist.schema";
 import { CreateWishlistDto } from "./dto/create-wishlist.dto";
 import { UpdateWishlistDto } from "./dto/update-wishlist.dto";
 
 @Injectable()
 export class WishlistService {
   constructor(
-    @InjectModel(WishlistService.name)
-    private readonly model: Model<WishlistDocument>
+    @InjectModel(Wishlist.name)
+    private readonly wishlistModel: Model<WishlistDocument>
   ) {}
-  create(createWishlistDto: CreateWishlistDto) {
-    return "This action adds a new wishlist";
+  async create(createWishlistDto: CreateWishlistDto): Promise<Object> {
+    const result = await new this.wishlistModel(createWishlistDto).save();
+
+    if (result) {
+      return {
+        data: result,
+        message: "success-wishlist",
+      };
+    } else {
+      return {
+        message: "error-wishlist",
+      };
+    }
   }
 
-  findAll() {
-    return `This action returns all wishlist`;
+  async findAll(): Promise<Wishlist[]> {
+    const wishlistData = await this.wishlistModel.find();
+    return wishlistData;
   }
 
   findOne(id: number) {
