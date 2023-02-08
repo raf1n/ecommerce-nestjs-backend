@@ -17,8 +17,8 @@ export class Category {
   @Prop({ required: true })
   cat_status: string;
 
-  @Prop({ required: true })
-  cat_icon: string;
+  // @Prop()
+  // cat_icon: string;
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
