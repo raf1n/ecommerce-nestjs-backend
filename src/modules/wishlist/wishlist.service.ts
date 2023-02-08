@@ -11,6 +11,7 @@ export class WishlistService {
     @InjectModel(Wishlist.name)
     private readonly wishlistModel: Model<WishlistDocument>
   ) {}
+  //create wishlist product
   async create(createWishlistDto: CreateWishlistDto): Promise<Object> {
     const result = await new this.wishlistModel(createWishlistDto).save();
 
@@ -25,11 +26,21 @@ export class WishlistService {
       };
     }
   }
-
+  //get all wishlist product
   async findAll(): Promise<Wishlist[]> {
     const wishlistData = await this.wishlistModel.find();
     return wishlistData;
   }
+
+  //delete single wishlist product
+  async delete(slug: string): Promise<Wishlist> {
+    return await this.wishlistModel.findOneAndDelete({ slug }).exec();
+  }
+
+  //delete all wishlist product
+  // async deleteAll('user'){
+  //   return await this.wishlistModel.find
+  // }
 
   findOne(id: number) {
     return `This action returns a #${id} wishlist`;
@@ -39,7 +50,7 @@ export class WishlistService {
     return `This action updates a #${id} wishlist`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} wishlist`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} wishlist`;
+  // }
 }
