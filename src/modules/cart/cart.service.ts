@@ -1,26 +1,69 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateCartDto } from "./dto/create-cart.dto";
+import { UpdateCartDto } from "./dto/update-cart.dto";
+import { Cart, CartDocument } from "src/schemas/cart.schema";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
 
 @Injectable()
 export class CartService {
-  create(createCartDto: CreateCartDto) {
-    return 'This action adds a new cart';
+  constructor(
+    @InjectModel(Cart.name)
+    private readonly cartModel: Model<CartDocument>
+  ) {}
+  async create(createCartDto: CreateCartDto): Promise<Object> {
+    const result = await new this.cartModel(createCartDto).save();
+    if (result) {
+      return result;
+    }
   }
 
-  findAll() {
-    return `This action returns all cart`;
+  findAll(query: any) {
+    return this.cartModel.aggregate([
+      {
+        $match: {
+          user_slug: "user_slug_1",
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_slug",
+          foreignField: "slug",
+          as: "cartProducts",
+        },
+      },
+      {
+        $unwind: "$cartProducts",
+      },
+      {
+        $addFields: {
+          "cartProducts.quantity": "$quantity",
+          "cartProducts.cart_slug": "$slug",
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$cartProducts",
+        },
+      },
+    ]);
   }
 
   findOne(id: number) {
     return `This action returns a #${id} cart`;
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
+  async update(cart_slug: string, updateCartDto: UpdateCartDto) {
+    const updatedCart = await this.cartModel.findOneAndUpdate(
+      { slug: cart_slug },
+      updateCartDto,
+      { new: true }
+    );
+    return updatedCart;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+  async remove(slug: string): Promise<Cart> {
+    return await this.cartModel.findOneAndDelete({ product_slug: slug });
   }
 }
