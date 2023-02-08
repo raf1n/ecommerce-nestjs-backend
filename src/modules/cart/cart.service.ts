@@ -18,11 +18,11 @@ export class CartService {
     }
   }
 
-  findAll(query: any) {
+  findAll(query: { user_slug: string }) {
     return this.cartModel.aggregate([
       {
         $match: {
-          user_slug: "user_slug_1",
+          user_slug: query.user_slug,
         },
       },
       {

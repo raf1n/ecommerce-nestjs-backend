@@ -23,7 +23,7 @@ export class CartController {
   }
 
   @Get()
-  findAll(@Query() query) {
+  findAll(@Query() query: { user_slug: string }) {
     return this.cartService.findAll(query);
   }
 
