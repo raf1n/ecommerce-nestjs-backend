@@ -1,4 +1,6 @@
 export class CreateCartDto {
-  cart: Array<object>;
-  buyer_slug: string;
+  slug: string;
+  user_slug: string;
+  product_slug: string;
+  quantity: number;
 }

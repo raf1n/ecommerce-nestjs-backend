@@ -68,5 +68,5 @@ export class CreateProductDto {
   isPopular: boolean;
 
   @IsString()
-  addedBy: boolean;
+  addedBy: string;
 }

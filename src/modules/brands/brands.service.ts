@@ -53,6 +53,11 @@ export class BrandsService {
     });
     return trimmedBrands;
   }
+  async findAllBrand(): Promise<NewBrand[]> {
+    const allBrands = await this.brandModel.find();
+
+    return allBrands;
+  }
 
   async findOne(slug: string): Promise<Brand> {
     const singleBrand = await this.brandModel.findOne({ slug: slug });

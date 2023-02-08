@@ -1,9 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CartService } from './cart.service';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { Query } from "@nestjs/common/decorators";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from "@nestjs/common";
+import { CartService } from "./cart.service";
+import { CreateCartDto } from "./dto/create-cart.dto";
+import { UpdateCartDto } from "./dto/update-cart.dto";
+import { query } from "express";
 
-@Controller('cart')
+@Controller("cart")
 export class CartController {
   constructor(private readonly cartService: CartService) {}
 
@@ -13,22 +23,26 @@ export class CartController {
   }
 
   @Get()
-  findAll() {
-    return this.cartService.findAll();
+  findAll(@Query() query) {
+    return this.cartService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.cartService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartService.update(+id, updateCartDto);
+  @Patch()
+  update(
+    @Query() query: { cart_slug: string },
+    @Body() updateCartDto: UpdateCartDto
+  ) {
+    console.log(updateCartDto);
+    return this.cartService.update(query.cart_slug, updateCartDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartService.remove(+id);
+  @Delete(":slug")
+  remove(@Param("slug") slug: string) {
+    return this.cartService.remove(slug);
   }
 }
