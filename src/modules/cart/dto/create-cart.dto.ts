@@ -1,7 +1,4 @@
 export class CreateCartDto {
-  slug: string;
-  product_slug: Array<string>;
-  quantity: number;
+  cart: Array<object>;
   buyer_slug: string;
-  create_date: string;
 }

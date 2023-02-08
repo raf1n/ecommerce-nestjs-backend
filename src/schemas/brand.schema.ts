@@ -16,12 +16,6 @@ export class Brand {
 
   @Prop()
   status: string;
-
-  @Prop()
-  cat_slug: Array<string>;
-
-  @Prop()
-  sub_cat_slug: Array<string>;
 }
 
 export const BrandSchema = SchemaFactory.createForClass(Brand);
