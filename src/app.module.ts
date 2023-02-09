@@ -15,6 +15,7 @@ import { OrdersModule } from "./modules/orders/orders.module";
 import { PaymentsModule } from "./modules/payments/payments.module";
 import { PopularCategoriesModule } from "./modules/popular_categories/popular_categories.module";
 import { ReporteditemsModule } from "./modules/reporteditems/reporteditems.module";
+import { AddressesModule } from "./modules/addresses/addresses.module";
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ReporteditemsModule } from "./modules/reporteditems/reporteditems.modul
     OrdersModule,
     PaymentsModule,
     ReporteditemsModule,
+    AddressesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
