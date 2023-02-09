@@ -15,7 +15,7 @@ export class ProductsService {
     private readonly productModel: Model<ProductDocument>
   ) {}
 
-  async create(createProductDto: CreateProductDto): Promise<object> {
+  async create(createProductDto: CreateProductDto): Promise<Object> {
     const result = await new this.productModel(createProductDto).save();
     if (result) {
       return {
