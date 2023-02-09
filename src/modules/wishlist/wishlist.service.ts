@@ -1,3 +1,4 @@
+import { Product } from "./../../schemas/product.schema";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -28,19 +29,18 @@ export class WishlistService {
   }
   //get all wishlist product
   async findAll(): Promise<Wishlist[]> {
-    const wishlistData = await this.wishlistModel.find();
-    return wishlistData;
+    return await this.wishlistModel.find();
   }
 
   //delete single wishlist product
-  async delete(slug: string): Promise<Wishlist> {
+  async delete(slug: string) {
     return await this.wishlistModel.findOneAndDelete({ slug }).exec();
   }
 
   //delete all wishlist product
-  // async deleteAll('user'){
-  //   return await this.wishlistModel.find
-  // }
+  async deleteAll(user_slug: string) {
+    return await this.wishlistModel.deleteMany({ user_slug });
+  }
 
   findOne(id: number) {
     return `This action returns a #${id} wishlist`;

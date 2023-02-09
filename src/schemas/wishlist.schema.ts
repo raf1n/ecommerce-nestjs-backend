@@ -63,6 +63,9 @@ export class Wishlist {
 
   @Prop()
   addedBy: string;
+
+  @Prop()
+  user_slug: string;
 }
 
 export const WishlistSchema = SchemaFactory.createForClass(Wishlist);

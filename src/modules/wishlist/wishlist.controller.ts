@@ -50,4 +50,8 @@ export class WishlistController {
   delete(@Param("slug") slug: string) {
     return this.wishlistService.delete(slug);
   }
+  @Delete("delete_all/:user_slug")
+  deleteAll(@Param("user_slug") user_slug: string) {
+    return this.wishlistService.deleteAll(user_slug);
+  }
 }

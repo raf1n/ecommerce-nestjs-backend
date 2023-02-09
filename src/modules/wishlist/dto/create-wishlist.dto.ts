@@ -69,4 +69,8 @@ export class CreateWishlistDto {
   @IsString()
   @IsOptional()
   addedBy: string;
+
+  @IsString()
+  @IsOptional()
+  user_slug: string;
 }
