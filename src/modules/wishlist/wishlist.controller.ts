@@ -1,3 +1,4 @@
+import { query } from "express";
 import {
   Controller,
   Get,
@@ -6,6 +7,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from "@nestjs/common";
 import { WishlistService } from "./wishlist.service";
 import { CreateWishlistDto } from "./dto/create-wishlist.dto";
@@ -21,8 +23,8 @@ export class WishlistController {
   }
 
   @Get()
-  findAll() {
-    return this.wishlistService.findAll();
+  findAll(@Query() query: { user_slug: string }) {
+    return this.wishlistService.findAll(query.user_slug);
   }
 
   @Get(":id")
