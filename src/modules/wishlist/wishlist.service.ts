@@ -30,12 +30,25 @@ export class WishlistService {
   }
   //get all wishlist product
   async findAll(user_slug: string): Promise<Wishlist[]> {
-    return await this.wishlistModel.find({ user_slug: user_slug });
+    return await this.wishlistModel.aggregate([
+      {
+        $match: {
+          user_slug: user_slug,
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+        },
+      },
+    ]);
   }
 
   //delete single wishlist product
-  async delete(slug: string) {
-    return await this.wishlistModel.findOneAndDelete({ slug }).exec();
+  async delete(user_slug: string, product_slug: string) {
+    return await this.wishlistModel
+      .findOneAndDelete({ user_slug, product_slug })
+      .exec();
   }
 
   //delete all wishlist product
