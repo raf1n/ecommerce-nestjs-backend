@@ -1,22 +1,46 @@
+import { Product } from "./../../schemas/product.schema";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { WishlistDocument } from "src/schemas/wishlist.schema";
+import { WishlistDocument, Wishlist } from "src/schemas/wishlist.schema";
 import { CreateWishlistDto } from "./dto/create-wishlist.dto";
 import { UpdateWishlistDto } from "./dto/update-wishlist.dto";
 
 @Injectable()
 export class WishlistService {
   constructor(
-    @InjectModel(WishlistService.name)
-    private readonly model: Model<WishlistDocument>
+    @InjectModel(Wishlist.name)
+    private readonly wishlistModel: Model<WishlistDocument>
   ) {}
-  create(createWishlistDto: CreateWishlistDto) {
-    return "This action adds a new wishlist";
+  //create wishlist product
+  async create(createWishlistDto: CreateWishlistDto): Promise<Object> {
+    const result = await new this.wishlistModel(createWishlistDto).save();
+
+    if (result) {
+      delete result._id;
+      return {
+        data: result,
+        message: "success-wishlist",
+      };
+    } else {
+      return {
+        message: "error-wishlist",
+      };
+    }
+  }
+  //get all wishlist product
+  async findAll(user_slug: string): Promise<Wishlist[]> {
+    return await this.wishlistModel.find({ user_slug: user_slug });
   }
 
-  findAll() {
-    return `This action returns all wishlist`;
+  //delete single wishlist product
+  async delete(slug: string) {
+    return await this.wishlistModel.findOneAndDelete({ slug }).exec();
+  }
+
+  //delete all wishlist product
+  async deleteAll(user_slug: string) {
+    return await this.wishlistModel.deleteMany({ user_slug: user_slug });
   }
 
   findOne(id: number) {
@@ -27,7 +51,7 @@ export class WishlistService {
     return `This action updates a #${id} wishlist`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} wishlist`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} wishlist`;
+  // }
 }

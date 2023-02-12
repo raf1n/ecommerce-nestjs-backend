@@ -28,12 +28,12 @@ export class ProductsService {
       };
     }
   }
-  // async findAll(): Promise<ProductDocument[]> {
+  //   async findAll(): Promise<ProductDocument[]> {
   //   const allProductData = await this.productModel.find();
   //   return allProductData;
   // }
 
-  // async findOne(slug: string) {
+  //    async findOne(slug: string) {
   //   return this.productModel.findOne({ slug });
   async findAll(
     query: any // : Promise<ProductDocument[]>
@@ -42,31 +42,31 @@ export class ProductsService {
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
     const featuredProducts = await this.productModel
-      .find({ isFeatured: true })
+      .find({ isFeatured: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const topProducts = await this.productModel
-      .find({ isTopProduct: true })
+      .find({ isTopProduct: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const newProducts = await this.productModel
-      .find({ isNewArrival: true })
+      .find({ isNewArrival: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const bestProducts = await this.productModel
-      .find({ isBestProduct: true })
+      .find({ isBestProduct: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const popularProducts = await this.productModel
-      .find({ isPopular: true })
+      .find({ isPopular: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();

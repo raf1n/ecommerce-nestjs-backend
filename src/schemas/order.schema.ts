@@ -5,32 +5,20 @@ export type OrderDocument = Order & Document;
 
 @Schema({ timestamps: true })
 export class Order {
-  @Prop({ required: true })
-  slug: string;
+  @Prop()
+  order_slug: string;
 
-  @Prop({ required: true })
-  buyer_slug: string;
+  @Prop()
+  user_slug: string;
 
-  @Prop({ required: true })
-  product_list: Array<string>;
+  @Prop()
+  payment_method: string;
 
-  @Prop({ required: true })
-  billing_address: object;
+  @Prop()
+  transaction_id: string;
 
-  @Prop({ required: true })
-  shipping_address: object;
-
-  @Prop({ required: true })
-  order_status: string;
-
-  @Prop({ required: true })
-  placement_date: string;
-
-  @Prop({ required: true })
-  checkout_discount: number;
-
-  @Prop({ required: true })
-  shipping_cost: number;
+  @Prop()
+  product_list: Array<object>;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

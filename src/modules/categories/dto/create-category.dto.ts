@@ -3,5 +3,5 @@ export class CreateCategoryDto {
   cat_name: string;
   cat_image: string;
   cat_status: string;
-  cat_icon: string;
+  // cat_icon: string;
 }
