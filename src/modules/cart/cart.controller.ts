@@ -15,7 +15,7 @@ import { query } from "express";
 
 @Controller("cart")
 export class CartController {
-  constructor(private readonly cartService: CartService) {}
+  constructor(private readonly cartService: CartService) { }
 
   @Post()
   create(@Body() createCartDto: CreateCartDto) {
@@ -44,5 +44,10 @@ export class CartController {
   @Delete(":slug")
   remove(@Param("slug") slug: string) {
     return this.cartService.remove(slug);
+  }
+
+  @Delete("delete_all/:user_slug")
+  deleteAll(@Param("user_slug") user_slug: string) {
+    return this.cartService.deleteAll(user_slug);
   }
 }

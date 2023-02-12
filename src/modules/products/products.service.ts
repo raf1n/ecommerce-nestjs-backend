@@ -42,31 +42,31 @@ export class ProductsService {
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
     const featuredProducts = await this.productModel
-      .find({ isFeatured: true })
+      .find({ isFeatured: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const topProducts = await this.productModel
-      .find({ isTopProduct: true })
+      .find({ isTopProduct: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const newProducts = await this.productModel
-      .find({ isNewArrival: true })
+      .find({ isNewArrival: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const bestProducts = await this.productModel
-      .find({ isBestProduct: true })
+      .find({ isBestProduct: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const popularProducts = await this.productModel
-      .find({ isPopular: true })
+      .find({ isPopular: true }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();

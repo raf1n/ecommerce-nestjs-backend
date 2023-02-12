@@ -7,6 +7,7 @@ export type WishlistDocument = Wishlist & Document;
 export class Wishlist {
   @Prop()
   slug: string;
+
   @Prop()
   productName: string;
 
