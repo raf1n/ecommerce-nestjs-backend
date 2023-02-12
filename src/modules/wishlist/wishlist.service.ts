@@ -17,6 +17,7 @@ export class WishlistService {
     const result = await new this.wishlistModel(createWishlistDto).save();
 
     if (result) {
+      delete result._id;
       return {
         data: result,
         message: "success-wishlist",
@@ -28,8 +29,8 @@ export class WishlistService {
     }
   }
   //get all wishlist product
-  async findAll(): Promise<Wishlist[]> {
-    return await this.wishlistModel.find();
+  async findAll(user_slug: string): Promise<Wishlist[]> {
+    return await this.wishlistModel.find({ user_slug: user_slug });
   }
 
   //delete single wishlist product
@@ -39,7 +40,7 @@ export class WishlistService {
 
   //delete all wishlist product
   async deleteAll(user_slug: string) {
-    return await this.wishlistModel.deleteMany({ user_slug });
+    return await this.wishlistModel.deleteMany({ user_slug: user_slug });
   }
 
   findOne(id: number) {
