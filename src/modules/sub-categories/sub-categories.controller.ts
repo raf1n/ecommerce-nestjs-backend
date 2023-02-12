@@ -36,6 +36,11 @@ export class SubCategoriesController {
     return await this.subCategoriesService.findAllAdminSubCategories(query);
   }
 
+  @Get()
+  async findAllSubCategories(@Request() req: Request) {
+    return await this.subCategoriesService.findAllSubCategories();
+  }
+
   @Get(":slug")
   findOne(@Param("slug") slug: string) {
     return this.subCategoriesService.findOne(slug);

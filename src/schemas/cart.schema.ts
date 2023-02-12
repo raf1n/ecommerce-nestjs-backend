@@ -5,20 +5,17 @@ export type CartDocument = Cart & Document;
 
 @Schema()
 export class Cart {
-  @Prop()
+  @Prop({ default: "slug_1" })
   slug: string;
 
   @Prop()
-  product_slug: Array<string>;
+  user_slug: string;
+
+  @Prop()
+  product_slug: string;
 
   @Prop()
   quantity: number;
-
-  @Prop()
-  buyer_slug: string;
-
-  @Prop()
-  create_date: string;
 }
 
 export const CartSchema = SchemaFactory.createForClass(Cart);

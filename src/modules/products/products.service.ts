@@ -13,7 +13,7 @@ export class ProductsService {
   constructor(
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>
-  ) { }
+  ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Object> {
     const result = await new this.productModel(createProductDto).save();
@@ -28,12 +28,12 @@ export class ProductsService {
       };
     }
   }
-  // async findAll(): Promise<ProductDocument[]> {
+  //   async findAll(): Promise<ProductDocument[]> {
   //   const allProductData = await this.productModel.find();
   //   return allProductData;
   // }
 
-  // async findOne(slug: string) {
+  //    async findOne(slug: string) {
   //   return this.productModel.findOne({ slug });
   async findAll(
     query: any // : Promise<ProductDocument[]>
