@@ -10,7 +10,7 @@ export class CartService {
   constructor(
     @InjectModel(Cart.name)
     private readonly cartModel: Model<CartDocument>
-  ) {}
+  ) { }
   async create(createCartDto: CreateCartDto): Promise<Object> {
     const result = await new this.cartModel(createCartDto).save();
     if (result) {
@@ -65,5 +65,10 @@ export class CartService {
 
   async remove(slug: string): Promise<Cart> {
     return await this.cartModel.findOneAndDelete({ product_slug: slug });
+  }
+
+  //delete all cart product
+  async deleteAll(user_slug: string) {
+    return await this.cartModel.deleteMany({ user_slug });
   }
 }
