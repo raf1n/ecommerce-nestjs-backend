@@ -45,8 +45,10 @@ export class WishlistService {
   }
 
   //delete single wishlist product
-  async delete(slug: string) {
-    return await this.wishlistModel.findOneAndDelete({ slug }).exec();
+  async delete(user_slug: string, product_slug: string) {
+    return await this.wishlistModel
+      .findOneAndDelete({ user_slug, product_slug })
+      .exec();
   }
 
   //delete all wishlist product

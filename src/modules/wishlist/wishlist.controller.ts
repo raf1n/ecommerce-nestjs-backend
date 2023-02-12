@@ -48,9 +48,9 @@ export class WishlistController {
   // delete(@Param("slug") slug: string) {
   //   return this.productsService.delete(slug);
   // }
-  @Delete(":slug")
-  delete(@Param("slug") slug: string) {
-    return this.wishlistService.delete(slug);
+  @Delete()
+  delete(@Query() query: { user_slug: string; product_slug: string }) {
+    return this.wishlistService.delete(query.user_slug, query.product_slug);
   }
   @Delete("delete_all/:user_slug")
   deleteAll(@Param("user_slug") user_slug: string) {
