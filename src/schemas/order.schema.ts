@@ -6,7 +6,7 @@ export type OrderDocument = Order & Document;
 @Schema({ timestamps: true })
 export class Order {
   @Prop()
-  order_slug: string;
+  slug: string;
 
   @Prop()
   user_slug: string;
