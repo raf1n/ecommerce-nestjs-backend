@@ -9,6 +9,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { TokenVerifier } from 'src/utils/TokenVerifier';
 import { UtilSlug } from 'src/utils/UtilSlug';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateUserAddressDto } from './dto/update-user-address.dto';
 const admin = require("firebase-admin");
 
 // const serviceAccount = require('../../utils/ecommerce-3dcd5-firebase-adminsdk-8iryd-a787e6184a.json');
@@ -153,6 +154,28 @@ export class UsersService {
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
+  }
+
+  async updateAddress(email: string, updateUserAddressDto: UpdateUserAddressDto) {
+    const address = {
+      country: updateUserAddressDto.country,
+      city: updateUserAddressDto.city,
+      state: updateUserAddressDto.state,
+      address: updateUserAddressDto.address,
+    }
+    const editAddress = await this.userModel.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          fullName: updateUserAddressDto.name,
+          phone: updateUserAddressDto.phone,
+          address: address
+        }
+      },
+      { upsert: true, new: true }
+    );
+
+    return editAddress;
   }
 
   remove(id: number) {

@@ -7,6 +7,7 @@ import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
 import { filter } from "rxjs";
 import { QueryDto } from "./dto/query.dto";
+import { UtilSlug } from './../../utils/UtilSlug';
 
 @Injectable()
 export class ProductsService {
@@ -16,6 +17,10 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Object> {
+    createProductDto["slug"] = UtilSlug.getUniqueId(
+      createProductDto.productName
+    );
+
     const result = await new this.productModel(createProductDto).save();
     if (result) {
       return {
