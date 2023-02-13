@@ -8,6 +8,7 @@ import { NewBrand } from "./entities/brand.entity";
 import { ServiceHandler } from "src/utils/ServiceHandler";
 import { SearchSortDto } from "src/utils/all-queries.dto";
 import { ISearchSortQuery } from "src/interfaces/SearchSortQuery";
+import { UtilSlug } from "src/utils/UtilSlug";
 
 @Injectable()
 export class BrandsService {
@@ -16,6 +17,7 @@ export class BrandsService {
   ) {}
 
   async create(createBrandDto: CreateBrandDto) {
+    createBrandDto["slug"] = UtilSlug.getUniqueId(createBrandDto.name);
     const createdBrand = await this.brandModel.create(createBrandDto);
     return createdBrand;
   }
