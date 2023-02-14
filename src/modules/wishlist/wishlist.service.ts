@@ -5,6 +5,7 @@ import { Model } from "mongoose";
 import { WishlistDocument, Wishlist } from "src/schemas/wishlist.schema";
 import { CreateWishlistDto } from "./dto/create-wishlist.dto";
 import { UpdateWishlistDto } from "./dto/update-wishlist.dto";
+import { UtilSlug } from "src/utils/UtilSlug";
 
 @Injectable()
 export class WishlistService {
@@ -14,6 +15,8 @@ export class WishlistService {
   ) {}
   //create wishlist product
   async create(createWishlistDto: CreateWishlistDto): Promise<Object> {
+    const slug = createWishlistDto.user_slug + " " + createWishlistDto.slug;
+    createWishlistDto["slug"] = UtilSlug.getUniqueId(slug);
     const result = await new this.wishlistModel(createWishlistDto).save();
 
     if (result) {
