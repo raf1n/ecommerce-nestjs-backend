@@ -42,11 +42,11 @@ export class CategoriesService {
   }
 
   async update(
-    slug: string,
+    cat_slug: string,
     updateCategoryDto: UpdateCategoryDto
   ): Promise<UpdateCategoryDto> {
     return await this.categoryModel.findOneAndUpdate(
-      { slug },
+      { cat_slug },
       updateCategoryDto,
       {
         new: true,
