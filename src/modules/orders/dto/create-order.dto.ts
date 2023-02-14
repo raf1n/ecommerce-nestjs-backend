@@ -13,6 +13,9 @@ export class CreateOrderDto {
   @IsString()
   transaction_id: string;
 
+  @IsString()
+  delivery_status: string;
+
   @IsObject()
   address: {
     country: string;
