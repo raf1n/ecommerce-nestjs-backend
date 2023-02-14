@@ -28,7 +28,7 @@ export class OrdersService {
       };
     }
   }
-  // ----------------------------------------------//
+
   findAll() {
     return `This action returns all orders`;
   }
