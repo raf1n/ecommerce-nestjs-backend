@@ -17,6 +17,9 @@ export class ProductsService {
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Object> {
+    createProductDto["slug"] = UtilSlug.getUniqueId(
+      createProductDto.productName
+    );
     const result = await new this.productModel(createProductDto).save();
     if (result) {
       return {
