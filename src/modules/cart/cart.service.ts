@@ -4,14 +4,17 @@ import { UpdateCartDto } from "./dto/update-cart.dto";
 import { Cart, CartDocument } from "src/schemas/cart.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { UtilSlug } from "src/utils/UtilSlug";
 
 @Injectable()
 export class CartService {
   constructor(
     @InjectModel(Cart.name)
     private readonly cartModel: Model<CartDocument>
-  ) { }
+  ) {}
   async create(createCartDto: CreateCartDto): Promise<Object> {
+    const slug = createCartDto.user_slug + " " + createCartDto.product_slug;
+    createCartDto["slug"] = UtilSlug.getUniqueId(slug);
     const result = await new this.cartModel(createCartDto).save();
     if (result) {
       return result;

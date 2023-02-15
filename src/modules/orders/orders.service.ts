@@ -28,11 +28,21 @@ export class OrdersService {
       };
     }
   }
-  // ----------------------------------------------//
-  findAll() {
-    return `This action returns all orders`;
-  }
 
+  // findAll(slug: string) {
+  //   return this.orderModel.find({ user_slug: slug });
+  // }
+
+  async findAllCompleted(slug: string, delivery_status: string) {
+    const result = await this.orderModel.find({
+      user_slug: slug,
+      delivery_status: new RegExp(delivery_status, "i"),
+    });
+    return {
+      data: result,
+      message: "fetched Successfully",
+    };
+  }
   findOne(id: number) {
     return `This action returns a #${id} order`;
   }

@@ -16,7 +16,7 @@ export class CategoriesService {
   //   return 'This action adds a new category';
   // }
   async findAll(): Promise<Category[]> {
-    return await this.categoryModel.find().exec();
+    return await this.categoryModel.find({ cat_status: "active" }).exec();
   }
 
   async findAllAdminCategories(query: any) {
@@ -47,11 +47,11 @@ export class CategoriesService {
   }
 
   async update(
-    cat_slug: string,
+    slug: string,
     updateCategoryDto: UpdateCategoryDto
   ): Promise<UpdateCategoryDto> {
     return await this.categoryModel.findOneAndUpdate(
-      { cat_slug },
+      { cat_slug: slug },
       updateCategoryDto,
       {
         new: true,
