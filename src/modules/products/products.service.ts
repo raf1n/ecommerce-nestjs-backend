@@ -43,31 +43,31 @@ export class ProductsService {
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
     const featuredProducts = await this.productModel
-      .find({ isFeatured: true }, { _id: 0 })
+      .find({ isFeatured: true, status: "active" }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const topProducts = await this.productModel
-      .find({ isTopProduct: true }, { _id: 0 })
+      .find({ isTopProduct: true, status: "active" }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const newProducts = await this.productModel
-      .find({ isNewArrival: true }, { _id: 0 })
+      .find({ isNewArrival: true, status: "active" }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const bestProducts = await this.productModel
-      .find({ isBestProduct: true }, { _id: 0 })
+      .find({ isBestProduct: true, status: "active" }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
 
     const popularProducts = await this.productModel
-      .find({ isPopular: true }, { _id: 0 })
+      .find({ isPopular: true, status: "active" }, { _id: 0 })
       // .limit(limit)
       .sort({ createdAt: "asc" })
       .exec();
