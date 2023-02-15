@@ -56,7 +56,7 @@ export class BrandsService {
     return trimmedBrands;
   }
   async findAllBrand(): Promise<NewBrand[]> {
-    const allBrands = await this.brandModel.find();
+    const allBrands = await this.brandModel.find({ status: "active" });
 
     return allBrands;
   }
