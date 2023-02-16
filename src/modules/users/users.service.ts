@@ -147,8 +147,8 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(slug: string) {
-    return this.userModel.findOne({ slug });
+  async findOne(email: string) {
+    return await this.userModel.findOne({ email: email });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
