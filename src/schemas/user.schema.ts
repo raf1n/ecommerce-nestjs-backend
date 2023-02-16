@@ -1,13 +1,22 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document } from "mongoose";
 
 export type UserDocument = User & Document;
+
+export type UserAddress = {
+  country: string;
+  state: string;
+  city: string;
+  address: string;
+};
 
 @Schema({ timestamps: true })
 export class User {
   @Prop()
   fullName: string;
+
+  @Prop()
+  phone: string;
 
   @Prop()
   googleFullName: string;
@@ -17,6 +26,23 @@ export class User {
 
   @Prop({ required: true })
   email: string;
+
+  @Prop({
+    type: {
+      country: String,
+      state: String,
+      city: String,
+      address: String,
+    },
+  })
+  address: {
+    type: {
+      country: String;
+      state: String;
+      city: String;
+      address: String;
+    };
+  };
 
   @Prop({ required: true })
   tokenType: string;

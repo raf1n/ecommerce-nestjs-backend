@@ -1,4 +1,4 @@
-import { IsArray, IsString } from "class-validator";
+import { IsArray, IsObject, IsString } from "class-validator";
 
 export class CreateOrderDto {
   @IsString()
@@ -9,6 +9,17 @@ export class CreateOrderDto {
 
   @IsString()
   transaction_id: string;
+
+  @IsString()
+  delivery_status: string;
+
+  @IsObject()
+  address: {
+    country: string;
+    state: string;
+    city: string;
+    address: string;
+  };
 
   @IsArray()
   product_list: Array<object>;

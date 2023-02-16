@@ -18,6 +18,26 @@ export class Order {
   transaction_id: string;
 
   @Prop()
+  delivery_status: string;
+
+  @Prop({
+    type: {
+      country: String,
+      state: String,
+      city: String,
+      address: String,
+    },
+  })
+  address: {
+    type: {
+      country: string;
+      state: string;
+      city: string;
+      address: string;
+    };
+  };
+
+  @Prop()
   product_list: Array<object>;
 }
 

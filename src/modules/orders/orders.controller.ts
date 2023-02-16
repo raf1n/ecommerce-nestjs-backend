@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
@@ -24,15 +25,25 @@ export class OrdersController {
   }
   // --------------------
 
+  // @Get()
+  // findAll(@Query() query: { user_slug: string }) {
+  //   return this.ordersService.findAll(query.user_slug);
+  // }
+
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
+  findAllCompleted(
+    @Query() query: { user_slug: string; delivery_status: string }
+  ) {
+    return this.ordersService.findAllCompleted(
+      query.user_slug,
+      query.delivery_status
+    );
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.ordersService.findOne(+id);
-  }
+  // @Get(":id")
+  // findOne(@Param("id") id: string) {
+  //   return this.ordersService.findOne(+id);
+  // }
 
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateOrderDto: UpdateOrderDto) {

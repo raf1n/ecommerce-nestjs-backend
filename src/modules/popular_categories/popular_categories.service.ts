@@ -7,6 +7,7 @@ import {
 } from "src/schemas/popular-category.schema";
 import { CreatePopularCategoryDto } from "./dto/create-popular_category.dto";
 import { UpdatePopularCategoryDto } from "./dto/update-popular_category.dto";
+import { UtilSlug } from './../../utils/UtilSlug';
 
 @Injectable()
 export class PopularCategoriesService {
@@ -21,6 +22,10 @@ export class PopularCategoriesService {
   async create(
     createPopularCategoryDto: CreatePopularCategoryDto
   ): Promise<object> {
+    createPopularCategoryDto["slug"] = UtilSlug.getUniqueId(
+      createPopularCategoryDto.cat_name
+    );
+
     const result = await new this.popularCategoryModel(
       createPopularCategoryDto
     ).save();

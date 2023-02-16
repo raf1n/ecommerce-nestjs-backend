@@ -76,7 +76,9 @@ export class SubCategoriesService {
     // return await this.subCategoryModel.find();
   }
   async findAllSubCategories(): Promise<any> {
-    const allSubCat = await this.subCategoryModel.find();
+    const allSubCat = await this.subCategoryModel.find({
+      subcat_status: "active",
+    });
     return allSubCat;
 
     // return await this.subCategoryModel.find();
