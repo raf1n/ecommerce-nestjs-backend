@@ -1,15 +1,18 @@
-import { IsString } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
 
 export class CreateReviewDto {
   @IsString()
-  buyer_slug: string;
+  user_slug: string;
 
   @IsString()
   product_slug: string;
 
   @IsString()
-  review_description: string;
+  name: string;
 
   @IsString()
+  message: string;
+
+  @IsNumber()
   rating: number;
 }

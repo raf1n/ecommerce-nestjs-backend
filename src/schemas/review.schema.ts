@@ -11,17 +11,20 @@ export type ReviewDocument = Review & Document;
 
 @Schema()
 export class Review {
-  @Prop()
-  slug: string;
+  // @Prop()
+  // slug: string;
 
   @Prop()
-  buyer_slug: string;
+  user_slug: string;
 
   @Prop()
   product_slug: string;
 
   @Prop()
-  review_description: string;
+  name: string;
+
+  @Prop()
+  message: string;
 
   @Prop()
   rating: number;

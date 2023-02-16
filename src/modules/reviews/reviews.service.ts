@@ -12,7 +12,7 @@ export class ReviewsService {
     private readonly ReviewModal: Model<ReviewDocument>
   ) {}
 
-  async create(createReviewDto: CreateReviewDto) {
+  async create(createReviewDto: CreateReviewDto): Promise<Object> {
     const result = await new this.ReviewModal(createReviewDto).save();
     return result;
   }
