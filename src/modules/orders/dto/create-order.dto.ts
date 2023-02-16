@@ -2,9 +2,6 @@ import { IsArray, IsObject, IsString } from "class-validator";
 
 export class CreateOrderDto {
   @IsString()
-  order_slug: string;
-
-  @IsString()
   user_slug: string;
 
   @IsString()
