@@ -5,7 +5,7 @@ export type ProductDocument = Product & Document;
 
 @Schema({ timestamps: true })
 export class Product {
-  @Prop({ required: true, default: "product_slug_1" })
+  @Prop({ required: true })
   slug: string;
 
   @Prop({ required: true })

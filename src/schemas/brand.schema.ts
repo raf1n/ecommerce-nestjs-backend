@@ -5,7 +5,7 @@ export type BrandDocument = Brand & Document;
 
 @Schema({ timestamps: true })
 export class Brand {
-  @Prop({ default: "brand_slug_1"})
+  @Prop()
   slug: string;
 
   @Prop()
@@ -16,12 +16,6 @@ export class Brand {
 
   @Prop()
   status: string;
-
-  @Prop()
-  cat_slug: Array<string>;
-
-  @Prop()
-  sub_cat_slug: Array<string>;
 }
 
 export const BrandSchema = SchemaFactory.createForClass(Brand);

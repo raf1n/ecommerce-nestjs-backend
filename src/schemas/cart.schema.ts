@@ -5,7 +5,7 @@ export type CartDocument = Cart & Document;
 
 @Schema()
 export class Cart {
-  @Prop({ default: "slug_1" })
+  @Prop()
   slug: string;
 
   @Prop()
