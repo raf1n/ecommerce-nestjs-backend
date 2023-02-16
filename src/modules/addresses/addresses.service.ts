@@ -29,8 +29,27 @@ export class AddressesService {
     return `This action returns a #${id} address`;
   }
 
-  update(id: number, updateAddressDto: UpdateAddressDto) {
-    return `This action updates a #${id} address`;
+  // update(id: number, updateAddressDto: UpdateAddressDto) {
+  //   return `This action updates a #${id} address`;
+  // }
+
+  async update(
+    slug: string,
+    updateAddressDto: UpdateAddressDto
+  ): Promise<UpdateAddressDto> {
+    return await this.addressModel.findOneAndUpdate(
+      { slug },
+      {
+        $set: {
+          ...updateAddressDto,
+        },
+      },
+
+      {
+        upsert: true,
+        new: true,
+      }
+    );
   }
 
   async remove(slug: string): Promise<Address> {

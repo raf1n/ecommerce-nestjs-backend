@@ -7,7 +7,7 @@ import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
 import { filter } from "rxjs";
 import { QueryDto } from "./dto/query.dto";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from './../../utils/UtilSlug';
 
 @Injectable()
 export class ProductsService {
@@ -20,6 +20,7 @@ export class ProductsService {
     createProductDto["slug"] = UtilSlug.getUniqueId(
       createProductDto.productName
     );
+
     const result = await new this.productModel(createProductDto).save();
     if (result) {
       return {
