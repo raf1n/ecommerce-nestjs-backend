@@ -146,8 +146,8 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  findOne(slug: string) {
+    return this.userModel.findOne({ slug });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
