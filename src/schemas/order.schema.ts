@@ -6,6 +6,18 @@ export type OrderDocument = Order & Document;
 @Schema({ timestamps: true })
 export class Order {
   @Prop()
+  subTotal: number;
+
+  @Prop()
+  discount: number;
+
+  @Prop()
+  shippingCost: number;
+
+  @Prop()
+  total: number;
+
+  @Prop()
   slug: string;
 
   @Prop()

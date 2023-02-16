@@ -15,7 +15,8 @@ export class OrdersService {
   ) {}
   // ------------------post order--------------------- //
   async create(createOrderDto: CreateOrderDto): Promise<Object> {
-    createOrderDto["slug"] = UtilSlug.getUniqueId(createOrderDto.user_slug);
+    const slug = `order_${createOrderDto.user_slug}`;
+    createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
 
     const result = await new this.orderModel(createOrderDto).save();
 
@@ -40,13 +41,15 @@ export class OrdersService {
       user_slug: slug,
       delivery_status: new RegExp(delivery_status, "i"),
     });
+
+    console.log(result);
     return {
       data: result,
       message: "fetched Successfully",
     };
   }
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(slug: string) {
+    return await this.orderModel.findOne({ slug });
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {

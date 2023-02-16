@@ -5,6 +5,9 @@ export class CreateReviewDto {
   user_slug: string;
 
   @IsString()
+  order_slug: string;
+
+  @IsString()
   product_slug: string;
 
   @IsString()

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Review, ReviewDocument } from "src/schemas/review.schema";
+import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { UpdateReviewDto } from "./dto/update-review.dto";
 
@@ -13,6 +14,9 @@ export class ReviewsService {
   ) {}
 
   async create(createReviewDto: CreateReviewDto): Promise<Object> {
+    const slug = `review_${createReviewDto.product_slug}`;
+    createReviewDto["slug"] = UtilSlug.getUniqueId(slug);
+
     const result = await new this.ReviewModal(createReviewDto).save();
     return result;
   }

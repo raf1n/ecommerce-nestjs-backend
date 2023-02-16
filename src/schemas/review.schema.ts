@@ -11,8 +11,11 @@ export type ReviewDocument = Review & Document;
 
 @Schema()
 export class Review {
-  // @Prop()
-  // slug: string;
+  @Prop()
+  slug: string;
+
+  @Prop()
+  order_slug: string;
 
   @Prop()
   user_slug: string;
