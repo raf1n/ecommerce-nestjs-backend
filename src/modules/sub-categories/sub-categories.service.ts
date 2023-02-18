@@ -101,7 +101,7 @@ export class SubCategoriesService {
   }
 
   async create(createSubCategoryDto: CreateSubCategoryDto): Promise<object> {
-    const slug = `report_${createSubCategoryDto.cat_slug}_${createSubCategoryDto.subcat_name}`;
+    const slug = `${createSubCategoryDto.cat_slug}_${createSubCategoryDto.subcat_name}`;
     createSubCategoryDto["slug"] = UtilSlug.getUniqueId(slug);
     const result = await new this.subCategoryModel(createSubCategoryDto).save();
     if (result) {
