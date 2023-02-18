@@ -4,7 +4,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
-import { UtilSlug } from './../../utils/UtilSlug';
+import { UtilSlug } from "./../../utils/UtilSlug";
 
 @Injectable()
 export class CategoriesService {
@@ -36,7 +36,7 @@ export class CategoriesService {
     return categoryFind;
   }
   async create(createCategoryDto: CreateCategoryDto): Promise<object> {
-    createCategoryDto["slug"] = UtilSlug.getUniqueId(
+    createCategoryDto["cat_slug"] = UtilSlug.getUniqueId(
       createCategoryDto.cat_name
     );
 
