@@ -1,18 +1,6 @@
 import { IsArray, IsNumber, IsObject, IsString } from "class-validator";
 
 export class CreateOrderDto {
-  @IsNumber()
-  subTotal: number;
-
-  @IsNumber()
-  discount: number;
-
-  @IsNumber()
-  shippingCost: number;
-
-  @IsNumber()
-  total: number;
-
   @IsString()
   user_slug: string;
 
