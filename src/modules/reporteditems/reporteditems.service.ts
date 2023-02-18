@@ -7,6 +7,7 @@ import {
   ReportedItemDocument,
 } from "src/schemas/reported-item.schema";
 import { Model } from "mongoose";
+import { UtilSlug } from "src/utils/UtilSlug";
 
 @Injectable()
 export class ReporteditemsService {
@@ -16,6 +17,8 @@ export class ReporteditemsService {
   ) {}
 
   async create(createReporteditemDto: CreateReporteditemDto): Promise<Object> {
+    const slug = `report_${createReporteditemDto.user_slug}_${createReporteditemDto.product_slug}`;
+    createReporteditemDto["slug"] = UtilSlug.getUniqueId(slug);
     const result = await new this.ReportedItemModel(
       createReporteditemDto
     ).save();

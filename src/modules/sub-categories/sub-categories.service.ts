@@ -7,6 +7,7 @@ import {
 } from "src/schemas/sub-category.schema";
 import { CreateSubCategoryDto } from "./dto/create-sub-category.dto";
 import { UpdateSubCategoryDto } from "./dto/update-sub-category.dto";
+import { UtilSlug } from "src/utils/UtilSlug";
 
 @Injectable()
 export class SubCategoriesService {
@@ -100,6 +101,8 @@ export class SubCategoriesService {
   }
 
   async create(createSubCategoryDto: CreateSubCategoryDto): Promise<object> {
+    const slug = `report_${createSubCategoryDto.cat_slug}_${createSubCategoryDto.subcat_name}`;
+    createSubCategoryDto["slug"] = UtilSlug.getUniqueId(slug);
     const result = await new this.subCategoryModel(createSubCategoryDto).save();
     if (result) {
       return { message: "Success" };
