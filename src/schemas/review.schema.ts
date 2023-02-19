@@ -15,13 +15,19 @@ export class Review {
   slug: string;
 
   @Prop()
-  buyer_slug: string;
+  order_slug: string;
+
+  @Prop()
+  user_slug: string;
 
   @Prop()
   product_slug: string;
 
   @Prop()
-  review_description: string;
+  name: string;
+
+  @Prop()
+  message: string;
 
   @Prop()
   rating: number;

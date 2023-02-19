@@ -14,11 +14,11 @@ export class OrdersService {
     private readonly orderModel: Model<OrderDocument>
   ) {}
   // ------------------post order--------------------- //
-  async create(createOrderDto: CreateOrderDto) {
+  async create(createOrderDto: CreateOrderDto): Promise<Object> {
     const slug = `order_${createOrderDto.user_slug}`;
     createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
+
     const result = await new this.orderModel(createOrderDto).save();
-    console.log(result);
 
     if (result) {
       return {
@@ -41,13 +41,15 @@ export class OrdersService {
       user_slug: slug,
       delivery_status: new RegExp(delivery_status, "i"),
     });
+
+    console.log(result);
     return {
       data: result,
       message: "fetched Successfully",
     };
   }
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async findOne(slug: string) {
+    return await this.orderModel.findOne({ slug });
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {

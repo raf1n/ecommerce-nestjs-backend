@@ -34,16 +34,17 @@ export class OrdersController {
   findAllCompleted(
     @Query() query: { user_slug: string; delivery_status: string }
   ) {
+    console.log(query);
     return this.ordersService.findAllCompleted(
       query.user_slug,
       query.delivery_status
     );
   }
 
-  // @Get(":id")
-  // findOne(@Param("id") id: string) {
-  //   return this.ordersService.findOne(+id);
-  // }
+  @Get(":slug")
+  findOne(@Param("slug") slug: string) {
+    return this.ordersService.findOne(slug);
+  }
 
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateOrderDto: UpdateOrderDto) {

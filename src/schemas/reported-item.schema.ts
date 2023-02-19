@@ -5,7 +5,7 @@ export type ReportedItemDocument = ReportedItem & Document;
 
 @Schema({ timestamps: true })
 export class ReportedItem {
-  @Prop({ default: "slug_1" })
+  @Prop()
   slug: string;
 
   @Prop()

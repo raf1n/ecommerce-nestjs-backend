@@ -5,8 +5,11 @@ export type AddressDocument = Address & Document;
 
 @Schema({ timestamps: true })
 export class Address {
-  @Prop({ default: "address_slug_1", required: true })
+  @Prop({ required: true })
   slug: string;
+
+  @Prop()
+  user_slug: string;
 
   @Prop()
   name: string;

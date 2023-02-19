@@ -16,7 +16,7 @@ export class WishlistService {
   //create wishlist product
   async create(createWishlistDto: CreateWishlistDto): Promise<Object> {
     const slug = createWishlistDto.user_slug + " " + createWishlistDto.slug;
-    createWishlistDto["slug"] = UtilSlug.getUniqueId(slug);
+    createWishlistDto["wishlist_slug"] = UtilSlug.getUniqueId(slug);
     const result = await new this.wishlistModel(createWishlistDto).save();
 
     if (result) {
@@ -50,7 +50,7 @@ export class WishlistService {
   //delete single wishlist product
   async delete(user_slug: string, product_slug: string) {
     return await this.wishlistModel
-      .findOneAndDelete({ user_slug, product_slug })
+      .findOneAndDelete({ user_slug, slug: product_slug })
       .exec();
   }
 

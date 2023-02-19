@@ -1,11 +1,24 @@
-import { Injectable } from '@nestjs/common';
-import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Review, ReviewDocument } from "src/schemas/review.schema";
+import { UtilSlug } from "src/utils/UtilSlug";
+import { CreateReviewDto } from "./dto/create-review.dto";
+import { UpdateReviewDto } from "./dto/update-review.dto";
 
 @Injectable()
 export class ReviewsService {
-  create(createReviewDto: CreateReviewDto) {
-    return 'This action adds a new review';
+  constructor(
+    @InjectModel(Review.name)
+    private readonly ReviewModal: Model<ReviewDocument>
+  ) {}
+
+  async create(createReviewDto: CreateReviewDto): Promise<Object> {
+    const slug = `review_${createReviewDto.product_slug}`;
+    createReviewDto["slug"] = UtilSlug.getUniqueId(slug);
+
+    const result = await new this.ReviewModal(createReviewDto).save();
+    return result;
   }
 
   findAll() {

@@ -6,6 +6,9 @@ export type WishlistDocument = Wishlist & Document;
 @Schema({ timestamps: true })
 export class Wishlist {
   @Prop()
+  wishlist_slug: string; //primary key
+
+  @Prop()
   slug: string;
 
   @Prop()
