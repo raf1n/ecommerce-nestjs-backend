@@ -36,10 +36,10 @@ export class OrdersService {
   //   return this.orderModel.find({ user_slug: slug });
   // }
 
-  async findAllCompleted(slug: string, delivery_status: string) {
+  async findAllCompleted(slug: string, order_status: string) {
     const result = await this.orderModel.find({
       user_slug: slug,
-      delivery_status: new RegExp(delivery_status, "i"),
+      order_status: new RegExp(order_status, "i"),
     });
 
     console.log(result);
@@ -48,6 +48,73 @@ export class OrdersService {
       message: "fetched Successfully",
     };
   }
+
+  async findAllOrdersAdmin(query: any) {
+    // const allOrdersData = await this.orderModel
+    //   .find({ slug: new RegExp(query.search, "i") })
+    //   .sort({ [query.sortBy]: query.sortType });
+    let match_value = new RegExp(query.search, "i");
+    console.log(query);
+    // let sortOrder = parseInt(query.sortType);
+    // let sortOrder: number = 1;
+    // let bugs = {
+    //   [query.sortBy]: sortOrder,
+    // };
+    const allOrdersData = await this.orderModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: match_value,
+          },
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "1" ? 1 : -1,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+
+    const filteredOrdersData = await this.orderModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: match_value,
+          },
+          order_status: query.order_status,
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "1" ? 1 : -1,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+    return { allOrdersData, filteredOrdersData };
+  }
+
   async findOne(slug: string) {
     return await this.orderModel.findOne({ slug });
   }
