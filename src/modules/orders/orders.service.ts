@@ -50,16 +50,9 @@ export class OrdersService {
   }
 
   async findAllOrdersAdmin(query: any) {
-    // const allOrdersData = await this.orderModel
-    //   .find({ slug: new RegExp(query.search, "i") })
-    //   .sort({ [query.sortBy]: query.sortType });
     let match_value = new RegExp(query.search, "i");
     console.log(query);
-    // let sortOrder = parseInt(query.sortType);
-    // let sortOrder: number = 1;
-    // let bugs = {
-    //   [query.sortBy]: sortOrder,
-    // };
+
     const allOrdersData = await this.orderModel.aggregate([
       {
         $match: {
@@ -70,7 +63,7 @@ export class OrdersService {
       },
       {
         $sort: {
-          [query.sortBy]: query.sortType === "1" ? 1 : -1,
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
         },
       },
       {
@@ -97,7 +90,7 @@ export class OrdersService {
       },
       {
         $sort: {
-          [query.sortBy]: query.sortType === "1" ? 1 : -1,
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
         },
       },
       {
@@ -123,7 +116,7 @@ export class OrdersService {
     return `This action updates a #${id} order`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async remove(slug: string) {
+    return await this.orderModel.deleteOne({ slug });
   }
 }
