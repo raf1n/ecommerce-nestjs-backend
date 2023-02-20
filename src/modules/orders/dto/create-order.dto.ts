@@ -11,7 +11,7 @@ export class CreateOrderDto {
   transaction_id: string;
 
   @IsString()
-  delivery_status: string;
+  order_status: string;
 
   @IsObject()
   address: {

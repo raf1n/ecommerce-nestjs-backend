@@ -7,10 +7,12 @@ import {
   Param,
   Delete,
   Query,
+  Request,
 } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Controller("orders")
 export class OrdersController {
@@ -39,6 +41,14 @@ export class OrdersController {
       query.user_slug,
       query.delivery_status
     );
+  }
+
+  @Get("/admin")
+  async findAllAdminProduct(
+    @Query() query: SearchSortDto
+    // @Request() req: Request
+  ) {
+    return await this.ordersService.findAllOrdersAdmin(query);
   }
 
   @Get(":slug")

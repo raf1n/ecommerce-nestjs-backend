@@ -13,6 +13,10 @@ export class SearchSortDto {
   @IsOptional()
   search: string;
 
+  @IsString()
+  @IsOptional()
+  order_status: string;
+
   @IsNumber()
   @IsOptional()
   limit: number;
