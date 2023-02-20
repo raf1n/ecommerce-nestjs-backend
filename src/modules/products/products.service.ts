@@ -5,9 +5,7 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
-import { filter } from "rxjs";
-import { QueryDto } from "./dto/query.dto";
-import { UtilSlug } from './../../utils/UtilSlug';
+import { UtilSlug } from "./../../utils/UtilSlug";
 
 @Injectable()
 export class ProductsService {
