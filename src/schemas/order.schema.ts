@@ -29,8 +29,11 @@ export class Order {
   @Prop()
   transaction_id: string;
 
-  @Prop()
-  delivery_status: string;
+  @Prop({ default: "pending" })
+  order_status: string;
+
+  @Prop({ default: "pending" })
+  payment_status: string;
 
   @Prop({
     type: {
