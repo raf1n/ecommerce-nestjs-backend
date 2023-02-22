@@ -32,7 +32,7 @@ export class ProductsController {
   @Get("/filter")
   findFilteredProducts(
     @Query()
-    query: { categories: string; brands: string; max: string; min: string },
+    query: { search: string; categories: string; brands: string; max: string; min: string },
     @Request() req: Request
   ) {
     return this.productsService.findFilteredProducts(query);

@@ -33,11 +33,13 @@ export class ProductsService {
   }
 
   async findFilteredProducts(query: {
+    search: string;
     categories: string;
     brands: string;
     max: string;
     min: string;
   }): Promise<Product[]> {
+    const search = query.search;
     const categories = query.categories.split(" ").slice(1);
     const brands = query.brands.split(" ").slice(1);
     const maxRange = parseInt(query.max);
@@ -67,7 +69,10 @@ export class ProductsService {
         $match: {
           $and: [
             {
-              $or: allFilter
+              productName: { $regex: "(?i)" + search + "(?-i)" },
+            },
+            {
+              $or: allFilter,
             },
             {
               $or: [
