@@ -113,7 +113,6 @@ export class OrdersService {
   }
 
   async update(slug: string, updateOrderDto: UpdateOrderDto) {
-    console.log(slug, updateOrderDto);
     const result = await this.orderModel.findOneAndUpdate(
       { slug },
       updateOrderDto,
