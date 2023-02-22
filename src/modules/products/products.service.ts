@@ -31,6 +31,68 @@ export class ProductsService {
       };
     }
   }
+
+  async findFilteredProducts(query: {
+    categories: string;
+    brands: string;
+    max: string;
+    min: string;
+  }): Promise<Product[]> {
+    const categories = query.categories.split(" ").slice(1);
+    const brands = query.brands.split(" ").slice(1);
+    const maxRange = parseInt(query.max);
+    const minRange = parseInt(query.min);
+
+    console.log({ categories, brands, maxRange, minRange });
+
+    const categoryFilter = categories.map((cat) => {
+      return {
+        catSlug: cat,
+      };
+    });
+
+    const brandFilter = brands.map((brand) => {
+      return {
+        brandSlug: brand,
+      };
+    });
+
+    //@ts-ignore
+    const allFilter = brandFilter.concat(categoryFilter);
+
+    console.log(allFilter);
+
+    const filteredProducts = await this.productModel.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              $or: allFilter
+            },
+            {
+              $or: [
+                {
+                  price: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+                {
+                  offerPrice: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    ]);
+
+    return filteredProducts;
+  }
+
   //   async findAll(): Promise<ProductDocument[]> {
   //   const allProductData = await this.productModel.find();
   //   return allProductData;

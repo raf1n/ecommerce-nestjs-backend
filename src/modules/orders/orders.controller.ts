@@ -32,11 +32,12 @@ export class OrdersController {
   //   return this.ordersService.findAll(query.user_slug);
   // }
 
+
   @Get()
   findAllCompleted(
     @Query() query: { user_slug: string; delivery_status: string }
   ) {
-    console.log(query);
+    // console.log(query);
     return this.ordersService.findAllCompleted(
       query.user_slug,
       query.delivery_status

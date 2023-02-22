@@ -28,6 +28,16 @@ export class ProductsController {
   async findAll(@Query() queries: QueryDto, @Request() req: Request) {
     return await this.productsService.findAll(queries);
   }
+
+  @Get("/filter")
+  findFilteredProducts(
+    @Query()
+    query: { categories: string; brands: string; max: string; min: string },
+    @Request() req: Request
+  ) {
+    return this.productsService.findFilteredProducts(query);
+  }
+
   //..............
   // @Get("/seller")
   // async findAllSellerWithProduct(
