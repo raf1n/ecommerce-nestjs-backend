@@ -112,8 +112,14 @@ export class OrdersService {
     return await this.orderModel.findOne({ slug });
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  async update(slug: string, updateOrderDto: UpdateOrderDto) {
+    console.log(slug, updateOrderDto);
+    const result = await this.orderModel.findOneAndUpdate(
+      { slug },
+      updateOrderDto,
+      { new: true }
+    );
+    return result;
   }
 
   async remove(slug: string) {
