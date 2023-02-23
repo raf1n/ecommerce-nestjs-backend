@@ -60,9 +60,9 @@ export class ProductsService {
     });
 
     //@ts-ignore
-    const allFilter = brandFilter.concat(categoryFilter);
+    // const allFilter = brandFilter.concat(categoryFilter);
 
-    console.log(allFilter);
+    // console.log(allFilter);
 
     const filteredProducts = await this.productModel.aggregate([
       {
@@ -72,7 +72,10 @@ export class ProductsService {
               productName: { $regex: "(?i)" + search + "(?-i)" },
             },
             {
-              $or: allFilter,
+              $or: categoryFilter,
+            },
+            {
+              $or: brandFilter,
             },
             {
               $or: [
