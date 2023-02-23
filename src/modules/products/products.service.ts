@@ -40,35 +40,44 @@ export class ProductsService {
     min: string;
   }): Promise<Product[]> {
     const search = query.search;
-    const categoriesStrArr = query.categories ? query.categories.split(" ").slice(1): [""];
+    const categoriesStrArr = query.categories
+      ? query.categories.split(" ").slice(1)
+      : [""];
     const brandsStrArr = query.brands ? query.brands.split(" ").slice(1) : [""];
     const maxRange = parseInt(query.max);
     const minRange = parseInt(query.min);
 
-    console.log({ categoriesStrArr, brandsStrArr, maxRange, minRange });
+    // console.log({ categoriesStrArr, brandsStrArr, maxRange, minRange });
 
-    const categoryFilter = categoriesStrArr.map((cat) => {
-      return {
-        catSlug: {
-          $regex: "(?i)" + cat + "(?-i)",
-        },
-      };
-    });
+    const categoryFilter = Object.assign(
+      query.categories
+        ? {
+            $or: categoriesStrArr.map((cat) => {
+              return {
+                catSlug: {
+                  $regex: "(?i)" + cat + "(?-i)",
+                },
+              };
+            }),
+          }
+        : {}
+    );
 
-    const brandFilter = brandsStrArr.map((brand) => {
-      return {
-        brandSlug: {
-          $regex: "(?i)" + brand + "(?-i)",
-        },
-      };
-    });
+    const brandFilter = Object.assign(
+      query.brands
+        ? {
+            $or: brandsStrArr.map((brand) => {
+              return {
+                brandSlug: {
+                  $regex: "(?i)" + brand + "(?-i)",
+                },
+              };
+            }),
+          }
+        : {}
+    );
 
     console.log({ categoryFilter, brandFilter });
-
-    //@ts-ignore
-    // const allFilter = brandFilter.concat(categoryFilter);
-
-    // console.log(allFilter);
 
     const filteredProducts = await this.productModel.aggregate([
       {
@@ -77,12 +86,8 @@ export class ProductsService {
             {
               productName: { $regex: "(?i)" + search + "(?-i)" },
             },
-            {
-              $or: categoryFilter,
-            },
-            {
-              $or: brandFilter,
-            },
+            categoryFilter,
+            brandFilter,
             {
               $or: [
                 {

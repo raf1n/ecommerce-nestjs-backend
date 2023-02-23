@@ -35,7 +35,7 @@ export class ProductsController {
     query: { search: string; categories: string; brands: string; max: string; min: string },
     @Request() req: Request
   ) {
-    console.log(query);
+    console.log("con", query);
     return this.productsService.findFilteredProducts(query);
   }
 
