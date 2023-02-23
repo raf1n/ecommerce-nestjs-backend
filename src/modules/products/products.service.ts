@@ -40,24 +40,30 @@ export class ProductsService {
     min: string;
   }): Promise<Product[]> {
     const search = query.search;
-    const categories = query.categories.split(" ").slice(1);
-    const brands = query.brands.split(" ").slice(1);
+    const categoriesStrArr = query.categories ? query.categories.split(" ").slice(1): [""];
+    const brandsStrArr = query.brands ? query.brands.split(" ").slice(1) : [""];
     const maxRange = parseInt(query.max);
     const minRange = parseInt(query.min);
 
-    console.log({ categories, brands, maxRange, minRange });
+    console.log({ categoriesStrArr, brandsStrArr, maxRange, minRange });
 
-    const categoryFilter = categories.map((cat) => {
+    const categoryFilter = categoriesStrArr.map((cat) => {
       return {
-        catSlug: cat,
+        catSlug: {
+          $regex: "(?i)" + cat + "(?-i)",
+        },
       };
     });
 
-    const brandFilter = brands.map((brand) => {
+    const brandFilter = brandsStrArr.map((brand) => {
       return {
-        brandSlug: brand,
+        brandSlug: {
+          $regex: "(?i)" + brand + "(?-i)",
+        },
       };
     });
+
+    console.log({ categoryFilter, brandFilter });
 
     //@ts-ignore
     // const allFilter = brandFilter.concat(categoryFilter);
