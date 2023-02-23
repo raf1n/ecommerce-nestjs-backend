@@ -7,4 +7,5 @@ export class CreateCouponDto {
   expired_date: string;
   status: string;
   action: string;
+  minimum_purchase: number;
 }

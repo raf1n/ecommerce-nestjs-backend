@@ -50,8 +50,10 @@ export class CouponService {
     return couponFind;
   }
 
-  update(id: number, updateCouponDto: UpdateCouponDto) {
-    return `This action updates a #${id} coupon`;
+  update(slug: string, updateCouponDto: UpdateCouponDto) {
+    return this.couponModel.findOneAndUpdate({ slug }, updateCouponDto, {
+      new: true,
+    });
   }
 
   async delete(slug: string): Promise<Coupon> {
