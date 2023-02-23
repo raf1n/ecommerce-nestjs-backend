@@ -18,4 +18,7 @@ export class CreateReviewDto {
 
   @IsNumber()
   rating: number;
+
+  @IsString()
+  status: string;
 }

@@ -31,6 +31,9 @@ export class Review {
 
   @Prop()
   rating: number;
+
+  @Prop()
+  status: string;
 }
 
 export const ReviewSchema = SchemaFactory.createForClass(Review);
