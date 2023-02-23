@@ -45,7 +45,7 @@ export class ReviewsService {
       {
         $unwind: "$user",
       },
-    ]);
+    ]).sort({ [query.sortBy]: query.sortType });
   }
   // ----------------------------------------------
   async findAll(query: { user_slug: string }) {

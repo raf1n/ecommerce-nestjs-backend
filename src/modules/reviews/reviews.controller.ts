@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   Query,
+  Request,
 } from "@nestjs/common";
 import { ReviewsService } from "./reviews.service";
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { UpdateReviewDto } from "./dto/update-review.dto";
 import { Review } from "src/schemas/review.schema";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Controller("reviews")
 export class ReviewsController {
@@ -28,7 +30,7 @@ export class ReviewsController {
   }
   // ---------------------------------
   @Get("/findAllForAdmin")
-  findAllForAdmin(query) {
+  findAllForAdmin(@Query() query: SearchSortDto) {
     return this.reviewsService.findAllForAdmin(query);
   }
   // ---------------------------------
