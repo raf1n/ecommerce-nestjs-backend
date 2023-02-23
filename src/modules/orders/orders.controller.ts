@@ -23,13 +23,8 @@ export class OrdersController {
   ) {
     return this.ordersService.create(createOrderDto);
   }
-  // --------------------
 
-  // @Get()
-  // findAll(@Query() query: { user_slug: string }) {
-  //   return this.ordersService.findAll(query.user_slug);
-  // }
-
+  // -----------------------------------------------------
   @Get()
   findAllCompleted(
     @Query() query: { user_slug: string; delivery_status: string }
@@ -40,7 +35,7 @@ export class OrdersController {
       query.delivery_status
     );
   }
-
+  // ------------------------------------------------------
   @Get(":slug")
   findOne(@Param("slug") slug: string) {
     return this.ordersService.findOne(slug);

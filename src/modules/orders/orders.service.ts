@@ -32,22 +32,19 @@ export class OrdersService {
     }
   }
 
-  // findAll(slug: string) {
-  //   return this.orderModel.find({ user_slug: slug });
-  // }
-
+  // ------------------------------------------------------------------
   async findAllCompleted(slug: string, delivery_status: string) {
     const result = await this.orderModel.find({
       user_slug: slug,
       delivery_status: new RegExp(delivery_status, "i"),
     });
-
     console.log(result);
     return {
       data: result,
       message: "fetched Successfully",
     };
   }
+  // ------------------------------------------------------------------
   async findOne(slug: string) {
     return await this.orderModel.findOne({ slug });
   }
