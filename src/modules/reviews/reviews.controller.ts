@@ -1,80 +1,51 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
-import { Review, ReviewDocument } from "src/schemas/review.schema";
-import { UtilSlug } from "src/utils/UtilSlug";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  Request,
+} from "@nestjs/common";
+import { ReviewsService } from "./reviews.service";
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { UpdateReviewDto } from "./dto/update-review.dto";
+import { Review } from "src/schemas/review.schema";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
-@Injectable()
-export class ReviewsService {
-  constructor(
-    @InjectModel(Review.name)
-    private readonly ReviewModal: Model<ReviewDocument>
-  ) {}
+@Controller("reviews")
+export class ReviewsController {
+  constructor(private readonly reviewsService: ReviewsService) {}
 
-  async create(createReviewDto: CreateReviewDto): Promise<Object> {
-    const slug = `review_${createReviewDto.product_slug}`;
-    createReviewDto["slug"] = UtilSlug.getUniqueId(slug);
-
-    const result = await new this.ReviewModal(createReviewDto).save();
-    return result;
+  @Post()
+  create(@Body() createReviewDto: CreateReviewDto) {
+    return this.reviewsService.create(createReviewDto);
   }
-  // ---------------------------------------------
-  async findAllForAdmin(query: any): Promise<Review[]> {
-    return await this.ReviewModal.aggregate([
-      {
-        $lookup: {
-          from: "products",
-          localField: "product_slug",
-          foreignField: "slug",
-          as: "reviewProducts",
-        },
-      },
-      {
-        $unwind: "$reviewProducts",
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "user_slug",
-          foreignField: "slug",
-          as: "user",
-        },
-      },
-      {
-        $unwind: "$user",
-      },
-    ]).sort({ [query.sortBy]: query.sortType });
+  // ---------------------------------
+  @Get()
+  findAll(@Query() query: { user_slug: string }) {
+    return this.reviewsService.findAll(query);
   }
-  // ----------------------------------------------
-  async findAll(query: { user_slug: string }) {
-    return await this.ReviewModal.aggregate([
-      { $match: { user_slug: query.user_slug } }, //
-      {
-        $lookup: {
-          from: "products",
-          localField: "product_slug",
-          foreignField: "slug",
-          as: "reviewProducts",
-        },
-      },
-      {
-        $unwind: "$reviewProducts",
-      },
-    ]);
+  // ---------------------------------
+  @Get("/findAllForAdmin")
+  findAllForAdmin(@Query() query: SearchSortDto, @Request() req: Request) {
+    return this.reviewsService.findAllForAdmin(query);
   }
-  // ----------------------------------------------
-  findOne(id: number) {
-    return `This action returns a #${id} review findOne`;
-  }
-  // ----------------------------------------------
-
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review update`;
+  // ---------------------------------
+  @Get(":id")
+  findOne(@Param("id") id: string) {
+    return this.reviewsService.findOne(+id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} review remove`;
+  @Patch(":id")
+  update(@Param("id") id: string, @Body() updateReviewDto: UpdateReviewDto) {
+    return this.reviewsService.update(+id, updateReviewDto);
+  }
+
+  @Delete(":id")
+  remove(@Param("id") id: string) {
+    return this.reviewsService.remove(+id);
   }
 }
