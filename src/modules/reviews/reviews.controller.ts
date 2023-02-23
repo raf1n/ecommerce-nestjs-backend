@@ -28,7 +28,7 @@ export class ReviewsController {
   }
   // ---------------------------------
   @Get("/findAllForAdmin")
-  findAllForAdmin(query): Promise<Review[]> {
+  findAllForAdmin(query) {
     return this.reviewsService.findAllForAdmin(query);
   }
   // ---------------------------------
@@ -42,8 +42,13 @@ export class ReviewsController {
     return this.reviewsService.update(+id, updateReviewDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.reviewsService.remove(+id);
+  // @Delete(":id")
+  // remove(@Param("id") id: string) {
+  //   return this.reviewsService.remove(+id);
+  // }
+
+  @Delete(":slug")
+  delete(@Param("slug") slug: string) {
+    return this.reviewsService.delete(slug);
   }
 }
