@@ -32,22 +32,27 @@ export class OrdersService {
     }
   }
 
+<<<<<<< HEAD
   // findAll(slug: string) {
   //   return this.orderModel.find({ user_slug: slug });
   // }
 
   async findAllCompleted(slug: string, order_status: string) {
+=======
+  // ------------------------------------------------------------------
+  async findAllCompleted(slug: string, delivery_status: string) {
+>>>>>>> 417981eb76c809c57342309266fd34cf393db350
     const result = await this.orderModel.find({
       user_slug: slug,
       order_status: new RegExp(order_status, "i"),
     });
-
     console.log(result);
     return {
       data: result,
       message: "fetched Successfully",
     };
   }
+<<<<<<< HEAD
 
   async findAllOrdersAdmin(query: any) {
     let match_value = new RegExp(query.search, "i");
@@ -108,6 +113,9 @@ export class OrdersService {
     return { allOrdersData, filteredOrdersData };
   }
 
+=======
+  // ------------------------------------------------------------------
+>>>>>>> 417981eb76c809c57342309266fd34cf393db350
   async findOne(slug: string) {
     return await this.orderModel.findOne({ slug });
   }

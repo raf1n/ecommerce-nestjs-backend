@@ -20,20 +20,61 @@ export class ReviewsService {
     const result = await new this.ReviewModal(createReviewDto).save();
     return result;
   }
-
-  findAll() {
-    return `This action returns all reviews`;
+  // ---------------------------------------------
+  async findAllForAdmin(query: any): Promise<Review[]> {
+    return await this.ReviewModal.aggregate([
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_slug",
+          foreignField: "slug",
+          as: "reviewProducts",
+        },
+      },
+      {
+        $unwind: "$reviewProducts",
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+    ]);
   }
-
+  // ----------------------------------------------
+  async findAll(query: { user_slug: string }) {
+    return await this.ReviewModal.aggregate([
+      { $match: { user_slug: query.user_slug } }, //
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_slug",
+          foreignField: "slug",
+          as: "reviewProducts",
+        },
+      },
+      {
+        $unwind: "$reviewProducts",
+      },
+    ]);
+  }
+  // ----------------------------------------------
   findOne(id: number) {
-    return `This action returns a #${id} review`;
+    return `This action returns a #${id} review findOne`;
   }
+  // ----------------------------------------------
 
   update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
+    return `This action updates a #${id} review update`;
   }
 
   remove(id: number) {
-    return `This action removes a #${id} review`;
+    return `This action removes a #${id} review remove`;
   }
 }
