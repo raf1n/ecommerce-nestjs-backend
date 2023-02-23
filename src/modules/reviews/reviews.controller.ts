@@ -44,8 +44,13 @@ export class ReviewsController {
     return this.reviewsService.update(+id, updateReviewDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.reviewsService.remove(+id);
+  @Delete(":slug")
+  delete(@Param("slug") slug: string) {
+    return this.reviewsService.delete(slug);
   }
+
+  // @Delete(":id")
+  // remove(@Param("id") id: string) {
+  //   return this.reviewsService.remove(+id);
+  // }
 }
