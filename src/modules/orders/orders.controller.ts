@@ -56,9 +56,9 @@ export class OrdersController {
     return this.ordersService.findOne(slug);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.ordersService.update(+id, updateOrderDto);
+  @Patch(":slug")
+  update(@Param("slug") slug: string, @Body() updateOrderDto: UpdateOrderDto) {
+    return this.ordersService.update(slug, updateOrderDto);
   }
 
   @Delete(":slug")
