@@ -28,7 +28,7 @@ export class CouponService {
   async findAllAdminCoupons(query: any) {
     const allCouponsData = await this.couponModel
       .find({
-        cat_name: new RegExp(query.search, "i"),
+        name: new RegExp(query.search, "i"),
       })
       .sort({ [query.sortBy]: query.sortType });
 
