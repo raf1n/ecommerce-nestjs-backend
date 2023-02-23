@@ -44,14 +44,12 @@ export class CouponService {
   // }
 
   async findOne(slug: string) {
-    console.log(slug);
-    const couponFind = await this.couponModel.findOne({ slug: slug });
-    console.log(couponFind);
+    const couponFind = await this.couponModel.findOne({ slug });
     return couponFind;
   }
 
-  update(slug: string, updateCouponDto: UpdateCouponDto) {
-    return this.couponModel.findOneAndUpdate({ slug }, updateCouponDto, {
+  async update(slug: string, updateCouponDto: UpdateCouponDto) {
+    return await this.couponModel.findOneAndUpdate({ slug }, updateCouponDto, {
       new: true,
     });
   }
