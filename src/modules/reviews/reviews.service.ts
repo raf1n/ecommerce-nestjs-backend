@@ -10,19 +10,19 @@ import { UpdateReviewDto } from "./dto/update-review.dto";
 export class ReviewsService {
   constructor(
     @InjectModel(Review.name)
-    private readonly reviewModel: Model<ReviewDocument>
+    private readonly ReviewModal: Model<ReviewDocument>
   ) {}
 
   async create(createReviewDto: CreateReviewDto): Promise<Object> {
     const slug = `review_${createReviewDto.product_slug}`;
     createReviewDto["slug"] = UtilSlug.getUniqueId(slug);
 
-    const result = await new this.reviewModel(createReviewDto).save();
+    const result = await new this.ReviewModal(createReviewDto).save();
     return result;
   }
   // ---------------------------------------------
   async findAllForAdmin(query: any): Promise<Review[]> {
-    return await this.reviewModel.aggregate([
+    return await this.ReviewModal.aggregate([
       {
         $lookup: {
           from: "products",
@@ -49,7 +49,7 @@ export class ReviewsService {
   }
   // ----------------------------------------------
   async findAll(query: { user_slug: string }) {
-    return await this.reviewModel.aggregate([
+    return await this.ReviewModal.aggregate([
       { $match: { user_slug: query.user_slug } }, //
       {
         $lookup: {
@@ -74,11 +74,7 @@ export class ReviewsService {
     return `This action updates a #${id} review update`;
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} review remove`;
-  // }
-
-  async delete(slug: string): Promise<Review> {
-    return await this.reviewModel.findOneAndDelete({ slug }).exec();
+  remove(id: number) {
+    return `This action removes a #${id} review remove`;
   }
 }
