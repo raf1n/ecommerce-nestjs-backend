@@ -42,9 +42,12 @@ export class CouponController {
     return this.couponService.findOne(slug);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateCouponDto: UpdateCouponDto) {
-    return this.couponService.update(+id, updateCouponDto);
+  @Patch(":slug")
+  update(
+    @Param("slug") slug: string,
+    @Body() updateCouponDto: UpdateCouponDto
+  ) {
+    return this.couponService.update(slug, updateCouponDto);
   }
 
   @Delete(":slug")

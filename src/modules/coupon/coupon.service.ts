@@ -44,14 +44,14 @@ export class CouponService {
   // }
 
   async findOne(slug: string) {
-    console.log(slug);
-    const couponFind = await this.couponModel.findOne({ slug: slug });
-    console.log(couponFind);
+    const couponFind = await this.couponModel.findOne({ slug });
     return couponFind;
   }
 
-  update(id: number, updateCouponDto: UpdateCouponDto) {
-    return `This action updates a #${id} coupon`;
+  async update(slug: string, updateCouponDto: UpdateCouponDto) {
+    return await this.couponModel.findOneAndUpdate({ slug }, updateCouponDto, {
+      new: true,
+    });
   }
 
   async delete(slug: string): Promise<Coupon> {

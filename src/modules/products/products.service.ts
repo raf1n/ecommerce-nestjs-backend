@@ -31,6 +31,87 @@ export class ProductsService {
       };
     }
   }
+
+  async findFilteredProducts(query: {
+    search: string;
+    categories: string;
+    brands: string;
+    max: string;
+    min: string;
+  }): Promise<Product[]> {
+    const search = query.search;
+    const categoriesStrArr = query.categories
+      ? query.categories.split(" ").slice(1)
+      : [""];
+    const brandsStrArr = query.brands ? query.brands.split(" ").slice(1) : [""];
+    const maxRange = parseInt(query.max);
+    const minRange = parseInt(query.min);
+
+    // console.log({ categoriesStrArr, brandsStrArr, maxRange, minRange });
+
+    const categoryFilter = Object.assign(
+      query.categories
+        ? {
+            $or: categoriesStrArr.map((cat) => {
+              return {
+                catSlug: {
+                  $regex: "(?i)" + cat + "(?-i)",
+                },
+              };
+            }),
+          }
+        : {}
+    );
+
+    const brandFilter = Object.assign(
+      query.brands
+        ? {
+            $or: brandsStrArr.map((brand) => {
+              return {
+                brandSlug: {
+                  $regex: "(?i)" + brand + "(?-i)",
+                },
+              };
+            }),
+          }
+        : {}
+    );
+
+    console.log({ categoryFilter, brandFilter });
+
+    const filteredProducts = await this.productModel.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              productName: { $regex: "(?i)" + search + "(?-i)" },
+            },
+            categoryFilter,
+            brandFilter,
+            {
+              $or: [
+                {
+                  price: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+                {
+                  offerPrice: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    ]);
+
+    return filteredProducts;
+  }
+
   //   async findAll(): Promise<ProductDocument[]> {
   //   const allProductData = await this.productModel.find();
   //   return allProductData;

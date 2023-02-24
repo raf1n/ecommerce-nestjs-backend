@@ -30,7 +30,7 @@ export class Coupon {
   status: string;
 
   @Prop()
-  action: string;
+  minimum_purchase: number;
 }
 
 export const CouponSchema = SchemaFactory.createForClass(Coupon);
