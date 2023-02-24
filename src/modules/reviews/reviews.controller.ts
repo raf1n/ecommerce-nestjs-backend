@@ -31,6 +31,7 @@ export class ReviewsController {
   // ---------------------------------
   @Get("/findAllForAdmin")
   findAllForAdmin(@Query() query: SearchSortDto, @Request() req: Request) {
+    console.log(query);
     return this.reviewsService.findAllForAdmin(query);
   }
   // ---------------------------------

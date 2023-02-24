@@ -22,6 +22,7 @@ export class ReviewsService {
   }
   // ---------------------------------------------
   async findAllForAdmin(query: any): Promise<Review[]> {
+    console.log(query);
     return await this.ReviewModal.aggregate([
       {
         $lookup: {
