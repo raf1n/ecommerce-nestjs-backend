@@ -39,10 +39,18 @@ export class ReviewsController {
     return this.reviewsService.findOne(+id);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateReviewDto: UpdateReviewDto) {
-    return this.reviewsService.update(+id, updateReviewDto);
+  @Patch(":slug")
+  update(
+    @Param("slug") slug: string,
+    @Body() updateReviewDto: UpdateReviewDto
+  ) {
+    return this.reviewsService.update(slug, updateReviewDto);
   }
+
+  // @Patch(":id")
+  // update(@Param("id") id: string, @Body() updateReviewDto: UpdateReviewDto) {
+  //   return this.reviewsService.update(+id, updateReviewDto);
+  // }
 
   @Delete(":slug")
   delete(@Param("slug") slug: string) {

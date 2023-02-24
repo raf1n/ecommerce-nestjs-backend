@@ -72,8 +72,14 @@ export class ReviewsService {
   }
   // ----------------------------------------------
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review update`;
+  // update(id: number, updateReviewDto: UpdateReviewDto) {
+  //   return `This action updates a #${id} review update`;
+  // }
+
+  async update(slug: string, updateReviewDto: UpdateReviewDto) {
+    return await this.reviewModel.findOneAndUpdate({ slug }, updateReviewDto, {
+      new: true,
+    });
   }
 
   async delete(slug: string): Promise<Review> {
