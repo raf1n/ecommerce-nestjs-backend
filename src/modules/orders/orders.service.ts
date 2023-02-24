@@ -41,7 +41,6 @@ export class OrdersService {
       user_slug: slug,
       order_status: new RegExp(order_status, "i"),
     });
-
     console.log(result);
     return {
       data: result,

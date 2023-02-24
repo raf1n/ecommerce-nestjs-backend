@@ -25,14 +25,8 @@ export class OrdersController {
   ) {
     return this.ordersService.create(createOrderDto);
   }
-  // --------------------
 
-  // @Get()
-  // findAll(@Query() query: { user_slug: string }) {
-  //   return this.ordersService.findAll(query.user_slug);
-  // }
-
-
+  // -----------------------------------------------------
   @Get()
   findAllCompleted(
     @Query() query: { user_slug: string; delivery_status: string }
