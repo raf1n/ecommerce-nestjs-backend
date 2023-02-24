@@ -10,9 +10,6 @@ export class CreateOrderDto {
   @IsString()
   transaction_id: string;
 
-  @IsString()
-  order_status: string;
-
   @IsObject()
   address: {
     country: string;
