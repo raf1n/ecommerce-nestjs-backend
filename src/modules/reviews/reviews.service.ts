@@ -10,47 +10,48 @@ import { UpdateReviewDto } from "./dto/update-review.dto";
 export class ReviewsService {
   constructor(
     @InjectModel(Review.name)
-    private readonly ReviewModal: Model<ReviewDocument>
+    private readonly reviewModel: Model<ReviewDocument>
   ) {}
 
   async create(createReviewDto: CreateReviewDto): Promise<Object> {
     const slug = `review_${createReviewDto.product_slug}`;
     createReviewDto["slug"] = UtilSlug.getUniqueId(slug);
 
-    const result = await new this.ReviewModal(createReviewDto).save();
+    const result = await new this.reviewModel(createReviewDto).save();
     return result;
   }
   // ---------------------------------------------
   async findAllForAdmin(query: any): Promise<Review[]> {
-    console.log(query);
-    return await this.ReviewModal.aggregate([
-      {
-        $lookup: {
-          from: "products",
-          localField: "product_slug",
-          foreignField: "slug",
-          as: "reviewProducts",
+    return await this.reviewModel
+      .aggregate([
+        {
+          $lookup: {
+            from: "products",
+            localField: "product_slug",
+            foreignField: "slug",
+            as: "reviewProducts",
+          },
         },
-      },
-      {
-        $unwind: "$reviewProducts",
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "user_slug",
-          foreignField: "slug",
-          as: "user",
+        {
+          $unwind: "$reviewProducts",
         },
-      },
-      {
-        $unwind: "$user",
-      },
-    ]).sort({ [query.sortBy]: query.sortType });
+        {
+          $lookup: {
+            from: "users",
+            localField: "user_slug",
+            foreignField: "slug",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$user",
+        },
+      ])
+      .sort({ [query.sortBy]: query.sortType });
   }
   // ----------------------------------------------
   async findAll(query: { user_slug: string }) {
-    return await this.ReviewModal.aggregate([
+    return await this.reviewModel.aggregate([
       { $match: { user_slug: query.user_slug } }, //
       {
         $lookup: {
@@ -71,11 +72,21 @@ export class ReviewsService {
   }
   // ----------------------------------------------
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review update`;
+  // update(id: number, updateReviewDto: UpdateReviewDto) {
+  //   return `This action updates a #${id} review update`;
+  // }
+
+  async update(slug: string, updateReviewDto: UpdateReviewDto) {
+    return await this.reviewModel.findOneAndUpdate({ slug }, updateReviewDto, {
+      new: true,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} review remove`;
+  async delete(slug: string): Promise<Review> {
+    return await this.reviewModel.findOneAndDelete({ slug }).exec();
   }
+
+  // remove(id: number) {
+  //   return `This action removes a #${id} review remove`;
+  // }
 }

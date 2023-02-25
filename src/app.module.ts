@@ -16,6 +16,7 @@ import { PaymentsModule } from "./modules/payments/payments.module";
 import { PopularCategoriesModule } from "./modules/popular_categories/popular_categories.module";
 import { ReporteditemsModule } from "./modules/reporteditems/reporteditems.module";
 import { AddressesModule } from "./modules/addresses/addresses.module";
+import { CouponModule } from "./modules/coupon/coupon.module";
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { AddressesModule } from "./modules/addresses/addresses.module";
     PaymentsModule,
     ReporteditemsModule,
     AddressesModule,
+    CouponModule,
   ],
   controllers: [AppController],
   providers: [AppService],

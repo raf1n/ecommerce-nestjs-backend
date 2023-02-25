@@ -4,5 +4,8 @@ import { CreateOrderDto } from "./create-order.dto";
 
 export class UpdateOrderDto extends PartialType(CreateOrderDto) {
   @IsString()
-  delivery_status: string;
+  payment_status: string;
+  
+  @IsString()
+  order_status: string;
 }

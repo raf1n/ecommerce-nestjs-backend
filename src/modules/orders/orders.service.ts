@@ -32,11 +32,14 @@ export class OrdersService {
     }
   }
 
-  // ------------------------------------------------------------------
-  async findAllCompleted(slug: string, delivery_status: string) {
+  // findAll(slug: string) {
+  //   return this.orderModel.find({ user_slug: slug });
+  // }
+
+  async findAllCompleted(slug: string, order_status: string) {
     const result = await this.orderModel.find({
       user_slug: slug,
-      delivery_status: new RegExp(delivery_status, "i"),
+      order_status: new RegExp(order_status, "i"),
     });
     console.log(result);
     return {
@@ -51,15 +54,80 @@ export class OrdersService {
   // }
 
   // ------------------------------------------------------------------
+
+  async findAllOrdersAdmin(query: any) {
+    let match_value = new RegExp(query.search, "i");
+    console.log(query);
+
+    const allOrdersData = await this.orderModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: match_value,
+          },
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+
+    const filteredOrdersData = await this.orderModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: match_value,
+          },
+          order_status: query.order_status,
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+    return { allOrdersData, filteredOrdersData };
+  }
+
   async findOne(slug: string) {
     return await this.orderModel.findOne({ slug });
   }
 
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
+  async update(slug: string, updateOrderDto: UpdateOrderDto) {
+    const result = await this.orderModel.findOneAndUpdate(
+      { slug },
+      updateOrderDto,
+      { new: true }
+    );
+    return result;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} order`;
+  async remove(slug: string) {
+    return await this.orderModel.deleteOne({ slug });
   }
 }
