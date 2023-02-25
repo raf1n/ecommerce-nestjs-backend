@@ -20,8 +20,10 @@ export class ReviewsService {
     const result = await new this.reviewModel(createReviewDto).save();
     return result;
   }
+
   // ---------------------------------------------
   async findAllForAdmin(query: any): Promise<Review[]> {
+    let match_value = new RegExp(query.search, "i");
     return await this.reviewModel
       .aggregate([
         {
@@ -45,6 +47,11 @@ export class ReviewsService {
         },
         {
           $unwind: "$user",
+        },
+        {
+          $match: {
+            "user.fullName": match_value,
+          },
         },
       ])
       .sort({ [query.sortBy]: query.sortType });
