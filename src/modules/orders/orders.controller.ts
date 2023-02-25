@@ -35,12 +35,21 @@ export class OrdersController {
       query.delivery_status
     );
   }
-  // ------------------------------------------------------
+  // ----------------------------------------------------------------
   @Get(":slug")
   findOne(@Param("slug") slug: string) {
     return this.ordersService.findOne(slug);
   }
-
+  //--------------- get pending orders for admin -------------------
+  // @Get("/pendingForAdmin")
+  // findAll(@Query() query: { delivery_status: string }) {
+  //   return this.ordersService.findAll(query.delivery_status);
+  // }
+  // @Get()
+  // findAll(@Query() query: { user_slug: string }) {
+  //   return this.wishlistService.findAll(query.user_slug);
+  // }
+  //----------------------------------------------------------------
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateOrderDto: UpdateOrderDto) {
     return this.ordersService.update(+id, updateOrderDto);
