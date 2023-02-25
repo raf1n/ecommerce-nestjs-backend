@@ -47,7 +47,7 @@ export class OrdersService {
       message: "fetched Successfully",
     };
   }
-  //----------------------------------
+
   // ----------------------------------------------
   // async findAll(delivery_status: string): Promise<Order[]> {
   //   return await this.orderModel.find({ delivery_status });
