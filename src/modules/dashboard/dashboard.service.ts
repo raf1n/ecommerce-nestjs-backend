@@ -5,7 +5,13 @@ import { Brand, BrandDocument } from "src/schemas/brand.schema";
 import { Category, CategoryDocument } from "src/schemas/category.schema";
 import { Order, OrderDocument } from "src/schemas/order.schema";
 import { Product, ProductDocument } from "src/schemas/product.schema";
+import {
+  ReportedItem,
+  ReportedItemDocument,
+} from "src/schemas/reported-item.schema";
+import { Review, ReviewDocument } from "src/schemas/review.schema";
 import { User, UserDocument } from "src/schemas/user.schema";
+import { Reporteditem } from "../reporteditems/entities/reporteditem.entity";
 import { CreateDashboardDto } from "./dto/create-dashboard.dto";
 import { UpdateDashboardDto } from "./dto/update-dashboard.dto";
 
@@ -21,7 +27,11 @@ export class DashboardService {
     @InjectModel(Brand.name)
     private readonly brandModel: Model<BrandDocument>,
     @InjectModel(Category.name)
-    private readonly categoryModel: Model<CategoryDocument>
+    private readonly categoryModel: Model<CategoryDocument>,
+    @InjectModel(Review.name)
+    private readonly reviewModel: Model<ReviewDocument>,
+    @InjectModel(ReportedItem.name)
+    private readonly reportedModel: Model<ReportedItemDocument>
   ) {}
   create(createDashboardDto: CreateDashboardDto) {
     return "This action adds a new dashboard";
@@ -33,6 +43,8 @@ export class DashboardService {
     const productCount = await this.productModel.countDocuments({});
     const brandCount = await this.brandModel.countDocuments({});
     const categoryCount = await this.categoryModel.countDocuments({});
+    const reviewCount = await this.reviewModel.countDocuments({});
+    const reportedCount = await this.reportedModel.countDocuments({});
     const pendingOrdersCount = await this.orderModel.countDocuments({
       order_status: "pending",
     });
@@ -88,6 +100,8 @@ export class DashboardService {
       brandCount: brandCount,
       categoryCount: categoryCount,
       todayNewOrders: todayNewOrders,
+      reviewCount: reviewCount,
+      reportedCount: reportedCount,
     };
 
     console.log(wholeRes);
