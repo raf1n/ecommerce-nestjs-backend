@@ -27,7 +27,7 @@ export class DashboardService {
     return "This action adds a new dashboard";
   }
 
-  async findAll() {
+  async findAll(query: any) {
     const allOrdersCount = await this.orderModel.countDocuments({});
     const usersCount = await this.userModel.countDocuments({});
     const productCount = await this.productModel.countDocuments({});
@@ -43,6 +43,41 @@ export class DashboardService {
       order_status: "completed",
     });
 
+    let match_value = new RegExp(query.search, "i");
+
+    var todayDate = new Date();
+    todayDate.setHours(0, 0, 0, 0);
+    todayDate.toISOString();
+
+    const todayNewOrders = await this.orderModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: match_value,
+          },
+          createdAt: {
+            $gte: todayDate,
+          },
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+
     const wholeRes = {
       completedOrdersCount: completedOrdersCount,
       declinedOrdersCount: declinedOrdersCount,
@@ -52,6 +87,7 @@ export class DashboardService {
       productCount: productCount,
       brandCount: brandCount,
       categoryCount: categoryCount,
+      todayNewOrders: todayNewOrders,
     };
 
     console.log(wholeRes);
