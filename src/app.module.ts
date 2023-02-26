@@ -17,6 +17,7 @@ import { PopularCategoriesModule } from "./modules/popular_categories/popular_ca
 import { ReporteditemsModule } from "./modules/reporteditems/reporteditems.module";
 import { AddressesModule } from "./modules/addresses/addresses.module";
 import { CouponModule } from "./modules/coupon/coupon.module";
+import { DashboardModule } from "./modules/dashboard/dashboard.module";
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CouponModule } from "./modules/coupon/coupon.module";
     ReporteditemsModule,
     AddressesModule,
     CouponModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],
