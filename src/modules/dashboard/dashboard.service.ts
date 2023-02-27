@@ -90,8 +90,6 @@ export class DashboardService {
       todayNewOrders: todayNewOrders,
     };
 
-    console.log(wholeRes);
-
     return wholeRes;
   }
 

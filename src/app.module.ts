@@ -18,6 +18,7 @@ import { ReporteditemsModule } from "./modules/reporteditems/reporteditems.modul
 import { AddressesModule } from "./modules/addresses/addresses.module";
 import { CouponModule } from "./modules/coupon/coupon.module";
 import { DashboardModule } from "./modules/dashboard/dashboard.module";
+import { AdvertisementsModule } from "./modules/advertisements/advertisements.module";
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { DashboardModule } from "./modules/dashboard/dashboard.module";
     AddressesModule,
     CouponModule,
     DashboardModule,
+    AdvertisementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
