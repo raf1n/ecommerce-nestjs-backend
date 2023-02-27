@@ -9,6 +9,15 @@ export class Advertisement {
   slug: string;
 
   @Prop()
+  adName: string;
+
+  @Prop()
+  adImage: string;
+
+  @Prop()
+  title: string;
+
+  @Prop()
   title_one: string;
 
   @Prop()

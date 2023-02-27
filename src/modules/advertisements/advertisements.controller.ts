@@ -25,9 +25,9 @@ export class AdvertisementsController {
     return this.advertisementsService.findAll();
   }
 
-  @Get(":slug")
-  findOne(@Param("slug") slug: string) {
-    return this.advertisementsService.findOne(slug);
+  @Get(":name")
+  findOne(@Param("name") name: string) {
+    return this.advertisementsService.findOne(name);
   }
 
   @Patch(":slug")

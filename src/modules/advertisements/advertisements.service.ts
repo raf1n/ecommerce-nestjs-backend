@@ -7,6 +7,7 @@ import {
   AdvertisementDocument,
 } from "src/schemas/advertisement.schema";
 import { Model } from "mongoose";
+import { UtilSlug } from "src/utils/UtilSlug";
 
 @Injectable()
 export class AdvertisementsService {
@@ -14,20 +15,33 @@ export class AdvertisementsService {
     @InjectModel(Advertisement.name)
     private advertisementModel: Model<AdvertisementDocument>
   ) {}
-  create(createAdvertisementDto: CreateAdvertisementDto) {
-    return "This action adds a new advertisement";
+
+  async create(
+    createAdvertisementDto: CreateAdvertisementDto
+  ): Promise<object> {
+    createAdvertisementDto["slug"] = UtilSlug.getUniqueId(
+      createAdvertisementDto.adName
+    );
+
+    return await new this.advertisementModel(createAdvertisementDto).save();
   }
 
   findAll() {
-    return `This action returns all advertisements`;
+    return this.advertisementModel.find();
   }
 
-  findOne(slug: string) {
-    return `This action returns a #${slug} advertisement`;
+  findOne(name: string) {
+    return this.advertisementModel.findOne({ adName: name });
   }
 
-  update(slug: string, updateAdvertisementDto: UpdateAdvertisementDto) {
-    return;
+  async update(slug: string, updateAdvertisementDto: UpdateAdvertisementDto) {
+    console.log(slug);
+    console.log(updateAdvertisementDto);
+    return await this.advertisementModel.findOneAndUpdate(
+      { slug },
+      updateAdvertisementDto,
+      { new: true }
+    );
   }
 
   remove(slug: string) {
