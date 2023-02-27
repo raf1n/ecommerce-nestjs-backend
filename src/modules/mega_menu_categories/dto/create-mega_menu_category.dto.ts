@@ -1,6 +1,10 @@
-import { IsArray, IsNumber, IsString } from "class-validator";
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateMegaMenuCategoryDto {
+  @IsString()
+  @IsOptional()
+  slug: string;
+
   @IsString()
   cat_name: string;
 
