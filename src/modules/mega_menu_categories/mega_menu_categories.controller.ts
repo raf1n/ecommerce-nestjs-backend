@@ -18,18 +18,18 @@ export class MegaMenuCategoriesController {
     return this.megaMenuCategoriesService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.megaMenuCategoriesService.findOne(+id);
+  @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.megaMenuCategoriesService.findOne(slug);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMegaMenuCategoryDto: UpdateMegaMenuCategoryDto) {
-    return this.megaMenuCategoriesService.update(+id, updateMegaMenuCategoryDto);
+  @Patch(':slug')
+  update(@Param('slug') slug: string, @Body() updateMegaMenuCategoryDto: UpdateMegaMenuCategoryDto) {
+    return this.megaMenuCategoriesService.update(slug, updateMegaMenuCategoryDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.megaMenuCategoriesService.remove(+id);
+  @Delete(':slug')
+  remove(@Param('slug') slug: string) {
+    return this.megaMenuCategoriesService.remove(slug);
   }
 }
