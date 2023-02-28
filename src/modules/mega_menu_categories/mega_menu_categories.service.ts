@@ -43,7 +43,7 @@ export class MegaMenuCategoriesService {
       {
         new: true,
       }
-    );;
+    );
   }
 
   async remove(slug: string): Promise<MegaCategories> {
