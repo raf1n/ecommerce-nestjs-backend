@@ -67,6 +67,9 @@ export class Product {
 
   @Prop({ default: "pending" })
   approvalStatus: string;
+
+  @Prop()
+  seller_slug: string;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
