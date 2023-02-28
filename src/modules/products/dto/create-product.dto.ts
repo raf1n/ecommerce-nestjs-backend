@@ -36,7 +36,7 @@ export class CreateProductDto {
   imageURL: Array<string>;
 
   @IsOptional()
-  offerPrice: string;
+  offerPrice: number;
 
   // sellerSlug: string;
 
