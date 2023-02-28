@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Request,
 } from "@nestjs/common";
 import { SliderService } from "./slider.service";
 import { CreateSliderDto } from "./dto/create-slider.dto";
 import { UpdateSliderDto } from "./dto/update-slider.dto";
+import { SearchSortDto } from "src/utils/all-queries.dto";
+import { Query } from "@nestjs/common/decorators";
 
 @Controller("slider")
 export class SliderController {
@@ -25,6 +28,15 @@ export class SliderController {
     return this.sliderService.findAll();
   }
 
+  @Get("/admin")
+  async findAllAdminCategories(
+    @Query() query: SearchSortDto,
+    @Request() req: Request
+  ) {
+    console.log(query);
+    return await this.sliderService.findAllAdminSliders(query);
+  }
+
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.sliderService.findOne(+id);
@@ -35,8 +47,13 @@ export class SliderController {
     return this.sliderService.update(+id, updateSliderDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.sliderService.remove(+id);
+  // @Delete(":id")
+  // remove(@Param("id") id: string) {
+  //   return this.sliderService.remove(+id);
+  // }
+
+  @Delete(":slug")
+  delete(@Param("slug") slug: string) {
+    return this.sliderService.delete(slug);
   }
 }

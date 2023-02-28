@@ -17,7 +17,8 @@ export class SliderService {
   // }
 
   async create(createSliderDto: CreateSliderDto): Promise<Object> {
-    const slug = `order_${createSliderDto.slug}`;
+    const slug = `slider`;
+    // ${createSliderDto.titleOne}
     createSliderDto["slug"] = UtilSlug.getUniqueId(slug);
 
     const result = await new this.sliderModel(createSliderDto).save();
@@ -34,8 +35,23 @@ export class SliderService {
     }
   }
 
-  findAll() {
-    return `This action returns all slider`;
+  // findAll() {
+  //   return `This action returns all slider`;
+  // }
+
+  async findAll(): Promise<Slider[]> {
+    return await this.sliderModel.find({ status: "active" }).exec();
+  }
+  // new RegExp(query.search, "d")
+
+  async findAllAdminSliders(query: any) {
+    const allSliderData = await this.sliderModel
+      .find({
+        titleOne: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
+
+    return allSliderData;
   }
 
   findOne(id: number) {
@@ -46,7 +62,11 @@ export class SliderService {
     return `This action updates a #${id} slider`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} slider`;
+  // remove(id: number) {
+  //   return `This action removes a #${id} slider`;
+  // }
+
+  async delete(slug: string): Promise<Slider> {
+    return await this.sliderModel.findOneAndDelete({ slug }).exec();
   }
 }
