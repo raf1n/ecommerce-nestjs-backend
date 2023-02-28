@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { MegaMenuCategoriesService } from './mega_menu_categories.service';
 import { CreateMegaMenuCategoryDto } from './dto/create-mega_menu_category.dto';
 import { UpdateMegaMenuCategoryDto } from './dto/update-mega_menu_category.dto';
+import { SearchSortDto } from 'src/utils/all-queries.dto';
 
 @Controller('mega-menu-categories')
 export class MegaMenuCategoriesController {
@@ -13,8 +14,8 @@ export class MegaMenuCategoriesController {
   }
 
   @Get()
-  findAll() {
-    return this.megaMenuCategoriesService.findAll();
+  findAll(@Query() query: SearchSortDto) {
+    return this.megaMenuCategoriesService.findAll(query);
   }
 
   @Get(':id')
