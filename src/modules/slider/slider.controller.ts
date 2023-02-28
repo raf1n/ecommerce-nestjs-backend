@@ -37,14 +37,28 @@ export class SliderController {
     return await this.sliderService.findAllAdminSliders(query);
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.sliderService.findOne(+id);
+  // @Get(":id")
+  // findOne(@Param("id") id: string) {
+  //   return this.sliderService.findOne(+id);
+  // }
+
+  @Get(":slug")
+  async find(@Param("slug") slug: string) {
+    console.log(slug);
+    return this.sliderService.findOne(slug);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateSliderDto: UpdateSliderDto) {
-    return this.sliderService.update(+id, updateSliderDto);
+  // @Patch(":id")
+  // update(@Param("id") id: string, @Body() updateSliderDto: UpdateSliderDto) {
+  //   return this.sliderService.update(+id, updateSliderDto);
+  // }
+
+  @Patch(":slug")
+  update(
+    @Param("slug") slug: string,
+    @Body() updateSliderDto: UpdateSliderDto
+  ) {
+    return this.sliderService.update(slug, updateSliderDto);
   }
 
   // @Delete(":id")

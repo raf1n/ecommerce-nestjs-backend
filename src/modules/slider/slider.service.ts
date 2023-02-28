@@ -54,12 +54,28 @@ export class SliderService {
     return allSliderData;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} slider`;
+  // findOne(id: number) {
+  //   return `This action returns a #${id} slider`;
+  // }
+
+  async findOne(slug: string) {
+    console.log(slug);
+    const sliderFind = await this.sliderModel.findOne({ slug: slug });
+    console.log(sliderFind);
+    return sliderFind;
   }
 
-  update(id: number, updateSliderDto: UpdateSliderDto) {
-    return `This action updates a #${id} slider`;
+  // update(id: number, updateSliderDto: UpdateSliderDto) {
+  //   return `This action updates a #${id} slider`;
+  // }
+
+  async update(
+    slug: string,
+    updateSliderDto: UpdateSliderDto
+  ): Promise<UpdateSliderDto> {
+    return await this.sliderModel.findOneAndUpdate({ slug }, updateSliderDto, {
+      new: true,
+    });
   }
 
   // remove(id: number) {
