@@ -68,7 +68,10 @@ export class UsersService {
     slug: string | undefined;
     access_token: string | null;
     userId?: string | null;
-    role: string | null;
+    role?: string | null;
+    fullName?: string | null;
+    avatar?: string | null;
+    email?: string | null;
   }> {
     console.log("loginUserDto", loginUserDto);
     const { token, tokenType } = loginUserDto;
@@ -114,7 +117,7 @@ export class UsersService {
         loginUserDto["slug"] = UtilSlug.getUniqueId(fullName);
       }
 
-      const creatUser = await this.userModel.findOneAndUpdate(
+      const createUser = await this.userModel.findOneAndUpdate(
         { email: email },
         {
           $set: {
@@ -124,15 +127,18 @@ export class UsersService {
         { upsert: true, new: true }
       );
       const accessToken = this.jwtService.sign({
-        _id: creatUser._id as string,
-        email: creatUser.email,
+        _id: createUser._id as string,
+        email: createUser.email,
       });
 
       return {
         slug: loginUserDto["slug"],
         access_token: accessToken,
-        userId: creatUser._id as string,
-        role: creatUser.role as string,
+        userId: createUser._id as string,
+        role: createUser.role as string,
+        email: createUser.email as string,
+        avatar: createUser.avatar as string,
+        fullName: createUser.fullName as string,
       };
     }
 
@@ -151,8 +157,9 @@ export class UsersService {
     return await this.userModel.findOne({ email: email });
   }
 
-  update(slug: string, updateUserDto: UpdateUserDto) {
-    return this.userModel.findOneAndUpdate({ slug }, updateUserDto, {
+  async update(slug: string, updateUserDto: UpdateUserDto) {
+    console.log(updateUserDto);
+    return await this.userModel.findOneAndUpdate({ slug }, updateUserDto, {
       new: true,
     });
   }
