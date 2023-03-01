@@ -19,6 +19,7 @@ import { AddressesModule } from "./modules/addresses/addresses.module";
 import { CouponModule } from "./modules/coupon/coupon.module";
 import { DashboardModule } from "./modules/dashboard/dashboard.module";
 import { SliderModule } from "./modules/slider/slider.module";
+import { AdvertisementsModule } from "./modules/advertisements/advertisements.module";
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { SliderModule } from "./modules/slider/slider.module";
     CouponModule,
     DashboardModule,
     SliderModule,
+    AdvertisementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

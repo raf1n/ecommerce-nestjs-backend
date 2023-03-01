@@ -32,7 +32,13 @@ export class ProductsController {
   @Get("/filter")
   findFilteredProducts(
     @Query()
-    query: { search: string; categories: string; brands: string; max: string; min: string },
+    query: {
+      search: string;
+      categories: string;
+      brands: string;
+      max: string;
+      min: string;
+    },
     @Request() req: Request
   ) {
     console.log("con", query);
@@ -49,11 +55,16 @@ export class ProductsController {
   // }
   //..............
   @Get("/admin")
-  async findAllAdminProduct(
-    @Query() query: SearchSortDto,
-    @Request() req: Request
-  ) {
+  async findAllAdminProduct(@Query() query: SearchSortDto) {
     return await this.productsService.findAllAdminProducts(query);
+  }
+
+  @Get("seller/:slug")
+  async findAllSellerProducts(
+    @Param("slug") slug: string,
+    @Query() query: SearchSortDto
+  ) {
+    return await this.productsService.findAllSellerProducts(slug, query);
   }
 
   @Get(":slug")

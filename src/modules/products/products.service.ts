@@ -202,6 +202,51 @@ export class ProductsService {
       sellerPendingProducts,
     };
   }
+
+  async findAllSellerProducts(
+    slug: string,
+    query: any // : Promise<ProductDocument[]>
+  ) {
+    const allProductData = await this.productModel
+      .find({ productName: new RegExp(query.search, "i"), seller_slug: slug })
+      .sort({ [query.sortBy]: query.sortType });
+
+    // const allProductData = await serviceHandler.queryHandler(
+    //   this.productModel,
+    //   query
+    // );
+
+    // let limit: number = parseInt(query.limit) || 3
+    // const page: number = parseInt(query.page) || 1
+
+    const stockOutProducts = await this.productModel
+      .find({
+        stock: 0,
+        productName: new RegExp(query.search, "i"),
+        seller_slug: slug,
+      })
+      .sort({ [query.sortBy]: query.sortType });
+
+    // const sellerProducts = await this.productModel
+    //   .find({ addedBy: "seller", productName: new RegExp(query.search, "i") })
+    //   .sort({ [query.sortBy]: query.sortType });
+
+    const sellerPendingProducts = await this.productModel
+      .find({
+        addedBy: "seller",
+        approvalStatus: "pending",
+        productName: new RegExp(query.search, "i"),
+        seller_slug: slug,
+      })
+      .sort({ [query.sortBy]: query.sortType });
+    return {
+      allProductData,
+      stockOutProducts,
+      // sellerProducts,
+      sellerPendingProducts,
+    };
+  }
+
   async findOne(slug: string) {
     return this.productModel.findOne({ slug });
   }
