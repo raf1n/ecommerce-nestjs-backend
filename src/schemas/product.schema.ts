@@ -47,19 +47,19 @@ export class Product {
   @Prop()
   seoDescription: string;
 
-  @Prop()
+  @Prop({ default: false })
   isTopProduct: boolean;
 
-  @Prop()
+  @Prop({ default: false })
   isNewArrival: boolean;
 
-  @Prop()
+  @Prop({ default: false })
   isBestProduct: boolean;
 
-  @Prop()
+  @Prop({ default: false })
   isFeatured: boolean;
 
-  @Prop()
+  @Prop({ default: false })
   isPopular: boolean;
 
   @Prop()
