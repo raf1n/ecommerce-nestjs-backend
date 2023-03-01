@@ -41,14 +41,14 @@ export class UsersService {
     private jwtService: JwtService // eslint-disable-next-line no-empty-function
   ) {}
   async register(registerUserDto: RegisterUserDto) {
-    const portfolio = await this.userModel.create({
+    const result = await this.userModel.create({
       firstName: registerUserDto.firstName,
       lastName: registerUserDto.lastName,
       email: registerUserDto.email,
       // password: registerUserDto.password,
       userType: registerUserDto.userType,
     });
-    return portfolio;
+    return result;
   }
 
   // async login(loginUserDto: LoginUserDto) {
@@ -151,8 +151,10 @@ export class UsersService {
     return await this.userModel.findOne({ email: email });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(slug: string, updateUserDto: UpdateUserDto) {
+    return this.userModel.findOneAndUpdate({ slug }, updateUserDto, {
+      new: true,
+    });
   }
 
   async updateAddress(
