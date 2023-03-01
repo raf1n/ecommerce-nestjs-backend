@@ -15,7 +15,7 @@ export class CreateMegaMenuCategoryDto {
   serial: number;
 
   @IsArray()
-  sub_cat_list: object[];
+  sub_cat_list: Array<{ label: string; value: string }>;
 
   @IsString()
   status: "active" | "inactive";

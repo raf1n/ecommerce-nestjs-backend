@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { MegaMenuCategoriesService } from './mega_menu_categories.service';
 import { CreateMegaMenuCategoryDto } from './dto/create-mega_menu_category.dto';
 import { UpdateMegaMenuCategoryDto } from './dto/update-mega_menu_category.dto';
+import { SearchSortDto } from 'src/utils/all-queries.dto';
 
 @Controller('mega-menu-categories')
 export class MegaMenuCategoriesController {
@@ -13,22 +14,22 @@ export class MegaMenuCategoriesController {
   }
 
   @Get()
-  findAll() {
-    return this.megaMenuCategoriesService.findAll();
+  findAll(@Query() query: SearchSortDto) {
+    return this.megaMenuCategoriesService.findAll(query);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.megaMenuCategoriesService.findOne(+id);
+  @Get(':slug')
+  findOne(@Param('slug') slug: string) {
+    return this.megaMenuCategoriesService.findOne(slug);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMegaMenuCategoryDto: UpdateMegaMenuCategoryDto) {
-    return this.megaMenuCategoriesService.update(+id, updateMegaMenuCategoryDto);
+  @Patch(':slug')
+  update(@Param('slug') slug: string, @Body() updateMegaMenuCategoryDto: UpdateMegaMenuCategoryDto) {
+    return this.megaMenuCategoriesService.update(slug, updateMegaMenuCategoryDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.megaMenuCategoriesService.remove(+id);
+  @Delete(':slug')
+  remove(@Param('slug') slug: string) {
+    return this.megaMenuCategoriesService.remove(slug);
   }
 }
