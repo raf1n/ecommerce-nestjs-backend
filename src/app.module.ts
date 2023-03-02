@@ -19,6 +19,7 @@ import { AddressesModule } from "./modules/addresses/addresses.module";
 import { CouponModule } from "./modules/coupon/coupon.module";
 import { DashboardModule } from "./modules/dashboard/dashboard.module";
 import { AdvertisementsModule } from "./modules/advertisements/advertisements.module";
+import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_menu_categories.module";
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { AdvertisementsModule } from "./modules/advertisements/advertisements.mo
     CouponModule,
     DashboardModule,
     AdvertisementsModule,
+    MegaMenuCategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
