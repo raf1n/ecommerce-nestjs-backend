@@ -150,6 +150,10 @@ export class UsersService {
   async findOne(email: string) {
     return await this.userModel.findOne({ email: email });
   }
+  
+  async findSingleUser(slug: string) {
+    return await this.userModel.findOne({ slug: slug });
+  }
 
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
