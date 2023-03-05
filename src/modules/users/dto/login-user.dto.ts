@@ -1,25 +1,35 @@
-import { IsInt, isNumber, IsNumber, IsString } from "class-validator"
+import {
+  IsInt,
+  isNumber,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 export class LoginUserDto {
+  @IsOptional()
+  @IsString({ message: "should be string email" })
+  email: string;
 
-    @IsString({ message: 'should be string' })
-    email: string
+  @IsOptional()
+  fullName: string | null;
 
-    @IsString({ message: 'should be string' })
-    fullName: string
+  @IsOptional()
+  @IsString({ message: "should be string token" })
+  token: string;
 
-    @IsString({ message: 'should be string' })
-    token: string
+  @IsOptional()
+  @IsString({ message: "should be string token" })
+  tokenType: "facebook" | "google" | "email";
 
-    @IsString({ message: 'should be string' })
-    tokenType: "facebook" | "google" | "email"
+  @IsOptional()
+  @IsString({ message: "should be string " })
+  avatar: string;
 
-    @IsString({ message: 'should be string' })
-    avatar: string
+  // @IsString({ message: 'should be string' })
+  @IsOptional()
+  role: string;
 
-    // @IsString({ message: 'should be string' })
-    role: string 
-
-    // @IsString({ message: 'should be string' })
-    // userType: string
+  // @IsString({ message: 'should be string' })
+  // userType: string
 }

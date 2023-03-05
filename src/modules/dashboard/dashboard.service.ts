@@ -104,8 +104,6 @@ export class DashboardService {
       reportedCount: reportedCount,
     };
 
-    console.log(wholeRes);
-
     return wholeRes;
   }
 

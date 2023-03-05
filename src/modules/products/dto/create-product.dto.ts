@@ -52,21 +52,30 @@ export class CreateProductDto {
   @IsString()
   seoDescription: string;
 
+  @IsOptional()
   @IsBoolean()
   isTopProduct: boolean;
 
+  @IsOptional()
   @IsBoolean()
   isNewArrival: boolean;
 
+  @IsOptional()
   @IsBoolean()
   isBestProduct: boolean;
 
+  @IsOptional()
   @IsBoolean()
   isFeatured: boolean;
 
+  @IsOptional()
   @IsBoolean()
   isPopular: boolean;
 
   @IsString()
   addedBy: string;
+
+  @IsString()
+  @IsOptional()
+  seller_slug: string;
 }
