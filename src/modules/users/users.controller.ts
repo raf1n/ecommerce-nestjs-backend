@@ -56,6 +56,16 @@ export class UsersController {
     return this.usersService.update(slug, updateUserDto);
   }
 
+  @Get("/private/:slug")
+  findSingleUser(@Param("slug") slug: string) {
+    return this.usersService.findSingleUser(slug);
+  }
+
+  // @Patch(":id")
+  // update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
+  //   return this.usersService.update(+id, updateUserDto);
+  // }
+
   @Delete(":id")
   remove(@Param("id") id: string) {
     return this.usersService.remove(+id);
