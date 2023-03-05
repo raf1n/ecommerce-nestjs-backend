@@ -18,6 +18,7 @@ import { ReporteditemsModule } from "./modules/reporteditems/reporteditems.modul
 import { AddressesModule } from "./modules/addresses/addresses.module";
 import { CouponModule } from "./modules/coupon/coupon.module";
 import { DashboardModule } from "./modules/dashboard/dashboard.module";
+import { SliderModule } from "./modules/slider/slider.module";
 import { AdvertisementsModule } from "./modules/advertisements/advertisements.module";
 import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_menu_categories.module";
 
@@ -40,6 +41,7 @@ import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_me
     AddressesModule,
     CouponModule,
     DashboardModule,
+    SliderModule,
     AdvertisementsModule,
     MegaMenuCategoriesModule,
   ],

@@ -16,12 +16,18 @@ export class MegaMenuCategoriesService {
     private readonly megaCategoriesModel: Model<MegaCategoriesDocument>
   ) {}
 
-  async create(createMegaMenuCategoryDto: CreateMegaMenuCategoryDto): Promise<MegaCategories> {
+  async create(
+    createMegaMenuCategoryDto: CreateMegaMenuCategoryDto
+  ): Promise<MegaCategories> {
     const slug = `mega_${UtilSlug.getUniqueId(
       createMegaMenuCategoryDto.cat_name
     )}`;
     createMegaMenuCategoryDto.slug = slug;
     return await this.megaCategoriesModel.create(createMegaMenuCategoryDto);
+  }
+
+  async findAlltwo(): Promise<MegaCategories[]> {
+    return await this.megaCategoriesModel.find({ status: "active" }).limit(3);
   }
 
   async findAll(query: any): Promise<MegaCategories[]> {
@@ -36,8 +42,11 @@ export class MegaMenuCategoriesService {
     return await this.megaCategoriesModel.findOne({ slug });
   }
 
-  async update(slug: string, updateMegaMenuCategoryDto: UpdateMegaMenuCategoryDto): Promise<MegaCategories> {
-    return  await this.megaCategoriesModel.findOneAndUpdate(
+  async update(
+    slug: string,
+    updateMegaMenuCategoryDto: UpdateMegaMenuCategoryDto
+  ): Promise<MegaCategories> {
+    return await this.megaCategoriesModel.findOneAndUpdate(
       { slug },
       updateMegaMenuCategoryDto,
       {
