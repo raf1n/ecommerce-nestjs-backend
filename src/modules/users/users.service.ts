@@ -92,8 +92,6 @@ export class UsersService {
       } catch {}
     }
 
-    // console.log(`isVerified: ${isVerified}`);
-
     if (isVerified) {
       const { email, fullName, role } = loginUserDto;
 
@@ -156,7 +154,7 @@ export class UsersService {
   async findOne(email: string) {
     return await this.userModel.findOne({ email: email });
   }
-  
+
   async findSingleUser(slug: string) {
     return await this.userModel.findOne({ slug: slug });
   }
