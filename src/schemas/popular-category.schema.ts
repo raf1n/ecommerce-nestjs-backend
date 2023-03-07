@@ -14,6 +14,9 @@ export class PopularCategory {
   @Prop()
   cat_image: string;
 
+  @Prop()
+  cat_slug: string;
+
   // @Prop({ required: true })
   // cat_status: string;
 
