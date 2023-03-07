@@ -1,8 +1,7 @@
-import { User } from "./entities/user.entity";
 import { Injectable } from "@nestjs/common";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
-import { UserDocument } from "src/schemas/user.schema";
+import { User, UserDocument } from "src/schemas/user.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { LoginUserDto } from "./dto/login-user.dto";
@@ -149,23 +148,37 @@ export class UsersService {
     };
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAllCustomers(query: any) {
+    const allUsers = await this.userModel
+      .find({
+        role: "buyer",
+        status: query.status,
+        name: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
+    return allUsers;
   }
 
   async findOne(email: string) {
     return await this.userModel.findOne({ email: email });
   }
-  
+
   async findSingleUser(slug: string) {
     return await this.userModel.findOne({ slug: slug });
   }
 
-  async update(slug: string, updateUserDto: UpdateUserDto) {
+  async update(slug: string, updateUserDto: UpdateUserDto): Promise<User> {
     console.log(updateUserDto);
-    return await this.userModel.findOneAndUpdate({ slug }, updateUserDto, {
-      new: true,
-    });
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { slug: slug },
+      updateUserDto,
+      {
+        new: true,
+      }
+    );
+    console.log(updatedUser);
+
+    return updatedUser;
   }
 
   async updateAddress(
@@ -193,7 +206,7 @@ export class UsersService {
     return editAddress;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async delete(slug: string): Promise<User> {
+    return await this.userModel.findOneAndDelete({ slug });
   }
 }
