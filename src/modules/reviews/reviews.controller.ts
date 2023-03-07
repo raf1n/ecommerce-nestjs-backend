@@ -34,10 +34,22 @@ export class ReviewsController {
     console.log(query);
     return this.reviewsService.findAllForAdmin(query);
   }
+
+  // reviews of seller products
+
+  @Get("/findAllForSeller/:seller_slug")
+  findAllForSeller(
+    @Query() query: SearchSortDto,
+    @Param("seller_slug") seller_slug: string
+  ) {
+    console.log(query);
+    return this.reviewsService.findAllForSeller(query, seller_slug);
+  }
+
   // ---------------------------------
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.reviewsService.findOne(+id);
+  @Get(":slug")
+  findOne(@Param("slug") slug: string) {
+    return this.reviewsService.findSingleReviewForSeller(slug);
   }
 
   @Patch(":slug")

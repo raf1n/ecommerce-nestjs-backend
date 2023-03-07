@@ -56,6 +56,47 @@ export class ReviewsService {
       ])
       .sort({ [query.sortBy]: query.sortType });
   }
+
+  // seller
+  async findAllForSeller(query: any, seller_slug: string): Promise<Review[]> {
+    let match_value = new RegExp(query.search, "i");
+    return await this.reviewModel
+      .aggregate([
+        {
+          $lookup: {
+            from: "products",
+            localField: "product_slug",
+            foreignField: "slug",
+            as: "reviewProducts",
+          },
+        },
+        {
+          $unwind: "$reviewProducts",
+        },
+        {
+          $match: {
+            "reviewProducts.seller_slug": seller_slug,
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "user_slug",
+            foreignField: "slug",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$user",
+        },
+        {
+          $match: {
+            "user.fullName": match_value,
+          },
+        },
+      ])
+      .sort({ [query.sortBy]: query.sortType });
+  }
   // ----------------------------------------------
   async findAll(query: { user_slug: string }) {
     return await this.reviewModel.aggregate([
@@ -74,9 +115,44 @@ export class ReviewsService {
     ]);
   }
   // ----------------------------------------------
-  findOne(id: number) {
-    return `This action returns a #${id} review findOne`;
+  findOne(slug: string) {
+    return this.reviewModel.findOne({ slug });
   }
+
+  async findSingleReviewForSeller(slug: string): Promise<Review[]> {
+    const result = await this.reviewModel.aggregate([
+      {
+        $match: {
+          slug: slug,
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_slug",
+          foreignField: "slug",
+          as: "reviewProducts",
+        },
+      },
+      {
+        $unwind: "$reviewProducts",
+      },
+
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+    ]);
+    return result[0];
+  }
+
   // ----------------------------------------------
 
   // update(id: number, updateReviewDto: UpdateReviewDto) {
