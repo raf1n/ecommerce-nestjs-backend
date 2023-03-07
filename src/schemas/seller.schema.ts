@@ -5,26 +5,29 @@ export type SellerDocument = Seller & Document;
 
 @Schema({ timestamps: true })
 export class Seller {
-  @Prop({ required: true })
+  @Prop()
   slug: string;
 
-  @Prop({ required: true })
+  @Prop()
   email: string;
 
-  @Prop({ required: true })
+  @Prop()
   phone: number;
 
-  @Prop({ required: true })
+  @Prop()
   shop_name: string;
 
-  @Prop({ required: true })
+  @Prop()
   address: string;
 
-  @Prop({ required: true })
-  imageURL_logo: string;
+  @Prop()
+  status: string;
 
-  @Prop({ required: true })
-  imageURL_cover: string;
+  @Prop()
+  logo: string;
+
+  @Prop()
+  cover: string;
 }
 
 export const SellerSchema = SchemaFactory.createForClass(Seller);

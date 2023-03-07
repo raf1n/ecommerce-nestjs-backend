@@ -21,6 +21,7 @@ import { DashboardModule } from "./modules/dashboard/dashboard.module";
 import { SliderModule } from "./modules/slider/slider.module";
 import { AdvertisementsModule } from "./modules/advertisements/advertisements.module";
 import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_menu_categories.module";
+import { SellerModule } from "./modules/seller/seller.module";
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_me
     SliderModule,
     AdvertisementsModule,
     MegaMenuCategoriesModule,
+    SellerModule,
   ],
   controllers: [AppController],
   providers: [AppService],
