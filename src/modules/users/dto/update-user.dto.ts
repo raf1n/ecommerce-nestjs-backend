@@ -4,7 +4,5 @@ import { LoginUserDto } from "./login-user.dto";
 import { IsOptional, IsString } from "class-validator";
 
 export class UpdateUserDto extends PartialType(LoginUserDto) {
-  @IsOptional()
-  @IsString()
-  status: string;
+  
 }

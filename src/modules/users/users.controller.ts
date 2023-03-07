@@ -52,7 +52,7 @@ export class UsersController {
     return this.usersService.findOne(email);
   }
 
-  @Patch(":slug")
+  @Patch("/edit-status/:slug")
   update(@Param("slug") slug: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(slug, updateUserDto);
   }

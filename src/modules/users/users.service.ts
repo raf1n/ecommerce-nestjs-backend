@@ -149,13 +149,15 @@ export class UsersService {
   }
 
   async findAllCustomers(query: any) {
+    console.log(query);
     const allUsers = await this.userModel
       .find({
         role: "buyer",
         status: query.status,
-        name: new RegExp(query.search, "i"),
+        fullName: new RegExp(query.search, "i"),
       })
       .sort({ [query.sortBy]: query.sortType });
+      console.log(allUsers);
     return allUsers;
   }
 

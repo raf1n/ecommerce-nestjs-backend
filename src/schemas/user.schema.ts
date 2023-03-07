@@ -52,6 +52,9 @@ export class User {
 
   @Prop({ slug: "title", unique: true })
   slug: string;
+
+  @Prop()
+  status: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
