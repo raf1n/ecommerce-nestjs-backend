@@ -88,4 +88,9 @@ export class ProductsController {
   getProductsInventory() {
     return this.productsService.getProductsInventory();
   }
+
+  @Get('/get-inventory/:slug')
+  getSingleProductInventory(@Param("slug") slug: string) {
+    return this.productsService.getSingleProductsInventory(slug);
+  }
 }

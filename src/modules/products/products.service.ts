@@ -272,11 +272,40 @@ export class ProductsService {
         $match: {
           productName: {
             $regex: "(?i)" + "" + "(?-i)",
-          }
-        }
-      }
+          },
+        },
+      },
     ]);
 
     return result;
+  }
+
+  async getSingleProductsInventory(slug: string) {
+    const result = await this.productModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: "(?i)" + slug + "(?-i)",
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "inventories",
+          localField: "slug",
+          foreignField: "product_slug",
+          as: "stockInData",
+          pipeline: [
+            {
+              $match: {
+                type: "stockIn",
+              },
+            },
+          ],
+        },
+      },
+    ]);
+
+    return result[0];
   }
 }
