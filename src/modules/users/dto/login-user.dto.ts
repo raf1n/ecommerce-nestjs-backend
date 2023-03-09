@@ -23,12 +23,16 @@ export class LoginUserDto {
   tokenType: "facebook" | "google" | "email";
 
   @IsOptional()
-  @IsString({ message: "should be string " })
+  @IsString({ message: "should be string" })
   avatar: string;
 
   // @IsString({ message: 'should be string' })
   @IsOptional()
   role: string;
+
+  @IsOptional()
+  @IsString()
+  status: "active" | "inactive";
 
   // @IsString({ message: 'should be string' })
   // userType: string
