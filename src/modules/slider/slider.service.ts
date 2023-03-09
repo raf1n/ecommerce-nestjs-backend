@@ -59,9 +59,7 @@ export class SliderService {
   // }
 
   async findOne(slug: string) {
-    console.log(slug);
     const sliderFind = await this.sliderModel.findOne({ slug: slug });
-    console.log(sliderFind);
     return sliderFind;
   }
 

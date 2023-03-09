@@ -19,7 +19,6 @@ export class CouponController {
 
   @Post()
   create(@Body() createCouponDto: CreateCouponDto) {
-    console.log(createCouponDto);
     return this.couponService.create(createCouponDto);
   }
 
@@ -28,7 +27,6 @@ export class CouponController {
     @Query() query: SearchSortDto,
     @Request() req: Request
   ) {
-    console.log(query);
     return await this.couponService.findAllAdminCoupons(query);
   }
 

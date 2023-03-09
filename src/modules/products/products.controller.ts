@@ -41,7 +41,6 @@ export class ProductsController {
     },
     @Request() req: Request
   ) {
-    console.log("con", query);
     return this.productsService.findFilteredProducts(query);
   }
 

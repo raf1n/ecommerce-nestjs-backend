@@ -15,7 +15,7 @@ import { query } from "express";
 
 @Controller("cart")
 export class CartController {
-  constructor(private readonly cartService: CartService) { }
+  constructor(private readonly cartService: CartService) {}
 
   @Post()
   create(@Body() createCartDto: CreateCartDto) {
@@ -37,7 +37,6 @@ export class CartController {
     @Query() query: { cart_slug: string },
     @Body() updateCartDto: UpdateCartDto
   ) {
-    console.log(updateCartDto);
     return this.cartService.update(query.cart_slug, updateCartDto);
   }
 

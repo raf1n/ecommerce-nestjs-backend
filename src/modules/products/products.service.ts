@@ -77,8 +77,6 @@ export class ProductsService {
         : {}
     );
 
-    console.log({ categoryFilter, brandFilter });
-
     const filteredProducts = await this.productModel.aggregate([
       {
         $match: {

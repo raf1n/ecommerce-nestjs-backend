@@ -21,7 +21,7 @@ export class SubCategoriesService {
   // }
 
   async findAllAdminSubCategories(query: any): Promise<SubCategoriesService[]> {
-    const xx = await this.subCategoryModel
+    const result = await this.subCategoryModel
       .aggregate([
         {
           $match: {
@@ -72,8 +72,7 @@ export class SubCategoriesService {
       ])
       .sort({ [query.sortBy]: query.sortType });
 
-    console.log(xx);
-    return xx;
+    return result;
     // return await this.subCategoryModel.find();
   }
   async findAllSubCategories(): Promise<any> {
@@ -94,9 +93,8 @@ export class SubCategoriesService {
   // }
 
   async findOne(slug: string) {
-    console.log(slug);
     const subCategoryFind = await this.subCategoryModel.findOne({ slug: slug });
-    console.log(subCategoryFind);
+
     return subCategoryFind;
   }
 

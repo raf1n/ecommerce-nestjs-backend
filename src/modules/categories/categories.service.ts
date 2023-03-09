@@ -30,9 +30,8 @@ export class CategoriesService {
   }
 
   async findOne(slug: string) {
-    console.log(slug);
     const categoryFind = await this.categoryModel.findOne({ cat_slug: slug });
-    console.log(categoryFind);
+
     return categoryFind;
   }
   async create(createCategoryDto: CreateCategoryDto): Promise<object> {

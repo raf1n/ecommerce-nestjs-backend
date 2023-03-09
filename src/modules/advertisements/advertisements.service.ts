@@ -35,8 +35,6 @@ export class AdvertisementsService {
   }
 
   async update(slug: string, updateAdvertisementDto: UpdateAdvertisementDto) {
-    console.log(slug);
-    console.log(updateAdvertisementDto);
     return await this.advertisementModel.findOneAndUpdate(
       { slug },
       updateAdvertisementDto,

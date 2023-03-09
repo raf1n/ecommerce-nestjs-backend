@@ -41,7 +41,7 @@ export class OrdersService {
       user_slug: slug,
       order_status: new RegExp(order_status, "i"),
     });
-    console.log(result);
+
     return {
       data: result,
       message: "fetched Successfully",
@@ -57,7 +57,6 @@ export class OrdersService {
 
   async findAllOrdersAdmin(query: any) {
     let match_value = new RegExp(query.search, "i");
-    console.log(query);
 
     const allOrdersData = await this.orderModel.aggregate([
       {

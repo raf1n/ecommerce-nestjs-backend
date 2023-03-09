@@ -19,7 +19,6 @@ export class CategoriesController {
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
-    console.log(createCategoryDto);
     return this.categoriesService.create(createCategoryDto);
   }
   // @Get()
@@ -37,13 +36,11 @@ export class CategoriesController {
     @Query() query: SearchSortDto,
     @Request() req: Request
   ) {
-    console.log(query);
     return await this.categoriesService.findAllAdminCategories(query);
   }
 
   @Get(":slug")
   async find(@Param("slug") slug: string) {
-    console.log(slug);
     return this.categoriesService.findOne(slug);
   }
 

@@ -18,7 +18,6 @@ export class AddressesController {
 
   @Post()
   create(@Body() createAddressDto: CreateAddressDto) {
-    console.log(createAddressDto);
     return this.addressesService.create(createAddressDto);
   }
 

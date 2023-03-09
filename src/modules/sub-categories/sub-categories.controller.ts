@@ -32,7 +32,6 @@ export class SubCategoriesController {
     @Query() query: SearchSortDto,
     @Request() req: Request
   ) {
-    console.log(query);
     return await this.subCategoriesService.findAllAdminSubCategories(query);
   }
 

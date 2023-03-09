@@ -33,7 +33,6 @@ export class SliderController {
     @Query() query: SearchSortDto,
     @Request() req: Request
   ) {
-    console.log(query);
     return await this.sliderService.findAllAdminSliders(query);
   }
 
@@ -44,7 +43,6 @@ export class SliderController {
 
   @Get(":slug")
   async find(@Param("slug") slug: string) {
-    console.log(slug);
     return this.sliderService.findOne(slug);
   }
 
