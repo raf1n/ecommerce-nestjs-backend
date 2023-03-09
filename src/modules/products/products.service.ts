@@ -265,4 +265,18 @@ export class ProductsService {
   async delete(slug: string): Promise<Product> {
     return await this.productModel.findOneAndDelete({ slug });
   }
+
+  async getProductsInventory(): Promise<Product[]> {
+    const result = await this.productModel.aggregate([
+      {
+        $match: {
+          productName: {
+            $regex: "(?i)" + "" + "(?-i)",
+          }
+        }
+      }
+    ]);
+
+    return result;
+  }
 }

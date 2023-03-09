@@ -1,3 +1,4 @@
+import { SearchSortDto } from 'src/utils/all-queries.dto';
 import {
   Controller,
   Get,
@@ -41,9 +42,9 @@ export class UsersController {
     );
   }
 
-  @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Get("/customers")
+  findAllCustomers(@Query() queries: SearchSortDto) {
+    return this.usersService.findAllCustomers(queries);
   }
 
   @Get(":email")
@@ -51,7 +52,7 @@ export class UsersController {
     return this.usersService.findOne(email);
   }
 
-  @Patch(":slug")
+  @Patch("/edit-status/:slug")
   update(@Param("slug") slug: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(slug, updateUserDto);
   }
@@ -66,8 +67,8 @@ export class UsersController {
   //   return this.usersService.update(+id, updateUserDto);
   // }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.usersService.remove(+id);
+  @Delete(":slug")
+  delete(@Param("slug") slug: string) {
+    return this.usersService.delete(slug);
   }
 }

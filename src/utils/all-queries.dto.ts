@@ -15,6 +15,10 @@ export class SearchSortDto {
 
   @IsString()
   @IsOptional()
+  status: string;
+
+  @IsString()
+  @IsOptional()
   order_status: string;
 
   @IsNumber()
