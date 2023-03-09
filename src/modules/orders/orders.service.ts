@@ -6,12 +6,15 @@ import { UpdateOrderDto } from "./dto/update-order.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { UtilSlug } from "src/utils/UtilSlug";
+import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectModel(Order.name)
-    private readonly orderModel: Model<OrderDocument>
+    private readonly orderModel: Model<OrderDocument>,
+    @InjectModel(Inventory.name)
+    private readonly inventoryModel: Model<InventoryDocument>
   ) {}
   // ------------------post order--------------------- //
   async create(createOrderDto: CreateOrderDto): Promise<Object> {
@@ -19,6 +22,19 @@ export class OrdersService {
     createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
 
     const result = await new this.orderModel(createOrderDto).save();
+
+    const stockProducts = createOrderDto.product_list.map(
+      (data: { slug: string; stock: number; type: "stockOut" }) => {
+        let p = {
+          product_slug: data.slug,
+          quantity: data.stock,
+          type: "stockOut",
+        };
+        return p;
+      }
+    );
+
+    this.inventoryModel.create(stockProducts);
 
     if (result) {
       return {

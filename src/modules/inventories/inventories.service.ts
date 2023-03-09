@@ -16,18 +16,20 @@ export class InventoriesService {
   }
 
   findAll() {
-    return `This action returns all inventories`;
+    return this.inventoryModel.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} inventory`;
+  findOne(slug: string) {
+    return this.inventoryModel.findOne({ slug });
   }
 
-  update(id: number, updateInventoryDto: UpdateInventoryDto) {
-    return `This action updates a #${id} inventory`;
+  update(slug: string, updateInventoryDto: UpdateInventoryDto) {
+    return this.inventoryModel.findOneAndUpdate({ slug }, updateInventoryDto, {
+      new: true,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} inventory`;
+  remove(slug: string) {
+    return this.inventoryModel.deleteOne({ slug });
   }
 }
