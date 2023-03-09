@@ -63,6 +63,83 @@ export class ReporteditemsService {
       .sort({ [query.sortBy]: query.sortType });
   }
 
+  async findAllForSeller(
+    query: any,
+    seller_slug: string
+  ): Promise<ReportedItem[]> {
+    let match_value = new RegExp(query.search, "i");
+    return await this.reportedItemModel
+      .aggregate([
+        {
+          $lookup: {
+            from: "products",
+            localField: "product_slug",
+            foreignField: "slug",
+            as: "reportedProducts",
+          },
+        },
+        {
+          $unwind: "$reportedProducts",
+        },
+        {
+          $match: {
+            "reportedProducts.seller_slug": seller_slug,
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "user_slug",
+            foreignField: "slug",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$user",
+        },
+        {
+          $match: {
+            "user.fullName": match_value,
+          },
+        },
+      ])
+      .sort({ [query.sortBy]: query.sortType });
+  }
+
+  async findSingleReportForSeller(slug: string): Promise<ReportedItem[]> {
+    const result = await this.reportedItemModel.aggregate([
+      {
+        $match: {
+          slug: slug,
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_slug",
+          foreignField: "slug",
+          as: "reportedProducts",
+        },
+      },
+      {
+        $unwind: "$reportedProducts",
+      },
+
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+    ]);
+    return result[0];
+  }
+
   // findOne(id: number) {
   //   return `This action returns a #${id} reporteditem`;
   // }

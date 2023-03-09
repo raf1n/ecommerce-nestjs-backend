@@ -34,6 +34,20 @@ export class ReporteditemsController {
     return this.reporteditemsService.findAllForAdmin(query);
   }
 
+  @Get("/findAllForSeller/:seller_slug")
+  findAllForSeller(
+    @Query() query: SearchSortDto,
+    @Param("seller_slug") seller_slug: string
+  ) {
+    console.log(seller_slug);
+    return this.reporteditemsService.findAllForSeller(query, seller_slug);
+  }
+
+  // ---------------------------------
+  @Get(":slug")
+  findOne(@Param("slug") slug: string) {
+    return this.reporteditemsService.findSingleReportForSeller(slug);
+  }
   // @Get(":id")
   // findOne(@Param("id") id: string) {
   //   return this.reporteditemsService.findOne(+id);
