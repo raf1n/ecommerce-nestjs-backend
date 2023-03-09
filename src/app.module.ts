@@ -22,6 +22,7 @@ import { SliderModule } from "./modules/slider/slider.module";
 import { AdvertisementsModule } from "./modules/advertisements/advertisements.module";
 import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_menu_categories.module";
 import { FeaturedCategoriesModule } from "./modules/featured_categories/featured_categories.module";
+import { InventoriesModule } from "./modules/inventories/inventories.module";
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { FeaturedCategoriesModule } from "./modules/featured_categories/featured
     AdvertisementsModule,
     MegaMenuCategoriesModule,
     FeaturedCategoriesModule,
+    InventoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
