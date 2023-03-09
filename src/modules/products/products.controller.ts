@@ -93,4 +93,9 @@ export class ProductsController {
   getSellerProductsInventory(@Param("slug") seller_slug: string) {
     return this.productsService.getSellerProductsInventory(seller_slug);
   }
+
+  @Get("/get-inventory/:slug")
+  getSingleProductInventory(@Param("slug") slug: string) {
+    return this.productsService.getSingleProductsInventory(slug);
+  }
 }
