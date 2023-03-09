@@ -84,8 +84,13 @@ export class ProductsController {
     return this.productsService.delete(slug);
   }
 
-  @Get('/admin/get-inventories')
+  @Get("/admin/get-inventories")
   getProductsInventory() {
     return this.productsService.getProductsInventory();
+  }
+
+  @Get("/seller/get-inventories/:slug")
+  getSellerProductsInventory(@Param("slug") seller_slug: string) {
+    return this.productsService.getSellerProductsInventory(seller_slug);
   }
 }

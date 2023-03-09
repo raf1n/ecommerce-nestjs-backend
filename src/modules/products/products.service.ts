@@ -272,9 +272,24 @@ export class ProductsService {
         $match: {
           productName: {
             $regex: "(?i)" + "" + "(?-i)",
-          }
-        }
-      }
+          },
+        },
+      },
+    ]);
+
+    return result;
+  }
+
+  async getSellerProductsInventory(seller_slug: string): Promise<Product[]> {
+    const result = await this.productModel.aggregate([
+      {
+        $match: {
+          seller_slug: seller_slug,
+          productName: {
+            $regex: "(?i)" + "" + "(?-i)",
+          },
+        },
+      },
     ]);
 
     return result;
