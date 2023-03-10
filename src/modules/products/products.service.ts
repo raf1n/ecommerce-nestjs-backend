@@ -267,12 +267,41 @@ export class ProductsService {
   }
 
   async getProductsInventory(): Promise<Product[]> {
+    var d = new Date();
+    d.setMonth(d.getMonth() - 1);
+
     const result = await this.productModel.aggregate([
       {
         $match: {
           productName: {
             $regex: "(?i)" + "" + "(?-i)",
           },
+        },
+      },
+      {
+        $lookup: {
+          from: "inventories",
+          localField: "slug",
+          foreignField: "product_slug",
+          as: "stockData",
+          pipeline: [
+            {
+              $match: {
+                createdAt: {
+                  $gte: d,
+                },
+              },
+            },
+            {
+              $group: {
+                _id: "$type",
+                totalCount: {
+                  $sum: "$quantity",
+                },
+                all_data: { $addToSet: "$$ROOT" },
+              },
+            },
+          ],
         },
       },
     ]);

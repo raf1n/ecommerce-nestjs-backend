@@ -1,3 +1,4 @@
+import { UtilSlug } from "./../../utils/UtilSlug";
 import { OrderDocument } from "./../../schemas/order.schema";
 import { Injectable } from "@nestjs/common";
 import { Order } from "src/schemas/order.schema";
@@ -5,7 +6,6 @@ import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { UtilSlug } from "src/utils/UtilSlug";
 import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 
@@ -24,40 +24,65 @@ export class OrdersService {
     const slug = `order_${createOrderDto.user_slug}`;
     createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
 
-    const result = await new this.orderModel(createOrderDto).save();
+    const updateProductStock = async (data) => {
+      await this.productModel.findOneAndUpdate(
+        { slug: data.slug },
+        {
+          $inc: {
+            stock: -data.quantity,
+          },
+        }
+      );
+    };
 
-    const stockProducts = createOrderDto.product_list.map(
-      (data: { slug: string; quantity: number; type: "stockOut" }) => {
-        let p = {
-          product_slug: data.slug,
-          quantity: data.quantity,
-          type: "stockOut",
-        };
+    let stockProducts = [];
 
-        this.productModel.findOneAndUpdate(
-          { slug: data.slug },
-          {
-            $inc: {
-              stock: -data.quantity,
-            },
-          }
-        );
-        return p;
-      }
-    );
+    for (let product of createOrderDto.product_list) {
+      let p = {
+        slug: UtilSlug.getUniqueId("stock"),
+        //@ts-ignore
+        product_slug: product.slug,
+        //@ts-ignore
+        quantity: product.quantity,
+        type: "stockOut",
+      };
 
-    this.inventoryModel.create(stockProducts);
+      stockProducts.push(p);
 
-    // const stockUpdate = createOrderDto.product_list.map(
-    //   (data: { slug: string; stock: number }) => {
-    //     console.log(data);
+      await updateProductStock(product);
+    }
+
+    // const stockProducts = createOrderDto.product_list.map(
+    //   (data: { slug: string; quantity: number; type: "stockOut" }) => {
+    //     let p = {
+    //       slug: UtilSlug.getUniqueId('stock'),
+    //       product_slug: data.slug,
+    //       quantity: data.quantity,
+    //       type: "stockOut",
+    //     };
+
+    //     console.log(p)
+
+    //     this.productModel.findOneAndUpdate(
+    //       { slug: data.slug },
+    //       {
+    //         $inc: {
+    //           stock: -data.quantity,
+    //         },
+    //       }
+    //     );
+    //     return p;
     //   }
     // );
+
+    await this.inventoryModel.create(stockProducts);
+
+    const result = await new this.orderModel(createOrderDto).save();
 
     if (result) {
       return {
         data: result,
-        message: "Order successfull ",
+        message: "Order successful ",
       };
     } else {
       return {
