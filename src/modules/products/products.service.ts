@@ -1,3 +1,4 @@
+import { query } from "express";
 // import { serviceHandler } from "./../../utils/ServiceHandler";
 import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
@@ -6,6 +7,7 @@ import { UpdateProductDto } from "./dto/update-product.dto";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
 import { UtilSlug } from "./../../utils/UtilSlug";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Injectable()
 export class ProductsService {
@@ -266,7 +268,8 @@ export class ProductsService {
     return await this.productModel.findOneAndDelete({ slug });
   }
 
-  async getProductsInventory(): Promise<Product[]> {
+  async getProductsInventory(query: SearchSortDto): Promise<Product[]> {
+    // to get stock data since last month
     var d = new Date();
     d.setMonth(d.getMonth() - 1);
 
@@ -274,8 +277,13 @@ export class ProductsService {
       {
         $match: {
           productName: {
-            $regex: "(?i)" + "" + "(?-i)",
+            $regex: "(?i)" + query.search + "(?-i)",
           },
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
         },
       },
       {
@@ -324,15 +332,27 @@ export class ProductsService {
     return result;
   }
 
-  async getSingleProductsInventory(slug: string) {
+  // .find({
+  //   product_slug: slug,
+  //   quantity: new RegExp(query.search, "i"),
+  //   type: "stockIn",
+  // })
+  // .sort({ [query.sortBy]: query.sortType });
+
+  async getSingleProductsInventory(slug: string, query: any) {
+    console.log(query);
     const result = await this.productModel.aggregate([
       {
         $match: {
           slug: {
             $regex: "(?i)" + slug + "(?-i)",
           },
+          // quantity: {
+          //   $regex: "(?i)" + query.search + "(?-i)",
+          // },
         },
       },
+
       {
         $lookup: {
           from: "inventories",
@@ -345,6 +365,9 @@ export class ProductsService {
                 type: "stockIn",
               },
             },
+            // {
+            //   $sort: { [query.sortBy]: query.sortType === "asc" ? 1 : -1 },
+            // },
           ],
         },
       },
