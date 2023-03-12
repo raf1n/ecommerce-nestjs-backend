@@ -90,8 +90,8 @@ export class ProductsController {
   }
 
   @Get("/seller/get-inventories/:slug")
-  getSellerProductsInventory(@Param("slug") seller_slug: string) {
-    return this.productsService.getSellerProductsInventory(seller_slug);
+  getSellerProductsInventory(@Param("slug") seller_slug: string,@Query() query: SearchSortDto) {
+    return this.productsService.getSellerProductsInventory(seller_slug,query);
   }
 
   @Get("/get-inventory/:slug")

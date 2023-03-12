@@ -317,14 +317,48 @@ export class ProductsService {
     return result;
   }
 
-  async getSellerProductsInventory(seller_slug: string): Promise<Product[]> {
+  async getSellerProductsInventory(seller_slug: string,query: SearchSortDto): Promise<Product[]> {
+     // to get stock data since last month
+     var d = new Date();
+     d.setMonth(d.getMonth() - 1);
     const result = await this.productModel.aggregate([
       {
         $match: {
           seller_slug: seller_slug,
           productName: {
-            $regex: "(?i)" + "" + "(?-i)",
+            $regex: "(?i)" + query.search + "(?-i)",
           },
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
+        },
+      },
+      {
+        $lookup: {
+          from: "inventories",
+          localField: "slug",
+          foreignField: "product_slug",
+          as: "stockData",
+          pipeline: [
+            {
+              $match: {
+                createdAt: {
+                  $gte: d,
+                },
+              },
+            },
+            {
+              $group: {
+                _id: "$type",
+                totalCount: {
+                  $sum: "$quantity",
+                },
+                all_data: { $addToSet: "$$ROOT" },
+              },
+            },
+          ],
         },
       },
     ]);
