@@ -23,6 +23,7 @@ import { AdvertisementsModule } from "./modules/advertisements/advertisements.mo
 import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_menu_categories.module";
 import { FeaturedCategoriesModule } from "./modules/featured_categories/featured_categories.module";
 import { InventoriesModule } from "./modules/inventories/inventories.module";
+import { SellerModule } from "./modules/seller/seller.module";
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { InventoriesModule } from "./modules/inventories/inventories.module";
     MegaMenuCategoriesModule,
     FeaturedCategoriesModule,
     InventoriesModule,
+    SellerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,5 @@
-import { SearchSortDto } from 'src/utils/all-queries.dto';
+import { SellerApplicationDto } from "./dto/seller-application.dto";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 import {
   Controller,
   Get,
@@ -31,6 +32,12 @@ export class UsersController {
     return await this.usersService.login(loginUserDto);
   }
 
+  @Post("/seller_apply")
+  async Seller_apply(@Body() sellerApplicationDto: SellerApplicationDto) {
+    console.log("tyryrty", sellerApplicationDto);
+    return await this.usersService.seller_apply(sellerApplicationDto);
+  }
+
   @Patch("/update-profile-info")
   async updateAddress(
     @Query() query: { email: string },
@@ -45,6 +52,10 @@ export class UsersController {
   @Get("/customers")
   findAllCustomers(@Query() queries: SearchSortDto) {
     return this.usersService.findAllCustomers(queries);
+  }
+  @Get("/sellers")
+  findAllSellers(@Query() queries: SearchSortDto) {
+    return this.usersService.findAllSellers(queries);
   }
 
   @Get(":email")

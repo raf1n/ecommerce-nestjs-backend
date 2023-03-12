@@ -24,7 +24,7 @@ export class User {
   @Prop()
   avatar: string;
 
-  @Prop({ required: true })
+  @Prop()
   email: string;
 
   @Prop({
@@ -43,18 +43,36 @@ export class User {
       address: String;
     };
   };
-
-  @Prop({ required: true })
+  @Prop({
+    type: {
+      shop_name: String,
+      shop_address: String,
+      shop_logo: String,
+      shop_cover: String,
+    },
+  })
+  shop: {
+    type: {
+      shop_name: string;
+      shop_address: string;
+      shop_logo: string;
+      shop_cover: string;
+    };
+  };
+  @Prop()
   tokenType: string;
 
-  @Prop({ required: true })
+  @Prop()
   role: string;
 
-  @Prop({ slug: "title", unique: true })
+  @Prop({ unique: true })
   slug: string;
 
   @Prop()
   status: string;
+
+  @Prop()
+  user_email: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
