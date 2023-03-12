@@ -9,6 +9,9 @@ export class Seller {
   slug: string;
 
   @Prop()
+  user_slug: string;
+
+  @Prop()
   email: string;
 
   @Prop()

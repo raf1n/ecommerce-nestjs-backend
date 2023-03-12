@@ -4,6 +4,9 @@ export class CreateSellerDto {
   @IsString()
   email: string;
 
+  @IsString()
+  user_slug: string;
+
   @IsNumber()
   phone: number;
 
