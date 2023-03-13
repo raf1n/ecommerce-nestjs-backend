@@ -24,6 +24,8 @@ import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_me
 import { FeaturedCategoriesModule } from "./modules/featured_categories/featured_categories.module";
 import { InventoriesModule } from "./modules/inventories/inventories.module";
 import { SellerModule } from "./modules/seller/seller.module";
+import { WithdrawsModule } from "./modules/withdraws/withdraws.module";
+import { WithdrawMethodsModule } from "./modules/withdraw_methods/withdraw_methods.module";
 
 @Module({
   imports: [
@@ -50,6 +52,8 @@ import { SellerModule } from "./modules/seller/seller.module";
     FeaturedCategoriesModule,
     InventoriesModule,
     SellerModule,
+    WithdrawsModule,
+    WithdrawMethodsModule
   ],
   controllers: [AppController],
   providers: [AppService],
