@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from "@nestjs/common";
 import { FlashSaleService } from "./flash_sale.service";
 import { CreateFlashSaleDto } from "./dto/create-flash_sale.dto";
 import { UpdateFlashSaleDto } from "./dto/update-flash_sale.dto";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Controller("flash-sale")
 export class FlashSaleController {
@@ -21,8 +23,8 @@ export class FlashSaleController {
   }
 
   @Get()
-  findAll() {
-    return this.flashSaleService.findAll();
+  findAll(@Query() query: SearchSortDto) {
+    return this.flashSaleService.findAll(query);
   }
 
   @Get(":slug")
