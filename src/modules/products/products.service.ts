@@ -317,10 +317,13 @@ export class ProductsService {
     return result;
   }
 
-  async getSellerProductsInventory(seller_slug: string,query: SearchSortDto): Promise<Product[]> {
-     // to get stock data since last month
-     var d = new Date();
-     d.setMonth(d.getMonth() - 1);
+  async getSellerProductsInventory(
+    seller_slug: string,
+    query: SearchSortDto
+  ): Promise<Product[]> {
+    // to get stock data since last month
+    var d = new Date();
+    d.setMonth(d.getMonth() - 1);
     const result = await this.productModel.aggregate([
       {
         $match: {
