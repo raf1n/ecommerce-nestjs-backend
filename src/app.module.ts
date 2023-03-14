@@ -24,6 +24,7 @@ import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_me
 import { FeaturedCategoriesModule } from "./modules/featured_categories/featured_categories.module";
 import { InventoriesModule } from "./modules/inventories/inventories.module";
 import { SellerModule } from "./modules/seller/seller.module";
+import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
 
 @Module({
   imports: [
@@ -50,6 +51,7 @@ import { SellerModule } from "./modules/seller/seller.module";
     FeaturedCategoriesModule,
     InventoriesModule,
     SellerModule,
+    FlashSaleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
