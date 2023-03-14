@@ -4,12 +4,14 @@ import {
   Post,
   Body,
   Patch,
+  Query,
   Param,
   Delete,
 } from "@nestjs/common";
 import { WithdrawMethodsService } from "./withdraw_methods.service";
 import { CreateWithdrawMethodDto } from "./dto/create-withdraw_method.dto";
 import { UpdateWithdrawMethodDto } from "./dto/update-withdraw_method.dto";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Controller("withdraw-methods")
 export class WithdrawMethodsController {
@@ -23,8 +25,8 @@ export class WithdrawMethodsController {
   }
 
   @Get()
-  findAll() {
-    return this.withdrawMethodsService.findAll();
+  findAll(@Query() queries: SearchSortDto) {
+    return this.withdrawMethodsService.findAll(queries);
   }
 
   @Get(":id")
@@ -40,8 +42,8 @@ export class WithdrawMethodsController {
     return this.withdrawMethodsService.update(slug, updateWithdrawMethodDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.withdrawMethodsService.remove(+id);
+  @Delete(":slug")
+  remove(@Param("slug") slug: string) {
+    return this.withdrawMethodsService.remove(slug);
   }
 }

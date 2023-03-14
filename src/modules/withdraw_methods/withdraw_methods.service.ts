@@ -21,8 +21,10 @@ export class WithdrawMethodsService {
     return await this.withdrawMethodModel.create(createWithdrawDto);
   }
 
-  async findAll() {
-    return await this.withdrawMethodModel.find({});
+  async findAll(query: any) {
+    return await this.withdrawMethodModel
+      .find({ name: new RegExp(query.search, "i") })
+      .sort({ [query.sortBy]: query.sortType });
   }
 
   findOne(id: number) {
@@ -37,7 +39,7 @@ export class WithdrawMethodsService {
     );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} withdrawMethod`;
+  async remove(slug: string) {
+    return await this.withdrawMethodModel.findOneAndRemove({ slug });
   }
 }
