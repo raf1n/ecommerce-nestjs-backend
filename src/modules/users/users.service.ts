@@ -161,7 +161,7 @@ export class UsersService {
     return allUsers;
   }
   async findAllSellers(query: any) {
-    console.log(query);
+    // console.log(query);
     const allSellers = await this.userModel
       .find({
         role: "seller",
@@ -169,7 +169,7 @@ export class UsersService {
         fullName: new RegExp(query.search, "i"),
       })
       .sort({ [query.sortBy]: query.sortType });
-    console.log(allSellers);
+    // console.log(allSellers);
     return allSellers;
   }
 

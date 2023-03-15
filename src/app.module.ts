@@ -26,6 +26,8 @@ import { InventoriesModule } from "./modules/inventories/inventories.module";
 import { SellerModule } from "./modules/seller/seller.module";
 import { WithdrawsModule } from "./modules/withdraws/withdraws.module";
 import { WithdrawMethodsModule } from "./modules/withdraw_methods/withdraw_methods.module";
+import { BlogsModule } from "./modules/blogs/blogs.module";
+import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
 
 @Module({
   imports: [
@@ -52,8 +54,11 @@ import { WithdrawMethodsModule } from "./modules/withdraw_methods/withdraw_metho
     FeaturedCategoriesModule,
     InventoriesModule,
     SellerModule,
+    FlashSaleModule,
     WithdrawsModule,
-    WithdrawMethodsModule
+    WithdrawMethodsModule,
+
+    BlogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
