@@ -24,12 +24,10 @@ import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_me
 import { FeaturedCategoriesModule } from "./modules/featured_categories/featured_categories.module";
 import { InventoriesModule } from "./modules/inventories/inventories.module";
 import { SellerModule } from "./modules/seller/seller.module";
-<<<<<<< HEAD
-import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
-=======
 import { WithdrawsModule } from "./modules/withdraws/withdraws.module";
 import { WithdrawMethodsModule } from "./modules/withdraw_methods/withdraw_methods.module";
->>>>>>> a219fda80008c1ceb7408ef4023447488af8ae27
+import { BlogsModule } from "./modules/blogs/blogs.module";
+import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
 
 @Module({
   imports: [
@@ -56,12 +54,11 @@ import { WithdrawMethodsModule } from "./modules/withdraw_methods/withdraw_metho
     FeaturedCategoriesModule,
     InventoriesModule,
     SellerModule,
-<<<<<<< HEAD
     FlashSaleModule,
-=======
     WithdrawsModule,
-    WithdrawMethodsModule
->>>>>>> a219fda80008c1ceb7408ef4023447488af8ae27
+    WithdrawMethodsModule,
+
+    BlogsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -11,7 +11,6 @@ import {
 } from "src/schemas/reported-item.schema";
 import { Review, ReviewDocument } from "src/schemas/review.schema";
 import { User, UserDocument } from "src/schemas/user.schema";
-import { Reporteditem } from "../reporteditems/entities/reporteditem.entity";
 import { CreateDashboardDto } from "./dto/create-dashboard.dto";
 import { UpdateDashboardDto } from "./dto/update-dashboard.dto";
 
@@ -103,7 +102,6 @@ export class DashboardService {
       reviewCount: reviewCount,
       reportedCount: reportedCount,
     };
-
     return wholeRes;
   }
 
