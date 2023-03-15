@@ -24,7 +24,9 @@ export class BlogCommentsService {
   }
 
   async findBlogComments(slug: string) {
-    return await this.blogCommentModel.find({ blogSlug: slug });
+    return await this.blogCommentModel
+      .find({ blogSlug: slug })
+      .sort({ createdAt: -1 });
   }
 
   findAll() {

@@ -27,6 +27,7 @@ export class BlogsController {
 
   @Get(":slug")
   findOne(@Param("slug") slug: string) {
+    console.log(slug)
     return this.blogsService.findOne(slug);
   }
 
