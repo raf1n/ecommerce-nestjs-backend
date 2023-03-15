@@ -1,3 +1,4 @@
+import { CreateAddressDto } from "./../addresses/dto/create-address.dto";
 import { OrderDocument } from "./../../schemas/order.schema";
 import { Injectable } from "@nestjs/common";
 import { Order } from "src/schemas/order.schema";
@@ -33,15 +34,15 @@ export class OrdersService {
   async create(createOrderDto: CreateOrderDto): Promise<Object> {
     const slug = `order_${createOrderDto.user_slug}`;
     createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
-
+    let trans_id = UtilSlug.getUniqueId("transaction");
     const sslcommerzParams = {
       total_amount: createOrderDto.subTotal,
       currency: "BDT",
-      tran_id: UtilSlug.getUniqueId("transaction"),
-      success_url: `${process.env.PORT}/payment/success`,
-      fail_url: `${process.env.PORT}/payment/failure`,
-      cancel_url: `${process.env.PORT}/payment/cancel`,
-      ipn_url: `${process.env.PORT}/payment/ipn`,
+      tran_id: trans_id,
+      success_url: `${process.env.API_URL}/orders/payment/success/${trans_id}`,
+      fail_url: `${process.env.API_URL}/orders/payment/fail`,
+      cancel_url: `${process.env.API_URL}/orders/payment/cancel`,
+      ipn_url: `${process.env.API_URL}/orders/payment/ipn`,
       shipping_method: "NO",
       product_name: "Order Payment",
       product_category: "Ecommerce",
@@ -66,31 +67,42 @@ export class OrdersService {
     const response = await this.sslcommerz.init_transaction(sslcommerzParams);
 
     if (response && response.status === "SUCCESS") {
-      const result = await new this.orderModel(createOrderDto).save();
+      const result = await new this.orderModel({
+        ...createOrderDto,
+        transaction_id: trans_id,
+      }).save();
 
-      const stockProducts = createOrderDto.product_list.map(
-        (data: { slug: string; quantity: number; type: "stockOut" }) => {
-          let p = {
-            product_slug: data.slug,
-            quantity: data.quantity,
-            type: "stockOut",
-          };
+      const updateProductStock = async (data) => {
+        await this.productModel.findOneAndUpdate(
+          { slug: data.slug },
+          {
+            $inc: {
+              stock: -data.quantity,
+            },
+          }
+        );
+      };
 
-          this.productModel.findOneAndUpdate(
-            { slug: data.slug },
-            {
-              $inc: {
-                stock: -data.quantity,
-              },
-            }
-          );
-          return p;
-        }
-      );
+      let stockProducts = [];
 
-      this.inventoryModel.create(stockProducts);
+      for (let product of createOrderDto.product_list) {
+        let p = {
+          slug: UtilSlug.getUniqueId("stock"),
+          //@ts-ignore
+          product_slug: product.slug,
+          //@ts-ignore
+          quantity: product.quantity,
+          type: "stockOut",
+        };
+
+        stockProducts.push(p);
+
+        await updateProductStock(product);
+      }
+
+      await this.inventoryModel.create(stockProducts);
       if (result) {
-        console.log(response.GatewayPageURL);
+        // console.log(response.GatewayPageURL);
         return {
           data: response.GatewayPageURL,
           message: "Order successfull ",
@@ -212,4 +224,27 @@ export class OrdersService {
   async remove(slug: string) {
     return await this.orderModel.deleteOne({ slug });
   }
+
+  async SSLCommerz_payment_success(transaction_id: string) {
+    console.log(transaction_id);
+    await this.orderModel.findOneAndUpdate(
+      { transaction_id },
+      {
+        payment_status: "Success",
+      },
+      { new: true }
+    );
+    return {
+      data: "success",
+      message: "success",
+    };
+  }
+
+  async SSLCommerz_payment_fail() {
+    return {
+      message: "Payment failed, Try Again",
+    };
+  }
+
+  async SSLCommerz_payment_cancel(createPaymentDto: CreateOrderDto) {}
 }

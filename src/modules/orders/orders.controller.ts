@@ -8,7 +8,10 @@ import {
   Delete,
   Query,
   Request,
+  Redirect,
+  Res,
 } from "@nestjs/common";
+import { Response } from "express";
 import { OrdersService } from "./orders.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";
@@ -24,6 +27,27 @@ export class OrdersController {
     createOrderDto: CreateOrderDto
   ) {
     return this.ordersService.create(createOrderDto);
+  }
+
+  @Post("/payment/success/:transaction_id")
+  @Redirect("http://localhost:3000/payment_success")
+  paymentSuccess(@Param("transaction_id") transaction_id: string) {
+    console.log(transaction_id);
+    return this.ordersService.SSLCommerz_payment_success(transaction_id);
+  }
+
+  @Post("/payment/fail")
+  @Redirect("http://localhost:3000/checkout")
+  paymentFail(@Res() res: Response) {
+    // return this.ordersService.SSLCommerz_payment_fail();
+
+    res.status(400).redirect("http://localhost:3000/checkout");
+  }
+
+  @Post("/payment/cancel")
+  @Redirect("http://localhost:3000/checkout")
+  paymentCancel(@Body() createPaymentDto: CreateOrderDto) {
+    return this.ordersService.SSLCommerz_payment_cancel(createPaymentDto);
   }
 
   // -----------------------------------------------------

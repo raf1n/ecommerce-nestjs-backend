@@ -25,9 +25,6 @@ export class CreateOrderDto {
   @IsString()
   payment_method: string;
 
-  @IsString()
-  transaction_id: string;
-
   @IsObject()
   address: {
     country: string;
