@@ -29,8 +29,12 @@ export class BlogsService {
     // }
   }
 
-  findAll() {
-    return `This action returns all blogs`;
+  // findAll() {
+  //   return `This action returns all blogs`;
+  // }
+
+  async findAll(): Promise<Blog[]> {
+    return await this.blogModel.find({}).exec();
   }
 
   findOne(id: number) {
