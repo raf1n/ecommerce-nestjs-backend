@@ -25,6 +25,7 @@ import { FeaturedCategoriesModule } from "./modules/featured_categories/featured
 import { InventoriesModule } from "./modules/inventories/inventories.module";
 import { SellerModule } from "./modules/seller/seller.module";
 import { BlogsModule } from "./modules/blogs/blogs.module";
+import { BlogCategoryModule } from "./modules/blog-category/blog-category.module";
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { BlogsModule } from "./modules/blogs/blogs.module";
     InventoriesModule,
     SellerModule,
     BlogsModule,
+    BlogCategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

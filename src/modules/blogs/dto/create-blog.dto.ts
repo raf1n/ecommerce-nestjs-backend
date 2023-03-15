@@ -17,7 +17,7 @@ export class CreateBlogDto {
   title: string;
 
   @IsString()
-  catSlug: string;
+  category: string;
 
   @IsString()
   description: string;
