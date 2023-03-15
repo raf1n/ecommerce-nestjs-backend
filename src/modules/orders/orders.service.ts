@@ -40,8 +40,8 @@ export class OrdersService {
       currency: "BDT",
       tran_id: trans_id,
       success_url: `${process.env.API_URL}/orders/payment/success/${trans_id}`,
-      fail_url: `${process.env.API_URL}/orders/payment/fail`,
-      cancel_url: `${process.env.API_URL}/orders/payment/cancel`,
+      fail_url: `${process.env.API_URL}/orders/payment/fail/${trans_id}`,
+      cancel_url: `${process.env.API_URL}/orders/payment/cancel/${trans_id}`,
       ipn_url: `${process.env.API_URL}/orders/payment/ipn`,
       shipping_method: "NO",
       product_name: "Order Payment",
@@ -240,11 +240,19 @@ export class OrdersService {
     };
   }
 
-  async SSLCommerz_payment_fail() {
+  async SSLCommerz_payment_fail(transaction_id: string) {
+    const result = await this.orderModel.findOneAndRemove({ transaction_id });
     return {
+      data: result,
       message: "Payment failed, Try Again",
     };
   }
 
-  async SSLCommerz_payment_cancel(createPaymentDto: CreateOrderDto) {}
+  async SSLCommerz_payment_cancel(transaction_id: string) {
+    const result = await this.orderModel.findOneAndRemove({ transaction_id });
+    return {
+      data: result,
+      message: "Payment failed, Try Again",
+    };
+  }
 }
