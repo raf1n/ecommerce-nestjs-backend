@@ -1,3 +1,4 @@
+import { BlogCommentsModule } from './modules/blog_comments/blog_comments.module';
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -57,8 +58,8 @@ import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
     FlashSaleModule,
     WithdrawsModule,
     WithdrawMethodsModule,
-
     BlogsModule,
+    BlogCommentsModule
   ],
   controllers: [AppController],
   providers: [AppService],
