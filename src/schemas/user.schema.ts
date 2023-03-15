@@ -49,6 +49,13 @@ export class User {
       shop_address: String,
       shop_logo: String,
       shop_cover: String,
+      opens_at: String,
+      close_at: String,
+      geetings_message: String,
+      social_icon: String,
+      social_link: String,
+      seo_title: String,
+      seo_des: String,
     },
   })
   shop: {
@@ -57,6 +64,13 @@ export class User {
       shop_address: string;
       shop_logo: string;
       shop_cover: string;
+      opens_at?: string;
+      close_at?: string;
+      geetings_message?: string;
+      social_icon?: string;
+      social_link?: string;
+      seo_title?: string;
+      seo_des?: string;
     };
   };
   @Prop()

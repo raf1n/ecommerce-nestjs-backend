@@ -32,7 +32,7 @@ export class LoginUserDto {
 
   @IsOptional()
   @IsString()
-  status: "active" | "inactive";
+  status: string;
 
   // @IsString({ message: 'should be string' })
   // userType: string

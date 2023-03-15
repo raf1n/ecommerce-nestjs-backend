@@ -15,6 +15,7 @@ import { RegisterUserDto } from "./dto/register-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
+import { UpdateShopInfoDto } from "./dto/update-shop-info.dto";
 
 @Controller("users")
 export class UsersController {
@@ -66,6 +67,14 @@ export class UsersController {
   @Patch("/edit-status/:slug")
   update(@Param("slug") slug: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(slug, updateUserDto);
+  }
+
+  @Patch("/shop/:email")
+  updateShop(
+    @Param("email") slug: string,
+    @Body() updateShopInfoDto: UpdateShopInfoDto
+  ) {
+    return this.usersService.updateShop(slug, updateShopInfoDto);
   }
 
   @Get("/private/:slug")
