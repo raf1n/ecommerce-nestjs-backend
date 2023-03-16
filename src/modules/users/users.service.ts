@@ -9,6 +9,7 @@ import { TokenVerifier } from "src/utils/TokenVerifier";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { JwtService } from "@nestjs/jwt";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
+import { SellerApplicationDto } from "./dto/seller-application.dto";
 const admin = require("firebase-admin");
 
 // const serviceAccount = require('../../utils/ecommerce-3dcd5-firebase-adminsdk-8iryd-a787e6184a.json');
@@ -49,19 +50,20 @@ export class UsersService {
     });
     return result;
   }
-
-  // async login(loginUserDto: LoginUserDto) {
-  //   console.log(loginUserDto)
-  //   const user = await this.userModel.findOne({ email: loginUserDto.email,password:loginUserDto.password });
-  //   // console.log(user)
-  //   if (user) {
-  //     return 'LoggedIn';
-  //   }
-  //   else {
-  //     return 'Invalid Username or Password'
-  //   }
-
-  // }
+  async seller_apply(sellerApplicationDto: SellerApplicationDto) {
+    const result = await this.userModel.create({
+      slug: UtilSlug.getUniqueId(sellerApplicationDto.shop.shop_name),
+      email: sellerApplicationDto.email,
+      user_email: sellerApplicationDto.user_email,
+      fullName: sellerApplicationDto.fullName,
+      avatar: sellerApplicationDto.avatar,
+      phone: sellerApplicationDto.phone,
+      shop: sellerApplicationDto.shop,
+      status: sellerApplicationDto.status,
+      role: sellerApplicationDto.role,
+    });
+    return result;
+  }
 
   async login(loginUserDto: Partial<LoginUserDto>): Promise<{
     slug: string | undefined;
@@ -155,8 +157,20 @@ export class UsersService {
         fullName: new RegExp(query.search, "i"),
       })
       .sort({ [query.sortBy]: query.sortType });
-      console.log(allUsers);
+    console.log(allUsers);
     return allUsers;
+  }
+  async findAllSellers(query: any) {
+    // console.log(query);
+    const allSellers = await this.userModel
+      .find({
+        role: "seller",
+        status: query.status,
+        fullName: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
+    // console.log(allSellers);
+    return allSellers;
   }
 
   async findOne(email: string) {

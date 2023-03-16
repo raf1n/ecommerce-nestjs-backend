@@ -1,12 +1,25 @@
-import { Injectable } from '@nestjs/common';
-import { CreateSellerDto } from './dto/create-seller.dto';
-import { UpdateSellerDto } from './dto/update-seller.dto';
+import { Injectable } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Seller, SellerDocument } from "src/schemas/seller.schema";
+import { UtilSlug } from "src/utils/UtilSlug";
+import { CreateSellerDto } from "./dto/create-seller.dto";
+import { UpdateSellerDto } from "./dto/update-seller.dto";
 
 @Injectable()
 export class SellerService {
-  create(createSellerDto: CreateSellerDto) {
-    return 'This action adds a new seller';
+  constructor(
+    @InjectModel(Seller.name)
+    private readonly sellerModel: Model<SellerDocument>
+  ) {}
+
+  async create(createSellerDto: CreateSellerDto): Promise<Object> {
+    createSellerDto["slug"] = UtilSlug.getUniqueId(createSellerDto.email);
+    const result = await new this.sellerModel(createSellerDto).save();
+    return result;
   }
+
+  // ****************************************
 
   findAll() {
     return `This action returns all seller`;

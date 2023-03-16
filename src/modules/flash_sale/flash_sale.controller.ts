@@ -27,6 +27,11 @@ export class FlashSaleController {
     return this.flashSaleService.findAll(query);
   }
 
+  @Get(":user")
+  findAllforUser(product_slug) {
+    return this.flashSaleService.findAllUser(product_slug);
+  }
+
   @Get(":slug")
   findOne(@Param("slug") slug: string) {
     return this.flashSaleService.findOne(slug);

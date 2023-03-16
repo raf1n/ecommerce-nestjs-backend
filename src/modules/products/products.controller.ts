@@ -85,17 +85,17 @@ export class ProductsController {
   }
 
   @Get("/admin/get-inventories")
-  getProductsInventory() {
-    return this.productsService.getProductsInventory();
+  getProductsInventory(@Query() query: SearchSortDto) {
+    return this.productsService.getProductsInventory(query);
   }
 
   @Get("/seller/get-inventories/:slug")
-  getSellerProductsInventory(@Param("slug") seller_slug: string) {
-    return this.productsService.getSellerProductsInventory(seller_slug);
+  getSellerProductsInventory(@Param("slug") seller_slug: string,@Query() query: SearchSortDto) {
+    return this.productsService.getSellerProductsInventory(seller_slug,query);
   }
 
   @Get("/get-inventory/:slug")
-  getSingleProductInventory(@Param("slug") slug: string) {
-    return this.productsService.getSingleProductsInventory(slug);
+  getSingleProductInventory(@Param("slug") slug: string, @Query() query: SearchSortDto) {
+    return this.productsService.getSingleProductsInventory(slug, query);
   }
 }

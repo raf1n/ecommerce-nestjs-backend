@@ -20,6 +20,26 @@ export class FlashSaleService {
       status: createFlashSaleDto.status,
     });
   }
+  findAllUser(product_slug: string) {
+    return this.flashSaleModel.aggregate([
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_slug",
+          foreignField: "slug",
+          as: "productsData",
+        },
+      },
+      {
+        $unwind: "$productsData",
+      },
+      // {
+      //   $match: {
+      //     "productsData.slug": product_slug,
+      //   },
+      // },
+    ]);
+  }
 
   findAll(query: SearchSortDto) {
     return this.flashSaleModel.aggregate([

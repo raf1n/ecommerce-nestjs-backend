@@ -1,4 +1,5 @@
 import { CreateAddressDto } from "./../addresses/dto/create-address.dto";
+import { UtilSlug } from "./../../utils/UtilSlug";
 import { OrderDocument } from "./../../schemas/order.schema";
 import { Injectable } from "@nestjs/common";
 import { Order } from "src/schemas/order.schema";
@@ -6,7 +7,6 @@ import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { UtilSlug } from "src/utils/UtilSlug";
 import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 import * as SSLCommerz from "sslcommerz-nodejs";
@@ -118,17 +118,7 @@ export class OrdersService {
         errorMessage: "Unable to initiate payment",
       };
     }
-
-    // const stockUpdate = createOrderDto.product_list.map(
-    //   (data: { slug: string; stock: number }) => {
-    //     console.log(data);
-    //   }
-    // );
   }
-
-  // findAll(slug: string) {
-  //   return this.orderModel.find({ user_slug: slug })
-  // }
 
   async findAllCompleted(slug: string, order_status: string) {
     const result = await this.orderModel.find({
@@ -141,13 +131,6 @@ export class OrdersService {
       message: "fetched Successfully",
     };
   }
-
-  // ----------------------------------------------
-  // async findAll(delivery_status: string): Promise<Order[]> {
-  //   return await this.orderModel.find({ delivery_status });
-  // }
-
-  // ------------------------------------------------------------------
 
   async findAllOrdersAdmin(query: any) {
     let match_value = new RegExp(query.search, "i");
