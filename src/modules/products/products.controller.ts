@@ -36,11 +36,13 @@ export class ProductsController {
       search: string;
       categories: string;
       brands: string;
+      highlight: string;
       max: string;
       min: string;
     },
     @Request() req: Request
   ) {
+    console.log(query);
     return this.productsService.findFilteredProducts(query);
   }
 
