@@ -1,4 +1,4 @@
-import { BlogCommentsModule } from './modules/blog_comments/blog_comments.module';
+import { BlogCommentsModule } from "./modules/blog_comments/blog_comments.module";
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -29,6 +29,7 @@ import { WithdrawsModule } from "./modules/withdraws/withdraws.module";
 import { WithdrawMethodsModule } from "./modules/withdraw_methods/withdraw_methods.module";
 import { BlogsModule } from "./modules/blogs/blogs.module";
 import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
+import { SeoModule } from "./modules/seo/seo.module";
 
 @Module({
   imports: [
@@ -56,10 +57,11 @@ import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
     InventoriesModule,
     SellerModule,
     FlashSaleModule,
+    SeoModule,
     WithdrawsModule,
     WithdrawMethodsModule,
     BlogsModule,
-    BlogCommentsModule
+    BlogCommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
