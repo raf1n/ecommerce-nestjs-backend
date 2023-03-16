@@ -1,14 +1,5 @@
 import { IsOptional, IsString } from "class-validator";
 
-// imageUrl:
-// title:
-// catSlug:
-// description:
-// isShowHomepage:
-// status:
-// seo_title:
-// seo_description:
-// postBy:
 export class CreateBlogDto {
   @IsString()
   imageURL: string;

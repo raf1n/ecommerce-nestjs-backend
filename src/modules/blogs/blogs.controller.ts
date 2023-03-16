@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from "@nestjs/common";
 import { BlogsService } from "./blogs.service";
 import { CreateBlogDto } from "./dto/create-blog.dto";
@@ -24,6 +25,21 @@ export class BlogsController {
   findAll() {
     return this.blogsService.findAll();
   }
+
+  @Get("/category")
+  findFilteredBlogs(
+    @Query()
+    query: {
+      category: string;
+    }
+  ) {
+    return this.blogsService.findFilteredBlogs(query);
+  }
+
+  // @Get()
+  // findAll(@Query() query: { user_slug: string }) {
+  //   return this.cartService.findAll(query);
+  // }
 
   @Get(":id")
   findOne(@Param("id") id: string) {

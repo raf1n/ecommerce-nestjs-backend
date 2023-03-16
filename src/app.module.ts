@@ -26,6 +26,7 @@ import { InventoriesModule } from "./modules/inventories/inventories.module";
 import { SellerModule } from "./modules/seller/seller.module";
 import { BlogsModule } from "./modules/blogs/blogs.module";
 import { BlogCategoryModule } from "./modules/blog-category/blog-category.module";
+import { SubscriberModule } from "./modules/subscriber/subscriber.module";
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { BlogCategoryModule } from "./modules/blog-category/blog-category.module
     SellerModule,
     BlogsModule,
     BlogCategoryModule,
+    SubscriberModule,
   ],
   controllers: [AppController],
   providers: [AppService],

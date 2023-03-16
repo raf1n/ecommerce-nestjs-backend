@@ -71,10 +71,10 @@ export class UsersController {
 
   @Patch("/shop/:email")
   updateShop(
-    @Param("email") slug: string,
+    @Param("email") email: string,
     @Body() updateShopInfoDto: UpdateShopInfoDto
   ) {
-    return this.usersService.updateShop(slug, updateShopInfoDto);
+    return this.usersService.updateShop(email, updateShopInfoDto);
   }
 
   @Get("/private/:slug")

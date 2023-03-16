@@ -3,16 +3,6 @@ import { Document } from "mongoose";
 
 export type BlogDocument = Blog & Document;
 
-// imageUrl:
-// title:
-// catSlug:
-// description:
-// isShowHomepage:
-// status:
-// seo_title:
-// seo_description:
-// postBy:
-
 @Schema({ timestamps: true })
 export class Blog {
   @Prop()
@@ -47,18 +37,3 @@ export class Blog {
 }
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);
-
-//admin_id//
-//blog_category_id
-//created_at
-//description
-//id
-//image
-//seo_description
-//seo_title
-//show_homepage
-//slug
-//status
-//title
-//updated_at
-//views
