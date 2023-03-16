@@ -29,7 +29,6 @@ export class BlogsService {
     // }
   }
 
-<<<<<<< HEAD
   // findAll() {
   //   return `This action returns all blogs`;
   // }
@@ -51,10 +50,6 @@ export class BlogsService {
       },
     ]);
     return { allBlogs, latestBlogs };
-=======
-  async findAll(): Promise<Blog[]> {
-    return await this.blogModel.find({}).exec();
->>>>>>> d5e2c5dc9299fa46d3886336d81be19a3fa4b071
   }
 
   async findOne(slug: string) {
