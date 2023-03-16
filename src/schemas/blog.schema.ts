@@ -25,7 +25,7 @@ export class Blog {
   title: string;
 
   @Prop()
-  catSlug: string;
+  category: string;
 
   @Prop()
   description: string;

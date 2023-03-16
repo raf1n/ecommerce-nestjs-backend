@@ -10,6 +10,7 @@ import { UtilSlug } from "src/utils/UtilSlug";
 import { JwtService } from "@nestjs/jwt";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
 import { SellerApplicationDto } from "./dto/seller-application.dto";
+import { UpdateShopInfoDto } from "./dto/update-shop-info.dto";
 const admin = require("firebase-admin");
 
 // const serviceAccount = require('../../utils/ecommerce-3dcd5-firebase-adminsdk-8iryd-a787e6184a.json');
@@ -219,7 +220,38 @@ export class UsersService {
 
     return editAddress;
   }
+  //------------
+  async updateShop(email: string, updateShopInfoDto: UpdateShopInfoDto) {
+    const shop = {
+      shop_name: updateShopInfoDto.shop.shop_name,
+      shop_address: updateShopInfoDto.shop.shop_address,
+      shop_logo: updateShopInfoDto.shop.shop_logo,
+      shop_cover: updateShopInfoDto.shop.shop_cover,
+      opens_at: updateShopInfoDto.shop.opens_at,
+      close_at: updateShopInfoDto.shop.close_at,
+      geetings_message: updateShopInfoDto.shop.geetings_message,
+      social_icon: updateShopInfoDto.shop.social_icon,
+      social_link: updateShopInfoDto.shop.social_link,
+      seo_title: updateShopInfoDto.shop.seo_title,
+      seo_des: updateShopInfoDto.shop.seo_des,
+    };
+    const editShop = await this.userModel.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          fullName: updateShopInfoDto.fullName,
+          phone: updateShopInfoDto.phone,
+          shop: shop,
+          status: updateShopInfoDto.status,
+          role: updateShopInfoDto.role,
+        },
+      },
+      { upsert: true, new: true }
+    );
 
+    return editShop;
+  }
+  //-----------
   async delete(slug: string): Promise<User> {
     return await this.userModel.findOneAndDelete({ slug });
   }
