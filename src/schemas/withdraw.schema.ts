@@ -9,22 +9,16 @@ export class Withdraw {
   slug: string;
 
   @Prop()
-  name: string;
+  seller_slug: string;
 
   @Prop()
-  min: number;
+  method?: string;
 
   @Prop()
-  max: number;
+  amount?: number;
 
   @Prop()
-  charge: number;
-
-  @Prop({ default: "inactive"})
-  status: string;
-
-  @Prop()
-  description: string;
+  information?: string;
 }
 
 export const WithdrawSchema = SchemaFactory.createForClass(Withdraw);

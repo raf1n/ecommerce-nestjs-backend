@@ -14,7 +14,7 @@ export class WithdrawsService {
   ) {}
 
   async create(createWithdrawDto: CreateWithdrawDto) {
-    createWithdrawDto["slug"] = UtilSlug.getUniqueId(createWithdrawDto.name);
+    createWithdrawDto["slug"] = UtilSlug.getUniqueId(createWithdrawDto.method);
     return await this.withdrawModel.create(createWithdrawDto);
   }
 
