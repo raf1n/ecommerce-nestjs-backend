@@ -28,12 +28,9 @@ import { SellerModule } from "./modules/seller/seller.module";
 import { WithdrawsModule } from "./modules/withdraws/withdraws.module";
 import { WithdrawMethodsModule } from "./modules/withdraw_methods/withdraw_methods.module";
 import { BlogsModule } from "./modules/blogs/blogs.module";
-<<<<<<< HEAD
 import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
 import { SeoModule } from "./modules/seo/seo.module";
-=======
 import { BlogCategoryModule } from "./modules/blog-category/blog-category.module";
->>>>>>> d5e2c5dc9299fa46d3886336d81be19a3fa4b071
 
 @Module({
   imports: [
@@ -65,11 +62,8 @@ import { BlogCategoryModule } from "./modules/blog-category/blog-category.module
     WithdrawsModule,
     WithdrawMethodsModule,
     BlogsModule,
-<<<<<<< HEAD
     BlogCommentsModule,
-=======
     BlogCategoryModule,
->>>>>>> d5e2c5dc9299fa46d3886336d81be19a3fa4b071
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreatePaymentDto } from "./dto/create-payment.dto";
 import { UpdatePaymentDto } from "./dto/update-payment.dto";
-import { SSLCommerz } from "sslcommerz-nodejs";
+
 import { UtilSlug } from "src/utils/UtilSlug";
 @Injectable()
 export class PaymentsService {
