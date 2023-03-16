@@ -52,8 +52,8 @@ export class BlogsService {
     return { allBlogs, latestBlogs };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blog`;
+  async findOne(slug: string) {
+    return await this.blogModel.findOne({ slug });
   }
 
   update(id: number, updateBlogDto: UpdateBlogDto) {

@@ -29,9 +29,9 @@ export class WithdrawMethodsController {
     return this.withdrawMethodsService.findAll(queries);
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.withdrawMethodsService.findOne(+id);
+  @Get(":slug")
+  findOne(@Param("slug") slug: string) {
+    return this.withdrawMethodsService.findOne(slug);
   }
 
   @Patch(":slug")

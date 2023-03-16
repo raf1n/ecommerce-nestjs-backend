@@ -27,8 +27,8 @@ export class WithdrawMethodsService {
       .sort({ [query.sortBy]: query.sortType });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} withdrawMethod`;
+  async findOne(slug: string) {
+    return await this.withdrawMethodModel.findOne({ slug });
   }
 
   async update(slug: string, updateWithdrawMethodDto: UpdateWithdrawMethodDto) {
