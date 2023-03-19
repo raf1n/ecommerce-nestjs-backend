@@ -77,6 +77,14 @@ export class UsersController {
     return this.usersService.updateShop(email, updateShopInfoDto);
   }
 
+  @Patch("/profile/:email")
+  updateProfile(
+    @Param("email") email: string,
+    @Body() updateShopInfoDto: UpdateShopInfoDto
+  ) {
+    return this.usersService.updateShop(email, updateShopInfoDto);
+  }
+
   @Get("/private/:slug")
   findSingleUser(@Param("slug") slug: string) {
     return this.usersService.findSingleUser(slug);

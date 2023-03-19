@@ -220,7 +220,7 @@ export class UsersService {
 
     return editAddress;
   }
-  //------------
+  //------------Shop/Profile Data --------------------------
   async updateShop(email: string, updateShopInfoDto: UpdateShopInfoDto) {
     const shop = {
       shop_name: updateShopInfoDto.shop.shop_name,
@@ -250,6 +250,26 @@ export class UsersService {
     );
 
     return editShop;
+  }
+  //------------Profile Data --------------------------
+  async updateProfile(email: string, updateShopInfoDto: UpdateShopInfoDto) {
+    const shop = {
+      shop_address: updateShopInfoDto.shop.shop_address,
+    };
+    const editProfile = await this.userModel.findOneAndUpdate(
+      { email: email },
+      {
+        $set: {
+          fullName: updateShopInfoDto?.fullName,
+          phone: updateShopInfoDto.phone,
+          avatar: updateShopInfoDto?.avatar,
+          shop: shop?.shop_address,
+        },
+      },
+      { upsert: true }
+    );
+
+    return editProfile;
   }
   //-----------
   async delete(slug: string): Promise<User> {

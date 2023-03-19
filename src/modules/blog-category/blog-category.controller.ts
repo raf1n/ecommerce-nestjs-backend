@@ -38,8 +38,8 @@ export class BlogCategoryController {
     return this.blogCategoryService.update(+id, updateBlogCategoryDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.blogCategoryService.remove(+id);
+  @Delete(":slug")
+  delete(@Param("slug") slug: string) {
+    return this.blogCategoryService.delete(slug);
   }
 }

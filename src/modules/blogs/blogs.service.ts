@@ -46,7 +46,8 @@ export class BlogsService {
     return `This action updates a #${id} blog`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} blog`;
+  //-----------
+  async delete(slug: string): Promise<Blog> {
+    return await this.blogModel.findOneAndDelete({ slug });
   }
 }

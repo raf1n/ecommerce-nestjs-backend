@@ -51,8 +51,8 @@ export class BlogsController {
     return this.blogsService.update(+id, updateBlogDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.blogsService.remove(+id);
+  @Delete(":slug")
+  delete(@Param("slug") slug: string) {
+    return this.blogsService.delete(slug);
   }
 }

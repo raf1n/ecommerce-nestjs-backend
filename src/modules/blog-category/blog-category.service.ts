@@ -32,7 +32,7 @@ export class BlogCategoryService {
     return `This action updates a #${id} blogCategory`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} blogCategory`;
+  async delete(slug: string): Promise<BlogCategory> {
+    return await this.blogCategoryModel.findOneAndDelete({ slug });
   }
 }
