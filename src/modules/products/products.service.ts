@@ -38,6 +38,7 @@ export class ProductsService {
     search: string;
     categories: string;
     brands: string;
+    highlight: string;
     max: string;
     min: string;
   }): Promise<Product[]> {
@@ -79,6 +80,16 @@ export class ProductsService {
         : {}
     );
 
+    const highlightFilter = Object.assign(
+      query.highlight
+        ? {
+            [query.highlight]: true,
+          }
+        : {}
+    );
+
+    console.log(categoryFilter, brandFilter, highlightFilter);
+
     const filteredProducts = await this.productModel.aggregate([
       {
         $match: {
@@ -88,6 +99,7 @@ export class ProductsService {
             },
             categoryFilter,
             brandFilter,
+            highlightFilter,
             {
               $or: [
                 {
