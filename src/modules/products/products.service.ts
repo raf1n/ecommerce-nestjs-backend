@@ -37,6 +37,7 @@ export class ProductsService {
   async findFilteredProducts(query: {
     search: string;
     categories: string;
+    sub_category: string;
     brands: string;
     highlight: string;
     max: string;
@@ -88,7 +89,15 @@ export class ProductsService {
         : {}
     );
 
-    console.log(categoryFilter, brandFilter, highlightFilter);
+    const subCategoryFilter = Object.assign(
+      query.sub_category
+        ? {
+            subCatSlug: query.sub_category,
+          }
+        : {}
+    );
+
+    console.log(categoryFilter, subCategoryFilter, brandFilter, highlightFilter);
 
     const filteredProducts = await this.productModel.aggregate([
       {
@@ -100,6 +109,7 @@ export class ProductsService {
             categoryFilter,
             brandFilter,
             highlightFilter,
+            subCategoryFilter,
             {
               $or: [
                 {

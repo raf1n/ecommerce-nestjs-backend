@@ -35,6 +35,7 @@ export class ProductsController {
     query: {
       search: string;
       categories: string;
+      sub_category: string;
       brands: string;
       highlight: string;
       max: string;
