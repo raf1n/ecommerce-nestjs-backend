@@ -1,3 +1,4 @@
+import { BlogCommentsModule } from "./modules/blog_comments/blog_comments.module";
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -24,7 +25,11 @@ import { MegaMenuCategoriesModule } from "./modules/mega_menu_categories/mega_me
 import { FeaturedCategoriesModule } from "./modules/featured_categories/featured_categories.module";
 import { InventoriesModule } from "./modules/inventories/inventories.module";
 import { SellerModule } from "./modules/seller/seller.module";
+import { WithdrawsModule } from "./modules/withdraws/withdraws.module";
+import { WithdrawMethodsModule } from "./modules/withdraw_methods/withdraw_methods.module";
 import { BlogsModule } from "./modules/blogs/blogs.module";
+import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
+import { SeoModule } from "./modules/seo/seo.module";
 import { BlogCategoryModule } from "./modules/blog-category/blog-category.module";
 import { SubscriberModule } from "./modules/subscriber/subscriber.module";
 
@@ -53,7 +58,12 @@ import { SubscriberModule } from "./modules/subscriber/subscriber.module";
     FeaturedCategoriesModule,
     InventoriesModule,
     SellerModule,
+    FlashSaleModule,
+    SeoModule,
+    WithdrawsModule,
+    WithdrawMethodsModule,
     BlogsModule,
+    BlogCommentsModule,
     BlogCategoryModule,
     SubscriberModule,
   ],

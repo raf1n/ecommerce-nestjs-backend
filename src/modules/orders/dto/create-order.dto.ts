@@ -1,14 +1,29 @@
-import { IsArray, IsNumber, IsObject, IsString } from "class-validator";
+import {
+  IsArray,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator";
 
 export class CreateOrderDto {
   @IsString()
   user_slug: string;
 
   @IsString()
-  payment_method: string;
+  @IsOptional()
+  user_name: string;
 
   @IsString()
-  transaction_id: string;
+  @IsOptional()
+  user_email: string;
+
+  @IsString()
+  @IsOptional()
+  user_phone: string;
+
+  @IsString()
+  payment_method: string;
 
   @IsObject()
   address: {
@@ -20,4 +35,7 @@ export class CreateOrderDto {
 
   @IsArray()
   product_list: Array<object>;
+
+  @IsNumber()
+  subTotal: number;
 }

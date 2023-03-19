@@ -19,12 +19,31 @@ export class BlogsService {
     return result;
   }
 
-  async findAll(): Promise<Blog[]> {
-    return await this.blogModel.find({}).exec();
+  // findAll() {
+  //   return `This action returns all blogs`;
+  // }
+
+  async findAll(): Promise<object> {
+    const allBlogs = await this.blogModel.find({}).exec();
+    // var todayDate = new Date();
+    // todayDate.setHours(0, 0, 0, 0);
+    // todayDate.toISOString();
+    var week = new Date();
+    week.setHours(168, 10080, 604800, 604800000);
+    const latestBlogs = await this.blogModel.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $lte: week,
+          },
+        },
+      },
+    ]);
+    return { allBlogs, latestBlogs };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} blog`;
+  async findOne(slug: string) {
+    return await this.blogModel.findOne({ slug });
   }
   async findFilteredBlogs(query: { category: string }) {
     return await this.blogModel.find({ category: query.category });

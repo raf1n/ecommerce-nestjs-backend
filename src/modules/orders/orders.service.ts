@@ -1,3 +1,4 @@
+import { CreateAddressDto } from "./../addresses/dto/create-address.dto";
 import { UtilSlug } from "./../../utils/UtilSlug";
 import { OrderDocument } from "./../../schemas/order.schema";
 import { Injectable } from "@nestjs/common";
@@ -8,9 +9,12 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
 import { Product, ProductDocument } from "src/schemas/product.schema";
+import * as SSLCommerz from "sslcommerz-nodejs";
 
 @Injectable()
 export class OrdersService {
+  private sslcommerz: SSLCommerz;
+
   constructor(
     @InjectModel(Order.name)
     private readonly orderModel: Model<OrderDocument>,
@@ -18,82 +22,103 @@ export class OrdersService {
     private readonly inventoryModel: Model<InventoryDocument>,
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>
-  ) {}
+  ) {
+    this.sslcommerz = new SSLCommerz({
+      store_id: process.env.STORE_ID,
+      store_passwd: process.env.STORE_PASSWORD,
+      isSandboxMode: true, // Set to false in production
+    });
+  }
+
   // ------------------post order--------------------- //
   async create(createOrderDto: CreateOrderDto): Promise<Object> {
     const slug = `order_${createOrderDto.user_slug}`;
     createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
-
-    const updateProductStock = async (data) => {
-      await this.productModel.findOneAndUpdate(
-        { slug: data.slug },
-        {
-          $inc: {
-            stock: -data.quantity,
-          },
-        }
-      );
+    let trans_id = UtilSlug.getUniqueId("transaction");
+    const sslcommerzParams = {
+      total_amount: createOrderDto.subTotal,
+      currency: "BDT",
+      tran_id: trans_id,
+      success_url: `${process.env.API_URL}/orders/payment/success/${trans_id}`,
+      fail_url: `${process.env.API_URL}/orders/payment/fail/${trans_id}`,
+      cancel_url: `${process.env.API_URL}/orders/payment/cancel/${trans_id}`,
+      ipn_url: `${process.env.API_URL}/orders/payment/ipn`,
+      shipping_method: "NO",
+      product_name: "Order Payment",
+      product_category: "Ecommerce",
+      product_profile: "general",
+      cus_name: createOrderDto.user_name,
+      cus_email: createOrderDto.user_email,
+      cus_add1: createOrderDto.address.address,
+      cus_city: createOrderDto.address.city,
+      cus_country: "Bangladesh",
+      cus_phone: createOrderDto.user_phone,
+      cus_state: createOrderDto.address.state,
+      shipping_city: createOrderDto.address.city,
+      shipping_country: "Bangladesh",
+      shipping_state: createOrderDto.address.state,
+      billing_address: createOrderDto.address.address,
+      billing_city: createOrderDto.address.city,
+      billing_country: "Bangladesh",
+      billing_name: createOrderDto.user_name,
+      billing_phone: createOrderDto.user_phone,
+      billing_state: createOrderDto.address.state,
     };
+    const response = await this.sslcommerz.init_transaction(sslcommerzParams);
 
-    let stockProducts = [];
+    if (response && response.status === "SUCCESS") {
+      const result = await new this.orderModel({
+        ...createOrderDto,
+        transaction_id: trans_id,
+      }).save();
 
-    for (let product of createOrderDto.product_list) {
-      let p = {
-        slug: UtilSlug.getUniqueId("stock"),
-        //@ts-ignore
-        product_slug: product.slug,
-        //@ts-ignore
-        quantity: product.quantity,
-        type: "stockOut",
+      const updateProductStock = async (data) => {
+        await this.productModel.findOneAndUpdate(
+          { slug: data.slug },
+          {
+            $inc: {
+              stock: -data.quantity,
+            },
+          }
+        );
       };
 
-      stockProducts.push(p);
+      let stockProducts = [];
 
-      await updateProductStock(product);
-    }
+      for (let product of createOrderDto.product_list) {
+        let p = {
+          slug: UtilSlug.getUniqueId("stock"),
+          //@ts-ignore
+          product_slug: product.slug,
+          //@ts-ignore
+          quantity: product.quantity,
+          type: "stockOut",
+        };
 
-    // const stockProducts = createOrderDto.product_list.map(
-    //   (data: { slug: string; quantity: number; type: "stockOut" }) => {
-    //     let p = {
-    //       slug: UtilSlug.getUniqueId('stock'),
-    //       product_slug: data.slug,
-    //       quantity: data.quantity,
-    //       type: "stockOut",
-    //     };
+        stockProducts.push(p);
 
-    //     console.log(p)
+        await updateProductStock(product);
+      }
 
-    //     this.productModel.findOneAndUpdate(
-    //       { slug: data.slug },
-    //       {
-    //         $inc: {
-    //           stock: -data.quantity,
-    //         },
-    //       }
-    //     );
-    //     return p;
-    //   }
-    // );
-
-    await this.inventoryModel.create(stockProducts);
-
-    const result = await new this.orderModel(createOrderDto).save();
-
-    if (result) {
-      return {
-        data: result,
-        message: "Order successful ",
-      };
+      await this.inventoryModel.create(stockProducts);
+      if (result) {
+        // console.log(response.GatewayPageURL);
+        return {
+          data: response.GatewayPageURL,
+          message: "Order successfull ",
+        };
+      } else {
+        return {
+          message: "Order  failed !",
+        };
+      }
     } else {
       return {
-        message: "Order  failed !",
+        status: "FAILED",
+        errorMessage: "Unable to initiate payment",
       };
     }
   }
-
-  // findAll(slug: string) {
-  //   return this.orderModel.find({ user_slug: slug });
-  // }
 
   async findAllCompleted(slug: string, order_status: string) {
     const result = await this.orderModel.find({
@@ -106,13 +131,6 @@ export class OrdersService {
       message: "fetched Successfully",
     };
   }
-
-  // ----------------------------------------------
-  // async findAll(delivery_status: string): Promise<Order[]> {
-  //   return await this.orderModel.find({ delivery_status });
-  // }
-
-  // ------------------------------------------------------------------
 
   async findAllOrdersAdmin(query: any) {
     let match_value = new RegExp(query.search, "i");
@@ -188,5 +206,36 @@ export class OrdersService {
 
   async remove(slug: string) {
     return await this.orderModel.deleteOne({ slug });
+  }
+
+  async SSLCommerz_payment_success(transaction_id: string) {
+    console.log(transaction_id);
+    await this.orderModel.findOneAndUpdate(
+      { transaction_id },
+      {
+        payment_status: "Success",
+      },
+      { new: true }
+    );
+    return {
+      data: "success",
+      message: "success",
+    };
+  }
+
+  async SSLCommerz_payment_fail(transaction_id: string) {
+    const result = await this.orderModel.findOneAndRemove({ transaction_id });
+    return {
+      data: result,
+      message: "Payment failed, Try Again",
+    };
+  }
+
+  async SSLCommerz_payment_cancel(transaction_id: string) {
+    const result = await this.orderModel.findOneAndRemove({ transaction_id });
+    return {
+      data: result,
+      message: "Payment failed, Try Again",
+    };
   }
 }
