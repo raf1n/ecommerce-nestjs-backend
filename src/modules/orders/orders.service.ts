@@ -9,6 +9,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
 import { Product, ProductDocument } from "src/schemas/product.schema";
+//@ts-ignore
 import * as SSLCommerz from "sslcommerz-nodejs";
 
 @Injectable()
@@ -52,7 +53,7 @@ export class OrdersService {
       cus_add1: createOrderDto.address.address,
       cus_city: createOrderDto.address.city,
       cus_country: "Bangladesh",
-      cus_phone: createOrderDto.user_phone,
+      cus_phone: createOrderDto?.user_phone,
       cus_state: createOrderDto.address.state,
       shipping_city: createOrderDto.address.city,
       shipping_country: "Bangladesh",

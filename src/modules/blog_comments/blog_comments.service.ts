@@ -29,8 +29,11 @@ export class BlogCommentsService {
       .sort({ createdAt: -1 });
   }
 
-  findAll() {
-    return `This action returns all blogComments`;
+  // findAll() {
+  //   return `This action returns all blogComments`;
+  // }
+  async findAll(): Promise<BlogComment[]> {
+    return await this.blogCommentModel.find({}).exec();
   }
 
   findOne(id: number) {
