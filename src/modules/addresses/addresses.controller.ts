@@ -21,15 +21,15 @@ export class AddressesController {
     return this.addressesService.create(createAddressDto);
   }
 
-  @Get()
-  findAll() {
-    return this.addressesService.findAll();
+  @Get(":email")
+  findAll(@Param("email") email: string) {
+    return this.addressesService.findAll(email);
   }
 
-  @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.addressesService.findOne(+id);
-  }
+  // @Get(":id")
+  // findOne(@Param("id") id: string) {
+  //   return this.addressesService.findOne(+id);
+  // }
 
   @Put(":slug")
   update(

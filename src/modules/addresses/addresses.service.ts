@@ -25,13 +25,13 @@ export class AddressesService {
     // return "This action adds a new address";
   }
 
-  async findAll(): Promise<Address[]> {
-    return await this.addressModel.find().exec();
+  async findAll(email: string): Promise<Address[]> {
+    return await this.addressModel.find({ email }).exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} address`;
-  }
+  // findOne(id: number) {
+  //   return `This action returns a #${id} address`;
+  // }
 
   // update(id: number, updateAddressDto: UpdateAddressDto) {
   //   return `This action updates a #${id} address`;
