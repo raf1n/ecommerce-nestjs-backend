@@ -67,7 +67,7 @@ export class CartService {
   }
 
   async remove(slug: string): Promise<Cart> {
-    return await this.cartModel.findOneAndDelete({ product_slug: slug });
+    return await this.cartModel.findOneAndDelete({ slug: slug });
   }
 
   //delete all cart product
