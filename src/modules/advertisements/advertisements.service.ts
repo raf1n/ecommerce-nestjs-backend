@@ -27,7 +27,11 @@ export class AdvertisementsService {
   }
 
   findAll() {
-    return this.advertisementModel.find();
+    return this.advertisementModel.find({});
+  }
+
+  findSingleSlider(name: string) {
+    return this.advertisementModel.findOne({ adName: name, status: "active" });
   }
 
   findOne(name: string) {

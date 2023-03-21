@@ -25,6 +25,11 @@ export class AdvertisementsController {
     return this.advertisementsService.findAll();
   }
 
+  @Get("/home/:name")
+  findSingleSlider(@Param("name") name: string) {
+    return this.advertisementsService.findSingleSlider(name);
+  }
+
   @Get(":name")
   findOne(@Param("name") name: string) {
     return this.advertisementsService.findOne(name);
