@@ -40,9 +40,9 @@ export class CartController {
     return this.cartService.update(query.cart_slug, updateCartDto);
   }
 
-  @Delete(":slug")
-  remove(@Param("slug") slug: string) {
-    return this.cartService.remove(slug);
+  @Delete()
+  remove(@Query() query: { user_slug: string; product_slug: string }) {
+    return this.cartService.remove(query.user_slug, query.product_slug);
   }
 
   @Delete("delete_all/:user_slug")

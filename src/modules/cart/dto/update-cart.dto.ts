@@ -1,3 +1,6 @@
+import { IsNumber, Max, Min } from "class-validator";
+
 export class UpdateCartDto {
-  quantity: number;
+  @IsNumber()
+  quantity: 1;
 }

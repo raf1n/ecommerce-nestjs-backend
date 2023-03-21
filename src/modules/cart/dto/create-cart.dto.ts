@@ -1,5 +1,12 @@
+import { IsNumber, IsString, Max, Min } from "class-validator";
+
 export class CreateCartDto {
+  @IsString()
   user_slug: string;
+
+  @IsString()
   product_slug: string;
-  quantity: number;
+
+  @IsNumber()
+  quantity: 1;
 }
