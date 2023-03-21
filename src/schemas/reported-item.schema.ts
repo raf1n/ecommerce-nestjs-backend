@@ -11,7 +11,7 @@ export class ReportedItem {
   @Prop()
   product_slug: string;
 
-  @Prop({ default: "user_slug_1" })
+  @Prop()
   user_slug: string;
 
   @Prop()
