@@ -14,6 +14,9 @@ export class CreateBlogDto {
   description: string;
 
   @IsString()
+  long_description: string;
+
+  @IsString()
   isShowHomepage: string;
 
   @IsString()

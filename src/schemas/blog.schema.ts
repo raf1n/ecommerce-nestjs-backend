@@ -21,6 +21,9 @@ export class Blog {
   description: string;
 
   @Prop()
+  long_description: string;
+
+  @Prop()
   isShowHomepage: string;
 
   @Prop()
