@@ -97,7 +97,12 @@ export class ProductsService {
         : {}
     );
 
-    console.log(categoryFilter, subCategoryFilter, brandFilter, highlightFilter);
+    console.log(
+      categoryFilter,
+      subCategoryFilter,
+      brandFilter,
+      highlightFilter
+    );
 
     const filteredProducts = await this.productModel.aggregate([
       {

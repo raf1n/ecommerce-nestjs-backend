@@ -182,6 +182,28 @@ export class UsersService {
     return await this.userModel.findOne({ slug: slug });
   }
 
+  async findUserWithProducts(seller_slug: string) {
+    const result = await this.userModel.aggregate([
+      {
+        $match: {
+          slug: seller_slug,
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "slug",
+          foreignField: "seller_slug",
+          as: "sellerProducts",
+        },
+      },
+      // {
+      //   $unwind: "$sellerProducts",
+      // },
+    ]);
+    return result[0];
+  }
+
   async update(slug: string, updateUserDto: UpdateUserDto): Promise<User> {
     console.log(updateUserDto);
     const updatedUser = await this.userModel.findOneAndUpdate(
