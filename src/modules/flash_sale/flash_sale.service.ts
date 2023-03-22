@@ -23,6 +23,12 @@ export class FlashSaleService {
   findAllUser(product_slug: string) {
     return this.flashSaleModel.aggregate([
       {
+        $match: {
+          status: "active",
+        },
+      },
+
+      {
         $lookup: {
           from: "products",
           localField: "product_slug",
