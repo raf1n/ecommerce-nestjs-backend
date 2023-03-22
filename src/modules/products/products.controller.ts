@@ -47,6 +47,25 @@ export class ProductsController {
     return this.productsService.findFilteredProducts(query);
   }
 
+  @Get("/filter-by-shop/:shopName")
+  findFilteredProductsBySeller(
+    @Param("shopName") shopName: string,
+    @Query()
+    query: {
+      search: string;
+      categories: string;
+      sub_category: string;
+      brands: string;
+      highlight: string;
+      max: string;
+      min: string;
+    },
+    @Request() req: Request
+  ) {
+    console.log(shopName, query);
+    return this.productsService.findFilteredProductsBySeller(shopName, query);
+  }
+
   //..............
   // @Get("/seller")
   // async findAllSellerWithProduct(

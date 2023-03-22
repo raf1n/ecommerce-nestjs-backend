@@ -8,12 +8,15 @@ import { Product, ProductDocument } from "src/schemas/product.schema";
 import { Model } from "mongoose";
 import { UtilSlug } from "./../../utils/UtilSlug";
 import { SearchSortDto } from "src/utils/all-queries.dto";
+import { User, UserDocument } from "src/schemas/user.schema";
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel(Product.name)
-    private readonly productModel: Model<ProductDocument>
+    private readonly productModel: Model<ProductDocument>,
+    @InjectModel(User.name)
+    private readonly userModel: Model<UserDocument>
   ) {}
 
   async create(createProductDto: CreateProductDto): Promise<Object> {
@@ -97,7 +100,12 @@ export class ProductsService {
         : {}
     );
 
-    console.log(categoryFilter, subCategoryFilter, brandFilter, highlightFilter);
+    console.log(
+      categoryFilter,
+      subCategoryFilter,
+      brandFilter,
+      highlightFilter
+    );
 
     const filteredProducts = await this.productModel.aggregate([
       {
@@ -105,6 +113,9 @@ export class ProductsService {
           $and: [
             {
               productName: { $regex: "(?i)" + search + "(?-i)" },
+            },
+            {
+              status: "active",
             },
             categoryFilter,
             brandFilter,
@@ -132,6 +143,127 @@ export class ProductsService {
     ]);
 
     return filteredProducts;
+  }
+
+  async findFilteredProductsBySeller(
+    shopName: string,
+    query: {
+      search: string;
+      categories: string;
+      sub_category: string;
+      brands: string;
+      highlight: string;
+      max: string;
+      min: string;
+    }
+  ): Promise<{ sellerData: User; filteredProducts: Product[] }> {
+    const search = query.search;
+    const categoriesStrArr = query.categories
+      ? query.categories.split(" ").slice(1)
+      : [""];
+    const brandsStrArr = query.brands ? query.brands.split(" ").slice(1) : [""];
+    const maxRange = parseInt(query.max);
+    const minRange = parseInt(query.min);
+
+    // console.log({ categoriesStrArr, brandsStrArr, maxRange, minRange });
+
+    const seller = await this.userModel.findOne({ "shop.shop_name": shopName });
+    if (!seller) {
+      return { sellerData: null, filteredProducts: [] };
+    }
+
+    const sellerSlug = seller.slug;
+
+    const categoryFilter = Object.assign(
+      query.categories
+        ? {
+            $or: categoriesStrArr.map((cat) => {
+              return {
+                catSlug: {
+                  $regex: "(?i)" + cat + "(?-i)",
+                },
+              };
+            }),
+          }
+        : {}
+    );
+
+    const brandFilter = Object.assign(
+      query.brands
+        ? {
+            $or: brandsStrArr.map((brand) => {
+              return {
+                brandSlug: {
+                  $regex: "(?i)" + brand + "(?-i)",
+                },
+              };
+            }),
+          }
+        : {}
+    );
+
+    const highlightFilter = Object.assign(
+      query.highlight
+        ? {
+            [query.highlight]: true,
+          }
+        : {}
+    );
+
+    const subCategoryFilter = Object.assign(
+      query.sub_category
+        ? {
+            subCatSlug: query.sub_category,
+          }
+        : {}
+    );
+
+    console.log(
+      categoryFilter,
+      subCategoryFilter,
+      brandFilter,
+      highlightFilter
+    );
+
+    const filteredProducts = await this.productModel.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              seller_slug: sellerSlug,
+            },
+            {
+              productName: { $regex: "(?i)" + search + "(?-i)" },
+            },
+            {
+              status: "active",
+            },
+            categoryFilter,
+            brandFilter,
+            highlightFilter,
+            subCategoryFilter,
+            {
+              $or: [
+                {
+                  price: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+                {
+                  offerPrice: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+    ]);
+
+    return { sellerData: seller, filteredProducts: filteredProducts };
   }
 
   //   async findAll(): Promise<ProductDocument[]> {

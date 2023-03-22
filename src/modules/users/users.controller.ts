@@ -54,6 +54,7 @@ export class UsersController {
   findAllCustomers(@Query() queries: SearchSortDto) {
     return this.usersService.findAllCustomers(queries);
   }
+  
   @Get("/sellers")
   findAllSellers(@Query() queries: SearchSortDto) {
     return this.usersService.findAllSellers(queries);
