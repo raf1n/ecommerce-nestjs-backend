@@ -1,3 +1,4 @@
+import { query } from "express";
 import { Injectable } from "@nestjs/common";
 import { CreateFeaturedCategoryDto } from "./dto/create-featured_category.dto";
 import { UpdateFeaturedCategoryDto } from "./dto/update-featured_category.dto";
@@ -35,8 +36,25 @@ export class FeaturedCategoriesService {
   //   return `This action returns all popularCategories`;
   // }
 
-  async findAll(): Promise<FeaturedCategory[]> {
-    return await this.featuredCategoryModel.find().exec();
+  async findAll(query: { slug: string }): Promise<FeaturedCategory[]> {
+    return await this.featuredCategoryModel.aggregate([
+      // {
+      //   $match: {
+      //     slug: query.slug,
+      //   },
+      // },
+      {
+        $lookup: {
+          from: "categories",
+          localField: "cat_slug",
+          foreignField: "cat_slug",
+          as: "categoriesData",
+        },
+      },
+      {
+        $unwind: "$categoriesData",
+      },
+    ]);
   }
 
   findOne(id: number) {
