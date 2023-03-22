@@ -64,6 +64,12 @@ export class UsersController {
     return this.usersService.findOne(email);
   }
 
+  @Get(":slug")
+  findUser(@Param("slug") slug: string) {
+    return this.usersService.findSingleUser(slug);
+  }
+
+
   @Patch("/edit-status/:slug")
   update(@Param("slug") slug: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(slug, updateUserDto);
