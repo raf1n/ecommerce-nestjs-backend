@@ -8,13 +8,13 @@ export class UpdateShopInfoDto extends UpdateUserDto {
   slug: string;
 
   @IsString()
+  email: string;
+
+  @IsString()
   fullName: string;
 
   @IsString()
   avatar: string;
-
-  @IsString()
-  email: string;
 
   @IsString()
   @IsOptional()

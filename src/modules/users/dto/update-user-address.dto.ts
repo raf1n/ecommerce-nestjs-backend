@@ -5,6 +5,9 @@ export class UpdateUserAddressDto {
   @MaxLength(50)
   name: string;
 
+  @IsString()
+  avatar: string;
+
   @IsString({ message: "should be string" })
   @MaxLength(50)
   phone: string;

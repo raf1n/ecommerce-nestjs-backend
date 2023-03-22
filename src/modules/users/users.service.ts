@@ -162,7 +162,6 @@ export class UsersService {
     return allUsers;
   }
   async findAllSellers(query: any) {
-    // console.log(query);
     const allSellers = await this.userModel
       .find({
         role: "seller",
@@ -170,7 +169,6 @@ export class UsersService {
         fullName: new RegExp(query.search, "i"),
       })
       .sort({ [query.sortBy]: query.sortType });
-    // console.log(allSellers);
     return allSellers;
   }
 
@@ -201,6 +199,8 @@ export class UsersService {
     updateUserAddressDto: UpdateUserAddressDto
   ) {
     const address = {
+      // avatar: updateUserAddressDto.avatar,
+
       country: updateUserAddressDto.country,
       city: updateUserAddressDto.city,
       state: updateUserAddressDto.state,
@@ -212,6 +212,7 @@ export class UsersService {
         $set: {
           fullName: updateUserAddressDto.name,
           phone: updateUserAddressDto.phone,
+          avatar: updateUserAddressDto.avatar,
           address: address,
         },
       },
@@ -222,7 +223,7 @@ export class UsersService {
   }
   //------------Shop/Profile Data --------------------------
   async updateShop(email: string, updateShopInfoDto: UpdateShopInfoDto) {
-    const shop = {
+    const shopInfo = {
       shop_name: updateShopInfoDto.shop.shop_name,
       shop_address: updateShopInfoDto.shop.shop_address,
       shop_logo: updateShopInfoDto.shop.shop_logo,
@@ -240,10 +241,11 @@ export class UsersService {
       {
         $set: {
           fullName: updateShopInfoDto.fullName,
+          avatar: updateShopInfoDto.avatar,
           phone: updateShopInfoDto.phone,
-          shop: shop,
-          status: updateShopInfoDto.status,
-          role: updateShopInfoDto.role,
+          shop: shopInfo,
+          // status: updateShopInfoDto.status,
+          // role: updateShopInfoDto.role,
         },
       },
       { upsert: true, new: true }
@@ -256,17 +258,18 @@ export class UsersService {
     const shop = {
       shop_address: updateShopInfoDto.shop.shop_address,
     };
+    console.log(updateShopInfoDto, "updateShopInfoDto");
     const editProfile = await this.userModel.findOneAndUpdate(
       { email: email },
       {
         $set: {
-          fullName: updateShopInfoDto?.fullName,
+          fullName: updateShopInfoDto.fullName,
           phone: updateShopInfoDto.phone,
-          avatar: updateShopInfoDto?.avatar,
-          shop: shop?.shop_address,
+          avatar: updateShopInfoDto.avatar,
+          shop: shop,
         },
       },
-      { upsert: true }
+      { upsert: true, new: true }
     );
 
     return editProfile;
