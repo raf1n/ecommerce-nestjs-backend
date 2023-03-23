@@ -190,7 +190,6 @@ export class UsersService {
       }
     );
     console.log(updatedUser);
-
     return updatedUser;
   }
 

@@ -2,6 +2,9 @@ import { IsOptional, IsString } from "class-validator";
 
 export class CreateBlogDto {
   @IsString()
+  slug: string;
+
+  @IsString()
   imageURL: string;
 
   @IsString()
@@ -23,12 +26,10 @@ export class CreateBlogDto {
   status: string;
 
   @IsString()
-  @IsOptional()
-  seo_Title: string;
+  seo_title: string;
 
   @IsString()
-  @IsOptional()
-  seo_Description: string;
+  seo_description: string;
 
   @IsString()
   postBy: string;
