@@ -161,6 +161,7 @@ export class UsersService {
     console.log(allUsers);
     return allUsers;
   }
+
   async findAllSellers(query: any) {
     // console.log(query);
     const allSellers = await this.userModel

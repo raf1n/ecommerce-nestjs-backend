@@ -7,11 +7,12 @@ import {
   Param,
   Delete,
 } from "@nestjs/common";
-import { Query, Request } from "@nestjs/common/decorators";
+import { Query, Request, UseGuards } from "@nestjs/common/decorators";
 import { SearchSortDto } from "src/utils/all-queries.dto";
 import { CouponService } from "./coupon.service";
 import { CreateCouponDto } from "./dto/create-coupon.dto";
 import { UpdateCouponDto } from "./dto/update-coupon.dto";
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller("coupon")
 export class CouponController {
@@ -23,10 +24,12 @@ export class CouponController {
   }
 
   @Get("/admin")
+  // @UseGuards(AuthGuard("jwt"))
   async findAllAdminCoupons(
     @Query() query: SearchSortDto,
     @Request() req: Request
   ) {
+    console.log(req);
     return await this.couponService.findAllAdminCoupons(query);
   }
 

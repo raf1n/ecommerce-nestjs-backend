@@ -26,7 +26,11 @@ export class OrdersController {
     @Body()
     createOrderDto: CreateOrderDto
   ) {
-    return this.ordersService.create(createOrderDto);
+    if (createOrderDto.payment_method === "ssl") {
+      return this.ordersService.createSSL(createOrderDto);
+    } else if (createOrderDto.payment_method === "cod") {
+      return this.ordersService.createCOD(createOrderDto);
+    }
   }
 
   @Post("/payment/success/:transaction_id")
