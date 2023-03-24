@@ -214,7 +214,7 @@ export class OrdersService {
     await this.orderModel.findOneAndUpdate(
       { transaction_id },
       {
-        payment_status: "Success",
+        payment_status: "success",
       },
       { new: true }
     );

@@ -48,6 +48,7 @@ export class UsersService {
       email: registerUserDto.email,
       // password: registerUserDto.password,
       userType: registerUserDto.userType,
+      status: "active",
     });
     return result;
   }
@@ -154,7 +155,6 @@ export class UsersService {
     const allUsers = await this.userModel
       .find({
         role: "buyer",
-        status: query.status,
         fullName: new RegExp(query.search, "i"),
       })
       .sort({ [query.sortBy]: query.sortType });
