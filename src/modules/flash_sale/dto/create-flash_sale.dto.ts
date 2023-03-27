@@ -33,6 +33,10 @@ export class CreateFlashSaleDto {
   @IsString()
   offer?: string;
 
+  @IsOptional()
+  @IsString()
+  time?: string;
+
   // @IsString()
   // sale_status?: string;
 }

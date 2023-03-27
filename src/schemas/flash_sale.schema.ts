@@ -24,6 +24,9 @@ export class FlashSale {
   imageFlash?: string;
 
   @Prop()
+  time?: string;
+
+  @Prop()
   title?: string;
 
   @Prop()
