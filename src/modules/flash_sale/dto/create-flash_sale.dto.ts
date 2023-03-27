@@ -11,7 +11,7 @@ export class CreateFlashSaleDto {
 
   @IsOptional()
   @IsString()
-  sale_slug?: string;
+  name?: string;
 
   @IsOptional()
   @IsString()

@@ -30,10 +30,11 @@ export class FlashSaleController {
 
   @Put("content")
   updateflash(
-    @Param("sale_slug") sale_slug: string,
+    // @Param("name") name: string,
     @Body() updateFlashSaleDto: UpdateFlashSaleDto
   ) {
-    return this.flashSaleService.update(sale_slug, updateFlashSaleDto);
+    console.log(updateFlashSaleDto);
+    return this.flashSaleService.updateflash(updateFlashSaleDto);
   }
 
   @Get()
@@ -51,9 +52,10 @@ export class FlashSaleController {
     return this.flashSaleService.findOne(slug);
   }
 
-  @Get("content/:sale_slug")
-  findAllflash(@Param("sale_slug") sale_slug: string) {
-    return this.flashSaleService.findAllflash(sale_slug);
+  @Get("content/:name")
+  findAllflash(@Param("name") name: string) {
+    console.log(name);
+    return this.flashSaleService.findAllflash(name);
   }
 
   @Patch(":slug")

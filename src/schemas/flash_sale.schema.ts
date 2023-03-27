@@ -9,7 +9,7 @@ export class FlashSale {
   slug?: string;
 
   @Prop()
-  sale_slug?: string;
+  name?: string;
 
   @Prop()
   product_slug?: string;
