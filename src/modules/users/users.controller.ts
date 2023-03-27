@@ -70,7 +70,6 @@ export class UsersController {
     return this.usersService.findSingleUser(slug);
   }
 
-
   @Patch("/edit-status/:slug")
   update(@Param("slug") slug: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(slug, updateUserDto);
@@ -95,6 +94,11 @@ export class UsersController {
   @Get("/private/:slug")
   findSingleUser(@Param("slug") slug: string) {
     return this.usersService.findSingleUser(slug);
+  }
+
+  @Get("/sellerWithProducts/:slug")
+  findUserWithProducts(@Param("slug") seller_slug: string) {
+    return this.usersService.findUserWithProducts(seller_slug);
   }
 
   // @Patch(":id")

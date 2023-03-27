@@ -196,6 +196,7 @@ export class UsersService {
     console.log(allUsers);
     return allUsers;
   }
+
   async findAllSellers(query: any) {
     // console.log(query);
     const allSellers = await this.userModel
@@ -215,6 +216,28 @@ export class UsersService {
 
   async findSingleUser(slug: string) {
     return await this.userModel.findOne({ slug: slug });
+  }
+
+  async findUserWithProducts(seller_slug: string) {
+    const result = await this.userModel.aggregate([
+      {
+        $match: {
+          slug: seller_slug,
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "slug",
+          foreignField: "seller_slug",
+          as: "sellerProducts",
+        },
+      },
+      // {
+      //   $unwind: "$sellerProducts",
+      // },
+    ]);
+    return result[0];
   }
 
   async update(slug: string, updateUserDto: UpdateUserDto): Promise<User> {

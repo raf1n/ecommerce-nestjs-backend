@@ -28,6 +28,12 @@ export class ReviewsController {
   findAll(@Query() query: { user_slug: string }) {
     return this.reviewsService.findAll(query);
   }
+
+  @Get("/reviewProducts/:product_slug")
+  findReview(@Param("product_slug") product_slug: string) {
+    return this.reviewsService.findReview(product_slug);
+  }
+
   // ---------------------------------
   @Get("/findAllForAdmin")
   findAllForAdmin(@Query() query: SearchSortDto, @Request() req: Request) {

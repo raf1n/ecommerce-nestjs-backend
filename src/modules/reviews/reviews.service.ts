@@ -21,7 +21,42 @@ export class ReviewsService {
     return result;
   }
 
+  async findReview(product_slug: string): Promise<Review[]> {
+    return await this.reviewModel.aggregate([
+      {
+        $match: {
+          product_slug,
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "product_slug",
+          foreignField: "slug",
+          as: "reviewProducts",
+        },
+      },
+
+      {
+        $unwind: "$reviewProducts",
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+    ]);
+  }
+
   // ---------------------------------------------
+
+  // admin
   async findAllForAdmin(query: any): Promise<Review[]> {
     let match_value = new RegExp(query.search, "i");
     return await this.reviewModel

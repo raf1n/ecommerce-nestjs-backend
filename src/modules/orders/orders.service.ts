@@ -32,7 +32,7 @@ export class OrdersService {
   }
 
   // ------------------post order--------------------- //
-  async create(createOrderDto: CreateOrderDto): Promise<Object> {
+  async createSSL(createOrderDto: CreateOrderDto): Promise<Object> {
     const slug = `order_${createOrderDto.user_slug}`;
     createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
     let trans_id = UtilSlug.getUniqueId("transaction");
@@ -117,6 +117,58 @@ export class OrdersService {
       return {
         status: "FAILED",
         errorMessage: "Unable to initiate payment",
+      };
+    }
+  }
+
+  async createCOD(createOrderDto: CreateOrderDto): Promise<Object> {
+    const slug = `order_${createOrderDto.user_slug}`;
+    createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
+    let trans_id = UtilSlug.getUniqueId("transaction");
+
+    const result = await new this.orderModel({
+      ...createOrderDto,
+      transaction_id: trans_id,
+    }).save();
+
+    const updateProductStock = async (data) => {
+      await this.productModel.findOneAndUpdate(
+        { slug: data.slug },
+        {
+          $inc: {
+            stock: -data.quantity,
+          },
+        }
+      );
+    };
+
+    let stockProducts = [];
+
+    for (let product of createOrderDto.product_list) {
+      let p = {
+        slug: UtilSlug.getUniqueId("stock"),
+        //@ts-ignore
+        product_slug: product.slug,
+        //@ts-ignore
+        quantity: product.quantity,
+        type: "stockOut",
+      };
+
+      stockProducts.push(p);
+
+      await updateProductStock(product);
+    }
+
+    await this.inventoryModel.create(stockProducts);
+    if (result) {
+      // console.log(response.GatewayPageURL);
+      return {
+        data: result,
+        message: "Order successfull ",
+      };
+    } else {
+      return {
+        message: "Order  failed !",
       };
     }
   }
