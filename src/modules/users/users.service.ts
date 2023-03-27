@@ -40,7 +40,42 @@ export class UsersService {
     // @InjectModel(Portfolio.name) private portfolioModel: Model<PortfolioDocument>,
     // @InjectModel(Picture.name) private pictureModel: Model<PictureDocument>,
     private jwtService: JwtService // eslint-disable-next-line no-empty-function
-  ) {}
+  ) {
+    this.userModel.findByIdAndUpdate(
+      {
+        _id: {
+          $oid: "640759ad632d86a8e096eb24",
+        },
+      },
+      {
+        _id: {
+          $oid: "640759ad632d86a8e096eb24",
+        },
+        email: "toukir.ahammed36@gmail.com",
+        __v: 0,
+        avatar: "https://tinyurl.com/382e6w5t",
+        createdAt: {
+          $date: {
+            $numberLong: "1678203309094",
+          },
+        },
+        fullName: "Kozuki Oden",
+        slug: "kozuki_oden_srbuo9JWB",
+        tokenType: "email",
+        updatedAt: {
+          $date: {
+            $numberLong: "1679378363220",
+          },
+        },
+        role: "admin",
+        status: "active",
+      },
+      {
+        upsert: true,
+      }
+    );
+  }
+  
   async register(registerUserDto: RegisterUserDto) {
     const result = await this.userModel.create({
       firstName: registerUserDto.firstName,
