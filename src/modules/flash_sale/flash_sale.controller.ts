@@ -23,9 +23,17 @@ export class FlashSaleController {
     return this.flashSaleService.create(createFlashSaleDto);
   }
 
-  @Put(":flash-content")
-  createflash(@Body() createFlashSaleDto: CreateFlashSaleDto) {
-    return this.flashSaleService.createflash(createFlashSaleDto);
+  // @Put("content")
+  // createflash(@Body() createFlashSaleDto: CreateFlashSaleDto) {
+  //   return this.flashSaleService.createflash(createFlashSaleDto);
+  // }
+
+  @Put("content")
+  updateflash(
+    @Param("sale_slug") sale_slug: string,
+    @Body() updateFlashSaleDto: UpdateFlashSaleDto
+  ) {
+    return this.flashSaleService.update(sale_slug, updateFlashSaleDto);
   }
 
   @Get()
@@ -43,6 +51,11 @@ export class FlashSaleController {
     return this.flashSaleService.findOne(slug);
   }
 
+  @Get("content/:sale_slug")
+  findAllflash(@Param("sale_slug") sale_slug: string) {
+    return this.flashSaleService.findAllflash(sale_slug);
+  }
+
   @Patch(":slug")
   update(
     @Param("slug") slug: string,
@@ -50,6 +63,14 @@ export class FlashSaleController {
   ) {
     return this.flashSaleService.update(slug, updateFlashSaleDto);
   }
+
+  // @Patch("content/:sale_slug")
+  // updateflash(
+  //   @Param("sale_slug") sale_slug: string,
+  //   @Body() updateFlashSaleDto: UpdateFlashSaleDto
+  // ) {
+  //   return this.flashSaleService.update(sale_slug, updateFlashSaleDto);
+  // }
 
   @Delete(":slug")
   remove(@Param("slug") slug: string) {

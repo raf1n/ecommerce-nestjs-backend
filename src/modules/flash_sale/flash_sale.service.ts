@@ -86,10 +86,24 @@ export class FlashSaleService {
     return this.flashSaleModel.findOne({ slug });
   }
 
+  async findAllflash(sale_slug: string): Promise<FlashSale[]> {
+    return await this.flashSaleModel.find({ sale_slug }).exec();
+  }
+
   update(slug: string, updateFlashSaleDto: UpdateFlashSaleDto) {
     return this.flashSaleModel.findOneAndUpdate({ slug }, updateFlashSaleDto, {
       new: true,
     });
+  }
+
+  updateflash(sale_slug: string, updateFlashSaleDto: UpdateFlashSaleDto) {
+    return this.flashSaleModel.findOneAndUpdate(
+      { sale_slug },
+      updateFlashSaleDto,
+      {
+        new: true,
+      }
+    );
   }
 
   createflash(createFlashSaleDto: CreateFlashSaleDto) {
