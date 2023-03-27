@@ -6,12 +6,30 @@ export type FlashSaleDocument = FlashSale & Document;
 @Schema({ timestamps: true })
 export class FlashSale {
   @Prop()
-  slug: string;
+  slug?: string;
 
   @Prop()
-  product_slug: string;
+  sale_slug?: string;
 
   @Prop()
-  status: string;
+  product_slug?: string;
+
+  @Prop()
+  status?: string;
+
+  @Prop()
+  imageHome?: string;
+
+  @Prop()
+  imageFlash?: string;
+
+  @Prop()
+  title?: string;
+
+  @Prop()
+  offer?: string;
+
+  @Prop()
+  sale_status?: string;
 }
 export const FlashSaleSchema = SchemaFactory.createForClass(FlashSale);

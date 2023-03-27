@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from "@nestjs/common";
 import { FlashSaleService } from "./flash_sale.service";
 import { CreateFlashSaleDto } from "./dto/create-flash_sale.dto";
@@ -20,6 +21,11 @@ export class FlashSaleController {
   @Post()
   create(@Body() createFlashSaleDto: CreateFlashSaleDto) {
     return this.flashSaleService.create(createFlashSaleDto);
+  }
+
+  @Put(":flash-content")
+  createflash(@Body() createFlashSaleDto: CreateFlashSaleDto) {
+    return this.flashSaleService.createflash(createFlashSaleDto);
   }
 
   @Get()

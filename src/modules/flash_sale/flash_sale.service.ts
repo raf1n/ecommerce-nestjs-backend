@@ -92,6 +92,17 @@ export class FlashSaleService {
     });
   }
 
+  createflash(createFlashSaleDto: CreateFlashSaleDto) {
+    return this.flashSaleModel.create({
+      sale_slug: UtilSlug.getUniqueId(createFlashSaleDto.sale_slug),
+      imageHome: createFlashSaleDto.imageHome,
+      sale_status: createFlashSaleDto.status,
+      imageFlash: createFlashSaleDto.imageFlash,
+      title: createFlashSaleDto.title,
+      offer: createFlashSaleDto.offer,
+    });
+  }
+
   remove(slug: string) {
     return this.flashSaleModel.findOneAndDelete({ slug });
   }
