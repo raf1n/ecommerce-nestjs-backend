@@ -47,9 +47,17 @@ export class BlogsController {
     return this.blogsService.findOne(slug);
   }
 
-  @Patch(":id")
-  update(@Param("id") id: string, @Body() updateBlogDto: UpdateBlogDto) {
-    return this.blogsService.update(+id, updateBlogDto);
+  @Patch(":slug")
+  update(@Param("slug") slug: string, @Body() updateBlogDto: UpdateBlogDto) {
+    return this.blogsService.update(slug, updateBlogDto);
+  }
+
+  @Patch("/edit-status/:slug")
+  updateStatus(
+    @Param("slug") slug: string,
+    @Body() updateBlogDto: UpdateBlogDto
+  ) {
+    return this.blogsService.update(slug, updateBlogDto);
   }
 
   @Delete(":slug")

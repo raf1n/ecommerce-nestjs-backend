@@ -30,10 +30,10 @@ export class Blog {
   status: string;
 
   @Prop()
-  seo_Title: string;
+  seo_title: string;
 
   @Prop()
-  seo_Description: string;
+  seo_description: string;
 
   @Prop()
   postBy: string;

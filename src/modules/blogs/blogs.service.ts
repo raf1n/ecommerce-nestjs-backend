@@ -16,12 +16,9 @@ export class BlogsService {
   async create(createBlogDto: CreateBlogDto): Promise<Object> {
     createBlogDto["slug"] = UtilSlug.getUniqueId(createBlogDto.title);
     const result = await new this.blogModel(createBlogDto).save();
+    console.log(result);
     return result;
   }
-
-  // findAll() {
-  //   return `This action returns all blogs`;
-  // }
 
   async findAll(): Promise<object> {
     const allBlogs = await this.blogModel.find({}).exec();
@@ -43,8 +40,13 @@ export class BlogsService {
   }
 
   async findOne(slug: string) {
-    return await this.blogModel.findOne({ slug });
+    return this.blogModel.findOne({ slug: slug });
   }
+
+  // async findOne(slug: string) {
+  //   return this.productModel.findOne({ slug });
+  // }
+
   async findFilteredBlogs(query: { category: string }) {
     return await this.blogModel.find({ category: query.category });
   }
@@ -61,8 +63,33 @@ export class BlogsService {
   //   };
   // }
 
-  update(id: number, updateBlogDto: UpdateBlogDto) {
-    return `This action updates a #${id} blog`;
+  // update(id: number, updateBlogDto: UpdateBlogDto) {
+  //   return `This action updates a #${id} blog`;
+  // }
+
+  async update(slug: string, updateBlogDto: UpdateBlogDto): Promise<Blog> {
+    const result = await this.blogModel.findOneAndUpdate(
+      { slug: slug },
+      updateBlogDto,
+      { new: true }
+    );
+    return result;
+  }
+
+  async updateStatus(
+    slug: string,
+    updateBlogDto: UpdateBlogDto
+  ): Promise<Blog> {
+    console.log(updateBlogDto);
+    const updatedStatus = await this.blogModel.findOneAndUpdate(
+      { slug: slug },
+      updateBlogDto,
+      {
+        new: true,
+      }
+    );
+    console.log(updatedStatus);
+    return updatedStatus;
   }
 
   //-----------

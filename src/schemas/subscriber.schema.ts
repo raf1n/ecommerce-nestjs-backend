@@ -10,6 +10,9 @@ export class Subscriber {
 
   @Prop()
   email: string;
+
+  @Prop()
+  user_slug: string;
 }
 
 export const SubscriberSchema = SchemaFactory.createForClass(Subscriber);

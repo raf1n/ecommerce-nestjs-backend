@@ -187,7 +187,6 @@ export class OrdersService {
 
   async findAllOrdersAdmin(query: any) {
     let match_value = new RegExp(query.search, "i");
-
     const allOrdersData = await this.orderModel.aggregate([
       {
         $match: {
@@ -243,7 +242,52 @@ export class OrdersService {
 
     return { allOrdersData, filteredOrdersData };
   }
+  // get all order for seller wise-----here "slug" is seller slug
+  async findAllOrderForSeller(slug: string, query: any) {
+    console.log(slug, "slug from or ser");
+    const orderDataBySeller = await this.orderModel.aggregate([
+      {
+        $match: {
+          "product_list.seller_slug": slug,
+        },
+      },
+      {
+        $project: {
+          slug: 1,
+          order_status: 1,
+          payment_status: 1,
+          createdAt: 1,
+          total: 1,
+          seller_slug: 1,
+          user_slug: 1,
+          product_list: {
+            $filter: {
+              input: "$product_list",
+              as: "products",
+              cond: {
+                $eq: ["$$products.seller_slug", slug],
+              },
+            },
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+    console.log(orderDataBySeller);
+    return orderDataBySeller;
+  }
 
+  // ---------------------------
   async findOne(slug: string) {
     return await this.orderModel.findOne({ slug });
   }
