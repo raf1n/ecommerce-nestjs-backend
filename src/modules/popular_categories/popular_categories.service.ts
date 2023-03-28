@@ -7,7 +7,7 @@ import {
 } from "src/schemas/popular-category.schema";
 import { CreatePopularCategoryDto } from "./dto/create-popular_category.dto";
 import { UpdatePopularCategoryDto } from "./dto/update-popular_category.dto";
-import { UtilSlug } from './../../utils/UtilSlug';
+import { UtilSlug } from "./../../utils/UtilSlug";
 
 @Injectable()
 export class PopularCategoriesService {
@@ -38,8 +38,20 @@ export class PopularCategoriesService {
   //   return `This action returns all popularCategories`;
   // }
 
-  async findAll(): Promise<PopularCategory[]> {
-    return await this.popularCategoryModel.find().exec();
+  async findAll(query: { slug: string }): Promise<PopularCategory[]> {
+    return await this.popularCategoryModel.aggregate([
+      {
+        $lookup: {
+          from: "categories",
+          localField: "cat_slug",
+          foreignField: "cat_slug",
+          as: "categoriesData",
+        },
+      },
+      {
+        $unwind: "$categoriesData",
+      },
+    ]);
   }
 
   findOne(id: number) {

@@ -23,6 +23,12 @@ export class FlashSaleService {
   findAllUser(product_slug: string) {
     return this.flashSaleModel.aggregate([
       {
+        $match: {
+          status: "active",
+        },
+      },
+
+      {
         $lookup: {
           from: "products",
           localField: "product_slug",
@@ -80,9 +86,32 @@ export class FlashSaleService {
     return this.flashSaleModel.findOne({ slug });
   }
 
+  async findAllflash(name: string): Promise<FlashSale> {
+    return await this.flashSaleModel.findOne({ name }).exec();
+  }
+
   update(slug: string, updateFlashSaleDto: UpdateFlashSaleDto) {
     return this.flashSaleModel.findOneAndUpdate({ slug }, updateFlashSaleDto, {
       new: true,
+    });
+  }
+  // name: string
+  async updateflash(updateFlashSaleDto: UpdateFlashSaleDto) {
+    return await this.flashSaleModel.findOneAndUpdate(
+      { name: updateFlashSaleDto.name },
+      updateFlashSaleDto,
+      { upsert: true, new: true }
+    );
+  }
+
+  createflash(createFlashSaleDto: CreateFlashSaleDto) {
+    return this.flashSaleModel.create({
+      slug: UtilSlug.getUniqueId(createFlashSaleDto.name),
+      imageHome: createFlashSaleDto.imageHome,
+      sale_status: createFlashSaleDto.status,
+      imageFlash: createFlashSaleDto.imageFlash,
+      title: createFlashSaleDto.title,
+      offer: createFlashSaleDto.offer,
     });
   }
 

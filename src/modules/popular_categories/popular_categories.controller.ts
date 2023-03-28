@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from "@nestjs/common";
 import { PopularCategoriesService } from "./popular_categories.service";
 import { CreatePopularCategoryDto } from "./dto/create-popular_category.dto";
@@ -23,8 +24,8 @@ export class PopularCategoriesController {
   }
 
   @Get()
-  findAll() {
-    return this.popularCategoriesService.findAll();
+  findAll(@Query() query: { slug: string }) {
+    return this.popularCategoriesService.findAll(query);
   }
 
   @Get(":id")

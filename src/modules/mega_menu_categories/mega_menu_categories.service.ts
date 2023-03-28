@@ -31,10 +31,32 @@ export class MegaMenuCategoriesService {
   }
 
   async findAll(query: any): Promise<MegaCategories[]> {
+    let match_value = new RegExp(query.search, "i");
+
     return await this.megaCategoriesModel
-      .find({
-        cat_name: new RegExp(query.search, "i"),
-      })
+      .aggregate([
+        {
+          $match: {
+            cat_name: {
+              $regex: match_value,
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "cat_slug",
+            foreignField: "cat_slug",
+            as: "categoriesData",
+          },
+        },
+        {
+          $unwind: "$categoriesData",
+        },
+      ])
+      // .find({
+      //   cat_name: new RegExp(query.search, "i"),
+      // })
       .sort({ [query.sortBy]: query.sortType });
   }
 

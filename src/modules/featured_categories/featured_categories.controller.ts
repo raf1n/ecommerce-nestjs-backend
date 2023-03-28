@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from "@nestjs/common";
 import { FeaturedCategoriesService } from "./featured_categories.service";
 import { CreateFeaturedCategoryDto } from "./dto/create-featured_category.dto";
@@ -26,8 +27,8 @@ export class FeaturedCategoriesController {
     return this.featuredCategoriesService.create(createFeaturedCategoryDto);
   }
   @Get()
-  findAll() {
-    return this.featuredCategoriesService.findAll();
+  findAll(@Query() query: { slug: string }) {
+    return this.featuredCategoriesService.findAll(query);
   }
 
   @Get(":id")
