@@ -71,6 +71,15 @@ export class OrdersController {
     return await this.ordersService.findAllOrdersAdmin(query);
   }
 
+  // get all order for seller wise
+  @Get("seller_slug/:slug")
+  async findAllOrderForSeller(
+    @Param("slug") slug: string,
+    @Query() query: SearchSortDto
+  ) {
+    return await this.ordersService.findAllOrderForSeller(slug, query);
+  }
+
   @Get(":slug")
   findOne(@Param("slug") slug: string) {
     return this.ordersService.findOne(slug);

@@ -51,19 +51,29 @@ export class UsersService {
     });
     return result;
   }
+
   async seller_apply(sellerApplicationDto: SellerApplicationDto) {
-    const result = await this.userModel.create({
-      slug: UtilSlug.getUniqueId(sellerApplicationDto.shop.shop_name),
+    console.log("from service", sellerApplicationDto.email);
+    const checkEmail = await this.userModel.find({
       email: sellerApplicationDto.email,
-      user_email: sellerApplicationDto.user_email,
-      fullName: sellerApplicationDto.fullName,
-      avatar: sellerApplicationDto.avatar,
-      phone: sellerApplicationDto.phone,
-      shop: sellerApplicationDto.shop,
-      status: sellerApplicationDto.status,
-      role: sellerApplicationDto.role,
     });
-    return result;
+    console.log("checkEmail-", checkEmail);
+    if (!checkEmail.length) {
+      return await this.userModel.create({
+        slug: UtilSlug.getUniqueId(sellerApplicationDto.shop.shop_name),
+        email: sellerApplicationDto.email,
+        user_email: sellerApplicationDto.user_email,
+        fullName: sellerApplicationDto.fullName,
+        avatar: sellerApplicationDto.avatar,
+        phone: sellerApplicationDto.phone,
+        shop: sellerApplicationDto.shop,
+        status: sellerApplicationDto.status,
+        role: sellerApplicationDto.role,
+      });
+    } else {
+      console.log("already exists from ");
+      return "already exists from  backend !";
+    }
   }
 
   async login(loginUserDto: Partial<LoginUserDto>): Promise<{
@@ -161,6 +171,7 @@ export class UsersService {
     console.log(allUsers);
     return allUsers;
   }
+
   async findAllSellers(query: any) {
     const allSellers = await this.userModel
       .find({
@@ -265,7 +276,7 @@ export class UsersService {
           fullName: updateShopInfoDto.fullName,
           phone: updateShopInfoDto.phone,
           avatar: updateShopInfoDto.avatar,
-          shop: shop,
+          shop_address: shop,
         },
       },
       { upsert: true, new: true }

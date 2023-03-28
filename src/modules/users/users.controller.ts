@@ -35,7 +35,7 @@ export class UsersController {
 
   @Post("/seller_apply")
   async Seller_apply(@Body() sellerApplicationDto: SellerApplicationDto) {
-    console.log("tyryrty", sellerApplicationDto);
+    console.log("from con--", sellerApplicationDto.email);
     return await this.usersService.seller_apply(sellerApplicationDto);
   }
 
@@ -69,7 +69,6 @@ export class UsersController {
     return this.usersService.findSingleUser(slug);
   }
 
-
   @Patch("/edit-status/:slug")
   update(@Param("slug") slug: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(slug, updateUserDto);
@@ -88,7 +87,7 @@ export class UsersController {
     @Param("email") email: string,
     @Body() updateShopInfoDto: UpdateShopInfoDto
   ) {
-    return this.usersService.updateShop(email, updateShopInfoDto);
+    return this.usersService.updateProfile(email, updateShopInfoDto);
   }
 
   @Get("/private/:slug")
