@@ -80,6 +80,11 @@ export class UsersController {
     return this.usersService.update(slug, updateUserDto);
   }
 
+  @Patch("/edit-seller-status/:slug")
+  updateSellerStatus(@Param("slug") slug: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.updateSellerStatus(slug, updateUserDto);
+  }
+
   @Patch("/shop/:email")
   updateShop(
     @Param("email") email: string,

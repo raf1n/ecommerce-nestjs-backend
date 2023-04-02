@@ -11,6 +11,7 @@ import { JwtService } from "@nestjs/jwt";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
 import { SellerApplicationDto } from "./dto/seller-application.dto";
 import { UpdateShopInfoDto } from "./dto/update-shop-info.dto";
+import { Product, ProductDocument } from "src/schemas/product.schema";
 const admin = require("firebase-admin");
 
 // const serviceAccount = require('../../utils/ecommerce-3dcd5-firebase-adminsdk-8iryd-a787e6184a.json');
@@ -37,6 +38,8 @@ admin.initializeApp({
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Product.name)
+    private readonly productModel: Model<ProductDocument>,
     // @InjectModel(Portfolio.name) private portfolioModel: Model<PortfolioDocument>,
     // @InjectModel(Picture.name) private pictureModel: Model<PictureDocument>,
     private jwtService: JwtService // eslint-disable-next-line no-empty-function
@@ -75,7 +78,7 @@ export class UsersService {
       }
     );
   }
-  
+
   async register(registerUserDto: RegisterUserDto) {
     const result = await this.userModel.create({
       firstName: registerUserDto.firstName,
@@ -262,6 +265,29 @@ export class UsersService {
       }
     );
     console.log(updatedUser);
+    return updatedUser;
+  }
+
+  async updateSellerStatus(
+    slug: string,
+    updateUserDto: UpdateUserDto
+  ): Promise<User> {
+    console.log(updateUserDto);
+    const status = updateUserDto.status;
+
+    const updatedUser = await this.userModel.findOneAndUpdate(
+      { slug: slug },
+      updateUserDto,
+      {
+        new: true,
+      }
+    );
+
+    const updateProducts = await this.productModel.updateMany(
+      { seller_slug: slug },
+      updateUserDto
+    );
+    console.log(updatedUser, updateProducts);
     return updatedUser;
   }
 
