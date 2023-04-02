@@ -2,9 +2,6 @@ import { IsOptional, IsString } from "class-validator";
 
 export class CreateBlogDto {
   @IsString()
-  slug: string;
-
-  @IsString()
   imageURL: string;
 
   @IsString()
