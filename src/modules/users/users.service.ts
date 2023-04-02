@@ -222,6 +222,10 @@ export class UsersService {
     return await this.userModel.findOne({ email: email });
   }
 
+  async findSellerByUser(email: string) {
+    return await this.userModel.findOne({ user_email: email });
+  }
+
   async findSingleUser(slug: string) {
     return await this.userModel.findOne({ slug: slug });
   }

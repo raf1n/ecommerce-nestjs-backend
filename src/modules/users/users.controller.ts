@@ -65,6 +65,11 @@ export class UsersController {
     return this.usersService.findOne(email);
   }
 
+  @Get("/seller/:email")
+  findSellerByUser(@Param("email") email: string) {
+    return this.usersService.findSellerByUser(email);
+  }
+
   @Get(":slug")
   findUser(@Param("slug") slug: string) {
     return this.usersService.findSingleUser(slug);

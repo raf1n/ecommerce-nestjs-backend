@@ -66,6 +66,7 @@ export class OrdersService {
       billing_state: createOrderDto.address.state,
     };
     const response = await this.sslcommerz.init_transaction(sslcommerzParams);
+    console.log(response);
 
     if (response && response.status === "SUCCESS") {
       const result = await new this.orderModel({
