@@ -50,11 +50,16 @@ export class UsersController {
     );
   }
 
+  @Get("/admins")
+  findAllAdmins(@Query() queries: SearchSortDto) {
+    return this.usersService.findAllAdmins(queries);
+  }
+
   @Get("/customers")
   findAllCustomers(@Query() queries: SearchSortDto) {
     return this.usersService.findAllCustomers(queries);
   }
-  
+
   @Get("/sellers")
   findAllSellers(@Query() queries: SearchSortDto) {
     return this.usersService.findAllSellers(queries);
@@ -81,7 +86,10 @@ export class UsersController {
   }
 
   @Patch("/edit-seller-status/:slug")
-  updateSellerStatus(@Param("slug") slug: string, @Body() updateUserDto: UpdateUserDto) {
+  updateSellerStatus(
+    @Param("slug") slug: string,
+    @Body() updateUserDto: UpdateUserDto
+  ) {
     return this.usersService.updateSellerStatus(slug, updateUserDto);
   }
 

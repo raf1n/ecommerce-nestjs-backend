@@ -81,8 +81,7 @@ export class UsersService {
 
   async register(registerUserDto: RegisterUserDto) {
     const result = await this.userModel.create({
-      firstName: registerUserDto.firstName,
-      lastName: registerUserDto.lastName,
+      fullName: registerUserDto.fullName,
       email: registerUserDto.email,
       // password: registerUserDto.password,
       userType: registerUserDto.userType,
@@ -264,7 +263,7 @@ export class UsersService {
         new: true,
       }
     );
-    console.log(updatedUser);
+    // console.log(updatedUser);
     return updatedUser;
   }
 
@@ -371,6 +370,19 @@ export class UsersService {
 
     return editProfile;
   }
+
+  async findAllAdmins(query: any) {
+    console.log(query);
+    const allAdmins = await this.userModel
+      .find({
+        role: "admin",
+        fullName: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
+    // console.log(allUsers);
+    return allAdmins;
+  }
+
   //-----------
   async delete(slug: string): Promise<User> {
     return await this.userModel.findOneAndDelete({ slug });
