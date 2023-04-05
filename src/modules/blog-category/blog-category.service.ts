@@ -23,14 +23,50 @@ export class BlogCategoryService {
   async findAll(): Promise<BlogCategory[]> {
     return await this.blogCategoryModel.find({});
   }
-
-  findOne(id: number) {
-    return `This action returns a #${id} blogCategory`;
+  async findAllForBlog(): Promise<BlogCategory[]> {
+    return await this.blogCategoryModel.find({ status: "active" });
   }
 
-  update(id: number, updateBlogCategoryDto: UpdateBlogCategoryDto) {
-    return `This action updates a #${id} blogCategory`;
+  // findOne(id: number) {
+  //   return `This action returns a #${id} blogCategory`;
+  // }
+  async findOne(slug: string) {
+    return this.blogCategoryModel.findOne({ slug: slug });
   }
+
+  // update(id: number, updateBlogCategoryDto: UpdateBlogCategoryDto) {
+  //   return `This action updates a #${id} blogCategory`;
+  // }
+
+  async update(
+    slug: string,
+    updateBlogCategoryDto: UpdateBlogCategoryDto
+  ): Promise<any> {
+    const result = await this.blogCategoryModel.findOneAndUpdate(
+      { slug: slug },
+      updateBlogCategoryDto,
+      { new: true }
+    );
+    return result;
+  }
+
+  //status update ---------------
+  async updateStatus(
+    slug: string,
+    updateBlogCategoryDto: UpdateBlogCategoryDto
+  ): Promise<any> {
+    console.log(updateBlogCategoryDto);
+    const updatedStatus = await this.blogCategoryModel.findOneAndUpdate(
+      { slug: slug },
+      updateBlogCategoryDto,
+      {
+        new: true,
+      }
+    );
+    console.log(updatedStatus);
+    return updatedStatus;
+  }
+  //------------------------
 
   async delete(slug: string): Promise<BlogCategory> {
     return await this.blogCategoryModel.findOneAndDelete({ slug });
