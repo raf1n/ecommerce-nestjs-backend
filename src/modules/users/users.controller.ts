@@ -134,4 +134,9 @@ export class UsersController {
   delete(@Param("slug") slug: string) {
     return this.usersService.delete(slug);
   }
+
+  @Delete("/deleteAdmin/:slug")
+  deleteAdmin(@Param("slug") slug: string, @Query() query: { email: string }) {
+    return this.usersService.deleteAdmin(slug, query.email);
+  }
 }

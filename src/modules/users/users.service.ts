@@ -388,4 +388,34 @@ export class UsersService {
   async delete(slug: string): Promise<User> {
     return await this.userModel.findOneAndDelete({ slug });
   }
+
+  async deleteAdmin(
+    slug: string, //
+    email: string
+  ): Promise<User> {
+    let userData: any;
+    let data: any;
+    await admin
+      .auth()
+      .getUserByEmail(email)
+      .then((userRecord: string) => {
+        // See the UserRecord reference doc for the contents of userRecord.
+        userData = JSON.stringify(userRecord);
+        data = JSON.parse(userData);
+        admin
+          .auth()
+          .deleteUser(data.uid)
+          .then(() => {
+            console.log("Successfully deleted user");
+          })
+          .catch((error) => {
+            console.log("Error deleting user:", error);
+          });
+      })
+      .catch((error: string) => {
+        console.log("Error fetching user data:", error);
+      });
+
+    return await this.userModel.findOneAndDelete({ slug });
+  }
 }
