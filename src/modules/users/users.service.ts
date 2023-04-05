@@ -81,10 +81,12 @@ export class UsersService {
 
   async register(registerUserDto: RegisterUserDto) {
     const result = await this.userModel.create({
+      slug: UtilSlug.getUniqueId(registerUserDto.fullName),
       fullName: registerUserDto.fullName,
       email: registerUserDto.email,
       // password: registerUserDto.password,
-      userType: registerUserDto.userType,
+      role: registerUserDto.role,
+      tokenType: registerUserDto.tokenType,
       status: "active",
     });
     return result;
@@ -372,7 +374,6 @@ export class UsersService {
   }
 
   async findAllAdmins(query: any) {
-    console.log(query);
     const allAdmins = await this.userModel
       .find({
         role: "admin",

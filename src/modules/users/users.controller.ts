@@ -21,7 +21,13 @@ import { UpdateShopInfoDto } from "./dto/update-shop-info.dto";
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post("/sign_up")
+  // @Post("/sign_up")
+  // async register(@Body() registerUserDto: RegisterUserDto) {
+  //   console.log("hello", registerUserDto);
+  //   return await this.usersService.register(registerUserDto);
+  // }
+
+  @Post("/add_admin")
   async register(@Body() registerUserDto: RegisterUserDto) {
     console.log("hello", registerUserDto);
     return await this.usersService.register(registerUserDto);

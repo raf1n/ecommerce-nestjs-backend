@@ -5,9 +5,6 @@ export class RegisterUserDto {
   email: string;
 
   @IsString({ message: "should be string" })
-  userType: string;
-
-  @IsString({ message: "should be string" })
   fullName: string;
 
   @IsString({ message: "should be string" })
