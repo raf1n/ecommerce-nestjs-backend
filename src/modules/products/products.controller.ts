@@ -126,4 +126,9 @@ export class ProductsController {
   ) {
     return this.productsService.getSingleProductsInventory(slug, query);
   }
+
+  @Get("/admin/related/:catSlug")
+  async findByCatSlug(@Param("catSlug") catSlug: string) {
+    return this.productsService.getRelatedProducts(catSlug);
+  }
 }
