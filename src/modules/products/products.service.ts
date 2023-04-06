@@ -45,7 +45,7 @@ export class ProductsService {
     highlight: string;
     max: string;
     min: string;
-  }): Promise<Product[]> {
+  }): Promise<{ filteredProducts: Product[]; count: number }> {
     const search = query.search;
     const categoriesStrArr = query.categories
       ? query.categories.split(" ").slice(1)
@@ -100,12 +100,50 @@ export class ProductsService {
         : {}
     );
 
-    console.log(
-      categoryFilter,
-      subCategoryFilter,
-      brandFilter,
-      highlightFilter
-    );
+    // console.log(
+    //   categoryFilter,
+    //   subCategoryFilter,
+    //   brandFilter,
+    //   highlightFilter
+    // );
+
+    const productCount = await this.productModel.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              productName: { $regex: "(?i)" + search + "(?-i)" },
+            },
+            {
+              status: "active",
+            },
+            categoryFilter,
+            brandFilter,
+            highlightFilter,
+            subCategoryFilter,
+            {
+              $or: [
+                {
+                  price: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+                {
+                  offerPrice: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+      { $count: "totalProducts" },
+    ]);
+
+    // console.log({ productCount });
 
     const filteredProducts = await this.productModel.aggregate([
       {
@@ -142,7 +180,14 @@ export class ProductsService {
       },
     ]);
 
-    return filteredProducts;
+    const result = {
+      filteredProducts: filteredProducts,
+      count: productCount.length !== 0 ? productCount[0].totalProducts : 0,
+    };
+
+    // console.log(result);
+
+    return result;
   }
 
   async findFilteredProductsBySeller(
@@ -156,7 +201,7 @@ export class ProductsService {
       max: string;
       min: string;
     }
-  ): Promise<{ sellerData: User; filteredProducts: Product[] }> {
+  ): Promise<{ sellerData: User; filteredProducts: Product[]; count: number }> {
     const search = query.search;
     const categoriesStrArr = query.categories
       ? query.categories.split(" ").slice(1)
@@ -169,7 +214,7 @@ export class ProductsService {
 
     const seller = await this.userModel.findOne({ "shop.shop_name": shopName });
     if (!seller) {
-      return { sellerData: null, filteredProducts: [] };
+      return { sellerData: null, filteredProducts: [], count: 0 };
     }
 
     const sellerSlug = seller.slug;
@@ -225,6 +270,45 @@ export class ProductsService {
       highlightFilter
     );
 
+    const productCount = await this.productModel.aggregate([
+      {
+        $match: {
+          $and: [
+            {
+              seller_slug: sellerSlug,
+            },
+            {
+              productName: { $regex: "(?i)" + search + "(?-i)" },
+            },
+            {
+              status: "active",
+            },
+            categoryFilter,
+            brandFilter,
+            highlightFilter,
+            subCategoryFilter,
+            {
+              $or: [
+                {
+                  price: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+                {
+                  offerPrice: {
+                    $gte: minRange,
+                    $lte: maxRange,
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      },
+      { $count: "totalProducts" },
+    ]);
+
     const filteredProducts = await this.productModel.aggregate([
       {
         $match: {
@@ -263,7 +347,11 @@ export class ProductsService {
       },
     ]);
 
-    return { sellerData: seller, filteredProducts: filteredProducts };
+    return {
+      sellerData: seller,
+      filteredProducts: filteredProducts,
+      count: productCount.length !== 0 ? productCount[0].totalProducts : 0,
+    };
   }
 
   //   async findAll(): Promise<ProductDocument[]> {
