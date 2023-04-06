@@ -143,8 +143,6 @@ export class ProductsService {
       { $count: "totalProducts" },
     ]);
 
-    // console.log({ productCount });
-
     const filteredProducts = await this.productModel.aggregate([
       {
         $match: {
