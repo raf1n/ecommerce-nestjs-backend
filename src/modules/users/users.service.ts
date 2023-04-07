@@ -144,6 +144,8 @@ export class UsersService {
       } catch {}
     }
 
+    console.log({ isVerified, token, tokenType });
+
     if (isVerified) {
       const { email, fullName, role } = loginUserDto;
 
@@ -154,6 +156,107 @@ export class UsersService {
       const user = await this.userModel.findOne({ email: email });
 
       if (user.role === "admin" || user.role === "seller") {
+        return {
+          slug: loginUserDto["slug"],
+          access_token: null,
+          role: user.role,
+        };
+      }
+
+      if (user?.avatar) {
+        delete loginUserDto.avatar;
+      }
+
+      if (user?.fullName) {
+        delete loginUserDto.fullName;
+      }
+
+      if (user) {
+        loginUserDto["slug"] = user.slug;
+      } else {
+        loginUserDto["slug"] = UtilSlug.getUniqueId(fullName);
+      }
+
+      const createUser = await this.userModel.findOneAndUpdate(
+        { email: email },
+        {
+          $set: {
+            ...loginUserDto,
+          },
+        },
+        { upsert: true, new: true }
+      );
+      console.log(
+        "🚀 ~ file: users.service.ts:179 ~ UsersService ~ login ~ createUser:",
+        createUser
+      );
+
+      const accessToken = this.jwtService.sign({
+        _id: createUser._id as string,
+        email: createUser.email,
+        role: createUser.role,
+      });
+
+      return {
+        slug: loginUserDto["slug"],
+        access_token: accessToken,
+        userId: createUser._id as string,
+        role: createUser.role as string,
+        email: createUser.email as string,
+        avatar: createUser.avatar as string,
+        fullName: createUser.fullName as string,
+        phone: createUser.phone || "",
+        address: createUser.address,
+      };
+    }
+
+    return {
+      slug: loginUserDto["slug"],
+      access_token: accessToken,
+      role: null,
+    };
+  }
+
+  async adminSellerLogin(loginUserDto: Partial<LoginUserDto>): Promise<
+    Partial<User> &
+      Partial<{
+        slug: string;
+        role: string;
+        access_token: string | null;
+        userId?: string;
+      }>
+  > {
+    console.log("loginUserDto", loginUserDto);
+    const { token, tokenType } = loginUserDto;
+    let isVerified = false;
+    const accessToken = null;
+
+    if (tokenType == "facebook") {
+      isVerified = await TokenVerifier.verifyFacebookToken(token);
+    } else if (tokenType == "google") {
+      isVerified = await TokenVerifier.verifyGoogleToken(token);
+      console.log("is verify google", isVerified);
+    } else if (tokenType == "email") {
+      try {
+        const decodedUser = await admin.auth().verifyIdToken(token); // 73-9 token verify hole bhitorer data gulo return korbe
+        if (decodedUser?.uid) {
+          isVerified = true;
+        }
+      } catch {}
+    }
+
+    console.log({ isVerified, token, tokenType });
+
+    if (isVerified) {
+      const { email, fullName, role } = loginUserDto;
+
+      console.log(`email: ${email}`);
+      console.log(`fullName: ${fullName}`);
+      console.log(`role: ${role}`);
+
+      const user = await this.userModel.findOne({ email: email });
+
+      if (user.role === "buyer") {
         return {
           slug: loginUserDto["slug"],
           access_token: null,

@@ -29,14 +29,17 @@ export class UsersController {
 
   @Post("/add_admin")
   async register(@Body() registerUserDto: RegisterUserDto) {
-    console.log("hello", registerUserDto);
     return await this.usersService.register(registerUserDto);
   }
 
   @Post("/login")
   async login(@Body() loginUserDto: LoginUserDto) {
-    console.log("hello1234", loginUserDto);
     return await this.usersService.login(loginUserDto);
+  }
+
+  @Post("seller/login")
+  async adminSellerLogin(@Body() loginUserDto: LoginUserDto) {
+    return await this.usersService.adminSellerLogin(loginUserDto);
   }
 
   @Post("/seller_apply")
