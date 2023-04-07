@@ -312,7 +312,7 @@ export class OrdersService {
   async SSLCommerz_payment_success(transaction_id: string) {
     console.log(transaction_id);
     const order = await this.orderModel.findOne({ transaction_id });
-    await this.cartModel.deleteOne({ user_slug: order.user_slug });
+    await this.cartModel.deleteMany({ user_slug: order.user_slug });
     await this.orderModel.findOneAndUpdate(
       { transaction_id },
       {
