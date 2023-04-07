@@ -34,7 +34,7 @@ export class UsersController {
   }
 
   @Post("/login")
-  async Login(@Body() loginUserDto: LoginUserDto) {
+  async login(@Body() loginUserDto: LoginUserDto) {
     console.log("hello1234", loginUserDto);
     return await this.usersService.login(loginUserDto);
   }
