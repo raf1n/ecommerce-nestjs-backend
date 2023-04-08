@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from "@nestjs/common";
 import { SubscriberService } from "./subscriber.service";
 import { CreateSubscriberDto } from "./dto/create-subscriber.dto";
 import { UpdateSubscriberDto } from "./dto/update-subscriber.dto";
+import { SearchSortDto } from "src/utils/all-queries.dto";
 
 @Controller("subscriber")
 export class SubscriberController {
@@ -20,9 +22,10 @@ export class SubscriberController {
     return this.subscriberService.create(createSubscriberDto);
   }
 
+  //..............
   @Get()
-  findAll() {
-    return this.subscriberService.findAll();
+  async findAll(@Query() query: SearchSortDto) {
+    return await this.subscriberService.findAll(query);
   }
 
   @Get(":id")
@@ -38,8 +41,8 @@ export class SubscriberController {
     return this.subscriberService.update(+id, updateSubscriberDto);
   }
 
-  @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.subscriberService.remove(+id);
+  @Delete(":slug")
+  delete(@Param("slug") slug: string) {
+    return this.subscriberService.delete(slug);
   }
 }
