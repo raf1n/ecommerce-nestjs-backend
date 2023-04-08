@@ -279,6 +279,7 @@ export class ProductsService {
     const allProductData = await this.productModel.find();
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
+
     const featuredProducts = await this.productModel
       .find({ isFeatured: true, status: "active" }, { _id: 0 })
       // .limit(limit)
