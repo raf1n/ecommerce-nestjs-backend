@@ -47,6 +47,7 @@ export class BlogCategoryController {
   ) {
     return this.blogCategoryService.update(slug, updateBlogCategoryDto);
   }
+  
   // status active/inactive
   @Patch("/edit-status/:slug")
   updateStatus(

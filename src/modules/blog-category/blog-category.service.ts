@@ -50,7 +50,7 @@ export class BlogCategoryService {
     return result;
   }
 
-  //status update ---------------
+  //-------status update ---------------
   async updateStatus(
     slug: string,
     updateBlogCategoryDto: UpdateBlogCategoryDto
