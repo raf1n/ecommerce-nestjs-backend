@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { IsObject } from "class-validator";
 import { Document } from "mongoose";
 
 export type CouponDocument = Coupon & Document;
@@ -14,8 +15,16 @@ export class Coupon {
   @Prop()
   code: string;
 
-  @Prop()
-  discount: number;
+  // @Prop()
+  // discount: number;
+
+  @Prop({ type: { role: String, value: Number } })
+  discount: {
+    type: {
+      role: string;
+      value: number;
+    };
+  };
 
   @Prop()
   items_number: number;

@@ -616,6 +616,20 @@ export class ProductsService {
   // })
   // .sort({ [query.sortBy]: query.sortType });
 
+  // async findOne(slug: string) {
+  //   const subCategoryFind = await this.subCategoryModel.findOne({ slug: slug });
+
+  //   return subCategoryFind;
+  // }
+
+  async getRelatedProducts(catSlug: string) {
+    const relatedProductsFind = await this.productModel.find({
+      catSlug,
+    });
+
+    return relatedProductsFind;
+  }
+
   async getSingleProductsInventory(slug: string, query: any) {
     console.log(query);
     const result = await this.productModel.aggregate([
