@@ -261,6 +261,8 @@ export class OrdersService {
           total: 1,
           seller_slug: 1,
           user_slug: 1,
+          // price: 1,
+          // offerPrice: 1,
           product_list: {
             $filter: {
               input: "$product_list",
