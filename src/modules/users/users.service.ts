@@ -81,11 +81,12 @@ export class UsersService {
 
   async register(registerUserDto: RegisterUserDto) {
     const result = await this.userModel.create({
-      firstName: registerUserDto.firstName,
-      lastName: registerUserDto.lastName,
+      slug: UtilSlug.getUniqueId(registerUserDto.fullName),
+      fullName: registerUserDto.fullName,
       email: registerUserDto.email,
       // password: registerUserDto.password,
-      userType: registerUserDto.userType,
+      role: registerUserDto.role,
+      tokenType: registerUserDto.tokenType,
       status: "active",
     });
     return result;
@@ -115,15 +116,15 @@ export class UsersService {
     }
   }
 
-  async login(loginUserDto: Partial<LoginUserDto>): Promise<{
-    slug: string | undefined;
-    access_token: string | null;
-    userId?: string | null;
-    role?: string | null;
-    fullName?: string | null;
-    avatar?: string | null;
-    email?: string | null;
-  }> {
+  async login(loginUserDto: Partial<LoginUserDto>): Promise<
+    Partial<User> &
+      Partial<{
+        slug: string;
+        role: string;
+        access_token: string | null;
+        userId?: string;
+      }>
+  > {
     console.log("loginUserDto", loginUserDto);
     const { token, tokenType } = loginUserDto;
     let isVerified = false;
@@ -143,6 +144,8 @@ export class UsersService {
       } catch {}
     }
 
+    console.log({ isVerified, token, tokenType });
+
     if (isVerified) {
       const { email, fullName, role } = loginUserDto;
 
@@ -151,6 +154,14 @@ export class UsersService {
       console.log(`role: ${role}`);
 
       const user = await this.userModel.findOne({ email: email });
+
+      if (user.role === "admin" || user.role === "seller") {
+        return {
+          slug: loginUserDto["slug"],
+          access_token: null,
+          role: user.role,
+        };
+      }
 
       if (user?.avatar) {
         delete loginUserDto.avatar;
@@ -175,9 +186,15 @@ export class UsersService {
         },
         { upsert: true, new: true }
       );
+      console.log(
+        "🚀 ~ file: users.service.ts:179 ~ UsersService ~ login ~ createUser:",
+        createUser
+      );
+
       const accessToken = this.jwtService.sign({
         _id: createUser._id as string,
         email: createUser.email,
+        role: createUser.role,
       });
 
       return {
@@ -188,6 +205,109 @@ export class UsersService {
         email: createUser.email as string,
         avatar: createUser.avatar as string,
         fullName: createUser.fullName as string,
+        phone: createUser.phone || "",
+        address: createUser.address,
+      };
+    }
+
+    return {
+      slug: loginUserDto["slug"],
+      access_token: accessToken,
+      role: null,
+    };
+  }
+
+  async adminSellerLogin(loginUserDto: Partial<LoginUserDto>): Promise<
+    Partial<User> &
+      Partial<{
+        slug: string;
+        role: string;
+        access_token: string | null;
+        userId?: string;
+      }>
+  > {
+    console.log("loginUserDto", loginUserDto);
+    const { token, tokenType } = loginUserDto;
+    let isVerified = false;
+    const accessToken = null;
+
+    if (tokenType == "facebook") {
+      isVerified = await TokenVerifier.verifyFacebookToken(token);
+    } else if (tokenType == "google") {
+      isVerified = await TokenVerifier.verifyGoogleToken(token);
+      console.log("is verify google", isVerified);
+    } else if (tokenType == "email") {
+      try {
+        const decodedUser = await admin.auth().verifyIdToken(token); // 73-9 token verify hole bhitorer data gulo return korbe
+        if (decodedUser?.uid) {
+          isVerified = true;
+        }
+      } catch {}
+    }
+
+    console.log({ isVerified, token, tokenType });
+
+    if (isVerified) {
+      const { email, fullName, role } = loginUserDto;
+
+      console.log(`email: ${email}`);
+      console.log(`fullName: ${fullName}`);
+      console.log(`role: ${role}`);
+
+      const user = await this.userModel.findOne({ email: email });
+
+      if (user.role === "buyer") {
+        return {
+          slug: loginUserDto["slug"],
+          access_token: null,
+          role: user.role,
+        };
+      }
+
+      if (user?.avatar) {
+        delete loginUserDto.avatar;
+      }
+
+      if (user?.fullName) {
+        delete loginUserDto.fullName;
+      }
+
+      if (user) {
+        loginUserDto["slug"] = user.slug;
+      } else {
+        loginUserDto["slug"] = UtilSlug.getUniqueId(fullName);
+      }
+
+      const createUser = await this.userModel.findOneAndUpdate(
+        { email: email },
+        {
+          $set: {
+            ...loginUserDto,
+          },
+        },
+        { upsert: true, new: true }
+      );
+      console.log(
+        "🚀 ~ file: users.service.ts:179 ~ UsersService ~ login ~ createUser:",
+        createUser
+      );
+
+      const accessToken = this.jwtService.sign({
+        _id: createUser._id as string,
+        email: createUser.email,
+        role: createUser.role,
+      });
+
+      return {
+        slug: loginUserDto["slug"],
+        access_token: accessToken,
+        userId: createUser._id as string,
+        role: createUser.role as string,
+        email: createUser.email as string,
+        avatar: createUser.avatar as string,
+        fullName: createUser.fullName as string,
+        phone: createUser.phone || "",
+        address: createUser.address,
       };
     }
 
@@ -264,7 +384,7 @@ export class UsersService {
         new: true,
       }
     );
-    console.log(updatedUser);
+    // console.log(updatedUser);
     return updatedUser;
   }
 
@@ -371,8 +491,50 @@ export class UsersService {
 
     return editProfile;
   }
+
+  async findAllAdmins(query: any) {
+    const allAdmins = await this.userModel
+      .find({
+        role: "admin",
+        fullName: new RegExp(query.search, "i"),
+      })
+      .sort({ [query.sortBy]: query.sortType });
+    // console.log(allUsers);
+    return allAdmins;
+  }
+
   //-----------
   async delete(slug: string): Promise<User> {
+    return await this.userModel.findOneAndDelete({ slug });
+  }
+
+  async deleteAdmin(
+    slug: string, //
+    email: string
+  ): Promise<User> {
+    let userData: any;
+    let data: any;
+    await admin
+      .auth()
+      .getUserByEmail(email)
+      .then((userRecord: string) => {
+        // See the UserRecord reference doc for the contents of userRecord.
+        userData = JSON.stringify(userRecord);
+        data = JSON.parse(userData);
+        admin
+          .auth()
+          .deleteUser(data.uid)
+          .then(() => {
+            console.log("Successfully deleted user");
+          })
+          .catch((error) => {
+            console.log("Error deleting user:", error);
+          });
+      })
+      .catch((error: string) => {
+        console.log("Error fetching user data:", error);
+      });
+
     return await this.userModel.findOneAndDelete({ slug });
   }
 }

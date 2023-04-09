@@ -11,6 +11,7 @@ import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 //@ts-ignore
 import * as SSLCommerz from "sslcommerz-nodejs";
+import { Cart, CartDocument } from "src/schemas/cart.schema";
 
 @Injectable()
 export class OrdersService {
@@ -22,7 +23,9 @@ export class OrdersService {
     @InjectModel(Inventory.name)
     private readonly inventoryModel: Model<InventoryDocument>,
     @InjectModel(Product.name)
-    private readonly productModel: Model<ProductDocument>
+    private readonly productModel: Model<ProductDocument>,
+    @InjectModel(Cart.name)
+    private readonly cartModel: Model<CartDocument>
   ) {
     this.sslcommerz = new SSLCommerz({
       store_id: process.env.STORE_ID,
@@ -261,6 +264,8 @@ export class OrdersService {
           total: 1,
           seller_slug: 1,
           user_slug: 1,
+          // price: 1,
+          // offerPrice: 1,
           product_list: {
             $filter: {
               input: "$product_list",
@@ -308,6 +313,8 @@ export class OrdersService {
 
   async SSLCommerz_payment_success(transaction_id: string) {
     console.log(transaction_id);
+    const order = await this.orderModel.findOne({ transaction_id });
+    await this.cartModel.deleteMany({ user_slug: order.user_slug });
     await this.orderModel.findOneAndUpdate(
       { transaction_id },
       {
