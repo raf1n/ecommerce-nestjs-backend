@@ -34,7 +34,7 @@ export class CreateFlashSaleDto {
   offer?: string;
 
   @IsOptional()
-  @IsDate()
+  // @IsDate()
   time?: string;
 
   // @IsString()
