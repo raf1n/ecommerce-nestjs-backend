@@ -110,7 +110,7 @@ export class OrdersService {
         // console.log(response.GatewayPageURL);
         return {
           data: response.GatewayPageURL,
-          message: "Order successfull ",
+          message: "SSL Order successful",
         };
       } else {
         return {
@@ -168,7 +168,7 @@ export class OrdersService {
       // console.log(response.GatewayPageURL);
       return {
         data: result,
-        message: "Order successfull ",
+        message: "COD Order successful",
       };
     } else {
       return {
