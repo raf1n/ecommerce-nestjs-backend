@@ -191,7 +191,10 @@ export class OrdersService {
 
   async findAllOrdersAdmin(query: any) {
     let match_value = new RegExp(query.search, "i");
-    const allOrdersData = await this.orderModel.aggregate([
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
+
+    const allOrdersCount = await this.orderModel.aggregate([
       {
         $match: {
           slug: {
@@ -215,9 +218,42 @@ export class OrdersService {
       {
         $unwind: "$userData",
       },
+      { $count: "totalOrders" },
     ]);
 
-    const filteredOrdersData = await this.orderModel.aggregate([
+    const allOrdersData = await this.orderModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: match_value,
+          },
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
+        },
+      },
+      {
+        $skip: page * limit,
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+
+    const filteredOrdersCount = await this.orderModel.aggregate([
       {
         $match: {
           slug: {
@@ -242,9 +278,52 @@ export class OrdersService {
       {
         $unwind: "$userData",
       },
+      { $count: "totalFilteredOrders" },
     ]);
 
-    return { allOrdersData, filteredOrdersData };
+    const filteredOrdersData = await this.orderModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: match_value,
+          },
+          order_status: query.order_status,
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
+        },
+      },
+      {
+        $skip: page * limit,
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+
+    return {
+      allOrdersData,
+      allOrdersCount:
+        allOrdersCount.length !== 0 ? allOrdersCount[0].totalOrders : 0,
+      filteredOrdersData,
+      filteredOrdersCount:
+        filteredOrdersCount.length !== 0
+          ? filteredOrdersCount[0].totalFilteredOrders
+          : 0,
+    };
   }
   // get all order for seller wise-----here "slug" is seller slug
   async findAllOrderForSeller(slug: string, query: any) {
