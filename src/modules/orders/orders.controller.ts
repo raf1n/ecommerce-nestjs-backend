@@ -68,10 +68,11 @@ export class OrdersController {
   }
 
   @Get("/admin")
-  async findAllAdminProduct(
+  async findAllOrdersAdmin(
     @Query() query: SearchSortDto
     // @Request() req: Request
   ) {
+    console.log("🚀 ~ file: orders.controller.ts:75 ~ OrdersController ~ query:", query)
     return await this.ordersService.findAllOrdersAdmin(query);
   }
 
