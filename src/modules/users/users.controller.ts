@@ -16,14 +16,10 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
 import { UpdateShopInfoDto } from "./dto/update-shop-info.dto";
-// import { GoogleService } from "./googleService.service";
 
 @Controller("users")
 export class UsersController {
-  constructor(
-    // private readonly googleService: GoogleService,
-    private readonly usersService: UsersService
-  ) {}
+  constructor(private readonly usersService: UsersService) {}
 
   // @Post("/sign_up")
   // async register(@Body() registerUserDto: RegisterUserDto) {
@@ -146,10 +142,4 @@ export class UsersController {
   deleteAdmin(@Param("slug") slug: string, @Query() query: { email: string }) {
     return this.usersService.deleteAdmin(slug, query.email);
   }
-
-  // @Get("/check-email/aaa")
-  // async checkEmailExists(@Query("email") email: string): Promise<boolean> {
-  //   console.log("aaaaa");
-  //   return this.googleService.checkEmailExists(email);
-  // }
 }

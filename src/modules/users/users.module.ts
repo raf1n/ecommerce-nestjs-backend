@@ -7,7 +7,6 @@ import { UserSchema } from "src/schemas/user.schema";
 import { User } from "./entities/user.entity";
 import { JwtModule } from "@nestjs/jwt/dist";
 import { Product, ProductSchema } from "src/schemas/product.schema";
-// import { GoogleService } from "./googleService.service";
 
 @Module({
   imports: [
@@ -22,9 +21,6 @@ import { Product, ProductSchema } from "src/schemas/product.schema";
     }),
   ],
   controllers: [UsersController],
-  providers: [
-    UsersService,
-    // GoogleService
-  ],
+  providers: [UsersService],
 })
 export class UsersModule {}

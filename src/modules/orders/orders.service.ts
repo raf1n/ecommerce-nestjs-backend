@@ -30,7 +30,7 @@ export class OrdersService {
     this.sslcommerz = new SSLCommerz({
       store_id: process.env.STORE_ID,
       store_passwd: process.env.STORE_PASSWORD,
-      isSandboxMode: false, // Set to false in production
+      isSandboxMode: true, // Set to false in production
     });
   }
 
@@ -172,7 +172,57 @@ export class OrdersService {
       };
     } else {
       return {
-        message: "Order  failed !",
+        message: "Order failed!",
+      };
+    }
+  }
+
+  async createBkashOrder(createOrderDto: CreateOrderDto): Promise<Object> {
+    const slug = `order_${createOrderDto.user_slug}`;
+    createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
+
+    const result = await new this.orderModel({
+      ...createOrderDto,
+    }).save();
+
+    const updateProductStock = async (data) => {
+      await this.productModel.findOneAndUpdate(
+        { slug: data.slug },
+        {
+          $inc: {
+            stock: -data.quantity,
+          },
+        }
+      );
+    };
+
+    let stockProducts = [];
+
+    for (let product of createOrderDto.product_list) {
+      let p = {
+        slug: UtilSlug.getUniqueId("stock"),
+        //@ts-ignore
+        product_slug: product.slug,
+        //@ts-ignore
+        quantity: product.quantity,
+        type: "stockOut",
+      };
+
+      stockProducts.push(p);
+
+      await updateProductStock(product);
+    }
+
+    await this.inventoryModel.create(stockProducts);
+    if (result) {
+      // console.log(response.GatewayPageURL);
+      return {
+        data: result,
+        message: "Order successful",
+      };
+    } else {
+      return {
+        message: "Order failed!",
       };
     }
   }
