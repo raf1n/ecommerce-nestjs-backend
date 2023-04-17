@@ -110,7 +110,7 @@ export class OrdersService {
         // console.log(response.GatewayPageURL);
         return {
           data: response.GatewayPageURL,
-          message: "Order successfull ",
+          message: "SSL Order successful",
         };
       } else {
         return {
@@ -168,11 +168,61 @@ export class OrdersService {
       // console.log(response.GatewayPageURL);
       return {
         data: result,
-        message: "Order successfull ",
+        message: "COD Order successful",
       };
     } else {
       return {
-        message: "Order  failed !",
+        message: "Order failed!",
+      };
+    }
+  }
+
+  async createBkashOrder(createOrderDto: CreateOrderDto): Promise<Object> {
+    const slug = `order_${createOrderDto.user_slug}`;
+    createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
+
+    const result = await new this.orderModel({
+      ...createOrderDto,
+    }).save();
+
+    const updateProductStock = async (data) => {
+      await this.productModel.findOneAndUpdate(
+        { slug: data.slug },
+        {
+          $inc: {
+            stock: -data.quantity,
+          },
+        }
+      );
+    };
+
+    let stockProducts = [];
+
+    for (let product of createOrderDto.product_list) {
+      let p = {
+        slug: UtilSlug.getUniqueId("stock"),
+        //@ts-ignore
+        product_slug: product.slug,
+        //@ts-ignore
+        quantity: product.quantity,
+        type: "stockOut",
+      };
+
+      stockProducts.push(p);
+
+      await updateProductStock(product);
+    }
+
+    await this.inventoryModel.create(stockProducts);
+    if (result) {
+      // console.log(response.GatewayPageURL);
+      return {
+        data: result,
+        message: "BKash Order successful",
+      };
+    } else {
+      return {
+        message: "Order failed!",
       };
     }
   }
@@ -191,7 +241,10 @@ export class OrdersService {
 
   async findAllOrdersAdmin(query: any) {
     let match_value = new RegExp(query.search, "i");
-    const allOrdersData = await this.orderModel.aggregate([
+    const page = parseInt(query.page);
+    const limit = parseInt(query.limit);
+
+    const allOrdersCount = await this.orderModel.aggregate([
       {
         $match: {
           slug: {
@@ -215,9 +268,42 @@ export class OrdersService {
       {
         $unwind: "$userData",
       },
+      { $count: "totalOrders" },
     ]);
 
-    const filteredOrdersData = await this.orderModel.aggregate([
+    const allOrdersData = await this.orderModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: match_value,
+          },
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
+        },
+      },
+      {
+        $skip: page * limit,
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+
+    const filteredOrdersCount = await this.orderModel.aggregate([
       {
         $match: {
           slug: {
@@ -242,9 +328,52 @@ export class OrdersService {
       {
         $unwind: "$userData",
       },
+      { $count: "totalFilteredOrders" },
     ]);
 
-    return { allOrdersData, filteredOrdersData };
+    const filteredOrdersData = await this.orderModel.aggregate([
+      {
+        $match: {
+          slug: {
+            $regex: match_value,
+          },
+          order_status: query.order_status,
+        },
+      },
+      {
+        $sort: {
+          [query.sortBy]: query.sortType === "asc" ? 1 : -1,
+        },
+      },
+      {
+        $skip: page * limit,
+      },
+      {
+        $limit: limit,
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+
+    return {
+      allOrdersData,
+      allOrdersCount:
+        allOrdersCount.length !== 0 ? allOrdersCount[0].totalOrders : 0,
+      filteredOrdersData,
+      filteredOrdersCount:
+        filteredOrdersCount.length !== 0
+          ? filteredOrdersCount[0].totalFilteredOrders
+          : 0,
+    };
   }
   // get all order for seller wise-----here "slug" is seller slug
   async findAllOrderForSeller(slug: string, query: any) {
