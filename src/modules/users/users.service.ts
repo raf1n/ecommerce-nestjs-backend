@@ -448,8 +448,11 @@ export class UsersService {
       opens_at: updateShopInfoDto.shop.opens_at,
       close_at: updateShopInfoDto.shop.close_at,
       geetings_message: updateShopInfoDto.shop.geetings_message,
-      social_icon: updateShopInfoDto.shop.social_icon,
-      social_link: updateShopInfoDto.shop.social_link,
+      // social_icon: updateShopInfoDto.shop.social_icon,
+      // social_link: updateShopInfoDto.shop.social_link,
+
+      social: updateShopInfoDto?.shop?.social,
+
       seo_title: updateShopInfoDto.shop.seo_title,
       seo_des: updateShopInfoDto.shop.seo_des,
     };

@@ -1,16 +1,22 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { BlogCategory } from "src/schemas/blog-category.schema";
+import {
+  BlogCategory,
+  BlogCategoryDocument,
+} from "src/schemas/blog-category.schema";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateBlogCategoryDto } from "./dto/create-blog-category.dto";
 import { UpdateBlogCategoryDto } from "./dto/update-blog-category.dto";
+import { Blog, BlogDocument } from "src/schemas/blog.schema";
 
 @Injectable()
 export class BlogCategoryService {
   constructor(
     @InjectModel(BlogCategory.name)
-    private readonly blogCategoryModel: Model<Document>
+    private readonly blogCategoryModel: Model<BlogCategoryDocument>,
+    @InjectModel(Blog.name)
+    private readonly blogModel: Model<BlogDocument>
   ) {}
 
   async create(createBlogCategoryDto: CreateBlogCategoryDto) {
@@ -47,6 +53,17 @@ export class BlogCategoryService {
       updateBlogCategoryDto,
       { new: true }
     );
+    const singleBlog = await this.blogModel.updateMany(
+      { category_slug: slug },
+      {
+        $set: {
+          category: updateBlogCategoryDto.name,
+        },
+      }
+    );
+
+    return { result, singleBlog };
+
     return result;
   }
 
