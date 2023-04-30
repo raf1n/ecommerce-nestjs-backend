@@ -218,7 +218,7 @@ export class OrdersService {
       // console.log(response.GatewayPageURL);
       return {
         data: result,
-        message: "Order successful",
+        message: "BKash Order successful",
       };
     } else {
       return {

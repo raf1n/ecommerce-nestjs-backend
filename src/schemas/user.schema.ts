@@ -52,8 +52,9 @@ export class User {
       opens_at: String,
       close_at: String,
       geetings_message: String,
-      social_icon: String,
-      social_link: String,
+      // social_icon: String,
+      // social_link: String,
+      social: Array,
       seo_title: String,
       seo_des: String,
     },
@@ -67,12 +68,16 @@ export class User {
       opens_at?: string;
       close_at?: string;
       geetings_message?: string;
-      social_icon?: string;
-      social_link?: string;
+      // social_icon?: string;
+      // social_link?: string;
+
+      social?: Array<object>;
+
       seo_title?: string;
       seo_des?: string;
     };
   };
+
   @Prop()
   tokenType: string;
 

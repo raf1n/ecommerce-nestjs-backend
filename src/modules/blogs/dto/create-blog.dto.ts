@@ -8,6 +8,9 @@ export class CreateBlogDto {
   title: string;
 
   @IsString()
+  category_slug: string;
+
+  @IsString()
   category: string;
 
   @IsString()
