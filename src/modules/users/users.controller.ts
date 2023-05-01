@@ -60,33 +60,33 @@ export class UsersController {
   }
 
   @Get("/admins")
-  findAllAdmins(@Query() queries: SearchSortDto) {
-    return this.usersService.findAllAdmins(queries);
+  async findAllAdmins(@Query() queries: SearchSortDto) {
+    return await this.usersService.findAllAdmins(queries);
   }
 
   @Get("/customers")
-  findAllCustomers(@Query() queries: SearchSortDto) {
-    return this.usersService.findAllCustomers(queries);
+  async findAllCustomers(@Query() queries: SearchSortDto) {
+    return await this.usersService.findAllCustomers(queries);
   }
 
   @Get("/sellers")
-  findAllSellers(@Query() queries: SearchSortDto) {
-    return this.usersService.findAllSellers(queries);
+  async findAllSellers(@Query() queries: SearchSortDto) {
+    return await this.usersService.findAllSellers(queries);
   }
 
   @Get(":email")
-  findOne(@Param("email") email: string) {
-    return this.usersService.findOne(email);
+  async findOne(@Param("email") email: string) {
+    return await this.usersService.findOne(email);
   }
 
   @Get("/seller/:email")
-  findSellerByUser(@Param("email") email: string) {
-    return this.usersService.findSellerByUser(email);
+  async findSellerByUser(@Param("email") email: string) {
+    return await this.usersService.findSellerByUser(email);
   }
 
   @Get(":slug")
-  findUser(@Param("slug") slug: string) {
-    return this.usersService.findSingleUser(slug);
+  async findUser(@Param("slug") slug: string) {
+    return await this.usersService.findSingleUser(slug);
   }
 
   @Patch("/edit-status/:slug")
@@ -119,8 +119,8 @@ export class UsersController {
   }
 
   @Get("/private/:slug")
-  findSingleUser(@Param("slug") slug: string) {
-    return this.usersService.findSingleUser(slug);
+  async findSingleUser(@Param("slug") slug: string) {
+    return await this.usersService.findSingleUser(slug);
   }
 
   @Get("/sellerWithProducts/:slug")
