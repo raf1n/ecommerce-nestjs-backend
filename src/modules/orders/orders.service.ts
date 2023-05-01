@@ -30,7 +30,7 @@ export class OrdersService {
     this.sslcommerz = new SSLCommerz({
       store_id: process.env.STORE_ID,
       store_passwd: process.env.STORE_PASSWORD,
-      isSandboxMode: false, // Set to false in production
+      isSandboxMode: true, // Set to false in production
     });
   }
 
