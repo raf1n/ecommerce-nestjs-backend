@@ -36,14 +36,16 @@ export class OrdersController {
   }
 
   @Post("/payment/success/:transaction_id")
-  @Redirect("http://localhost:3000/payment_success")
+  @Redirect(
+    "https://ecommerce-nextjs-frontend-seven.vercel.app/payment_success"
+  )
   paymentSuccess(@Param("transaction_id") transaction_id: string) {
     console.log(transaction_id);
     return this.ordersService.SSLCommerz_payment_success(transaction_id);
   }
 
   @Post("/payment/fail/:transaction_id")
-  @Redirect("http://localhost:3000/checkout")
+  @Redirect("https://ecommerce-nextjs-frontend-seven.vercel.app/checkout")
   paymentFail(
     @Res() res: Response,
     @Param("transaction_id") transaction_id: string
@@ -52,7 +54,7 @@ export class OrdersController {
   }
 
   @Post("/payment/cancel/:transaction_id")
-  @Redirect("http://localhost:3000/checkout")
+  @Redirect("https://ecommerce-nextjs-frontend-seven.vercel.app/checkout")
   paymentCancel(@Param("transaction_id") transaction_id: string) {
     return this.ordersService.SSLCommerz_payment_cancel(transaction_id);
   }
