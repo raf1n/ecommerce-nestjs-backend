@@ -70,6 +70,9 @@ export class Product {
 
   @Prop()
   seller_slug: string;
+
+  @Prop({ default: 0 })
+  rating: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
