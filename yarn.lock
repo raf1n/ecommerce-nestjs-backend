@@ -5452,10 +5452,10 @@ mute-stream@0.0.8:
   resolved "https://registry.npmjs.org/mute-stream/-/mute-stream-0.0.8.tgz"
   integrity sha512-nnbWWOkoWyUsTjKrhgD0dcz22mdkSnpYqbEjIm2nhwhuxlSkpywJmBo8h0ZqJdkp73mb90SssHkN4rsRaBAfAA==
 
-nanoid@^2.0.0:
-  version "2.1.11"
-  resolved "https://registry.npmjs.org/nanoid/-/nanoid-2.1.11.tgz"
-  integrity sha512-s/snB+WGm6uwi0WjsZdaVcuf3KJXlfGl2LcxgwkEwJF0D/BWzVWAZW/XY4bFaiR7s0Jk3FPvlnepg1H1b1UwlA==
+nanoid@3:
+  version "3.3.6"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.6.tgz#443380c856d6e9f9824267d960b4236ad583ea4c"
+  integrity sha512-BGcqMMJuToF7i1rt+2PWSNVnWIkGCU78jBG3RxO/bZlnZPK2Cmi2QaffxGO/2RvWi9sL+FAiRiXMgsyxQ1DIDA==
 
 natural-compare@^1.4.0:
   version "1.4.0"
@@ -6255,13 +6255,6 @@ shelljs@0.8.5:
     glob "^7.0.0"
     interpret "^1.0.0"
     rechoir "^0.6.2"
-
-shortid-fix@^2.2.15:
-  version "2.2.15"
-  resolved "https://registry.npmjs.org/shortid-fix/-/shortid-fix-2.2.15.tgz"
-  integrity sha512-xRbsfUpGC4ipQbRABFWaFNODALy/SUFzsjG/ONMLhqe9kPJYYtdvagQy5YbFqEv6TKwsWNcOyBvMTBchxEgzeA==
-  dependencies:
-    nanoid "^2.0.0"
 
 side-channel@^1.0.4:
   version "1.0.4"

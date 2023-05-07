@@ -178,8 +178,8 @@ export class OrdersService {
   }
 
   async createBkashOrder(createOrderDto: CreateOrderDto): Promise<Object> {
-    const slug = `order_${createOrderDto.user_slug}`;
-    createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
+    // const slug = `order_${createOrderDto.user_slug}`;
+    createOrderDto["slug"] = UtilSlug.getUniqueId();
 
     const result = await new this.orderModel({
       ...createOrderDto,
