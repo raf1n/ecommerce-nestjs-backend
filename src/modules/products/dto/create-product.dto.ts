@@ -78,4 +78,8 @@ export class CreateProductDto {
   @IsString()
   @IsOptional()
   seller_slug: string;
+
+  @IsNumber()
+  @IsOptional()
+  rating: number;
 }

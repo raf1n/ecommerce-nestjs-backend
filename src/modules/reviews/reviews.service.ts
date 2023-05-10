@@ -5,19 +5,54 @@ import { Review, ReviewDocument } from "src/schemas/review.schema";
 import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { UpdateReviewDto } from "./dto/update-review.dto";
+import { Product, ProductDocument } from "src/schemas/product.schema";
 
 @Injectable()
 export class ReviewsService {
   constructor(
     @InjectModel(Review.name)
-    private readonly reviewModel: Model<ReviewDocument>
+    private readonly reviewModel: Model<ReviewDocument>,
+    @InjectModel(Product.name)
+    private readonly productModel: Model<ProductDocument>
   ) {}
 
-  async create(createReviewDto: CreateReviewDto): Promise<Object> {
+  async create(
+    createReviewDto: CreateReviewDto // : Promise<Object>
+  ) {
     const slug = `review_${createReviewDto.product_slug}`;
     createReviewDto["slug"] = UtilSlug.getUniqueId(slug);
 
+    const reviewsCounts = await this.reviewModel.countDocuments({
+      product_slug: createReviewDto.product_slug,
+    });
+
+    const product = await this.productModel.findOne({
+      slug: createReviewDto.product_slug,
+    });
+
+    console.log({ product, reviewsCounts });
+
+    const getRating = async () => {
+      let newRating =
+        //@ts-ignore
+        (createReviewDto.rating + product.rating * reviewsCounts) /
+        (reviewsCounts + 1);
+      if (!newRating) {
+        newRating = 0;
+      }
+      return newRating;
+    };
+
+    const rating = await getRating();
+
     const result = await new this.reviewModel(createReviewDto).save();
+    await this.productModel.findOneAndUpdate(
+      {
+        slug: createReviewDto.product_slug,
+      },
+      { rating },
+      { new: true }
+    );
     return result;
   }
 
