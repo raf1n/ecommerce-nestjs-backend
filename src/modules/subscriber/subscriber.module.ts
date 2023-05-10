@@ -15,3 +15,4 @@ import { MailgunService } from "../mailgun/mailgun.service";
   providers: [SubscriberService, MailgunService],
 })
 export class SubscriberModule {}
+//MailgunService ,

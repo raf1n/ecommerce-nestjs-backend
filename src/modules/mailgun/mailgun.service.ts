@@ -7,8 +7,9 @@ export class MailgunService {
 
   constructor() {
     this.mg = mailgun({
-      apiKey: "1b0443097040bff968cb6f882e72b1f9-2cc48b29-4499d1a0",
-      domain: "sandbox890350345a1e4492be3e64fb011df396.mailgun.org",
+      //iamiqbalcse27@gmail.com 'to' account
+      apiKey: "cadd62ff366ee740a0981ad1906c9c9a-6b161b0a-7c371523",
+      domain: "sandboxb9ffd98b1f8247769ae580de08873db2.mailgun.org",
     });
   }
 
