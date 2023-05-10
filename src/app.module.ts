@@ -32,6 +32,7 @@ import { FlashSaleModule } from "./modules/flash_sale/flash_sale.module";
 import { SeoModule } from "./modules/seo/seo.module";
 import { BlogCategoryModule } from "./modules/blog-category/blog-category.module";
 import { SubscriberModule } from "./modules/subscriber/subscriber.module";
+import { MailgunService } from "./modules/mailgun/mailgun.service";
 
 @Module({
   imports: [
