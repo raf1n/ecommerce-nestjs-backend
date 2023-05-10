@@ -27,7 +27,22 @@ export class SubscriberService {
       .sort({ [query.sortBy]: query.sortType });
     return allSubscriber;
   }
+  async findAllForCoupon() {
+    return await this.subscriberModel.find({});
+  }
 
+  // ------------
+  // async sendEmail(emailData: any) {
+  //   const data = {
+  //     from: "iamiqbalcse27@gmail.com",
+  //     to: ["kawarib422@glumark.com", "iamhasan9501@gmail.com"],
+  //     subject: emailData.subject,
+  //     text: emailData.message,
+  //   };
+  //   return await this.mailgunService.sendEmail(data);
+  // }
+
+  // -----------
   findOne(id: number) {
     return `This action returns a #${id} subscriber`;
   }
