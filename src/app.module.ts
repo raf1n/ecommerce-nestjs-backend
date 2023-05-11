@@ -46,6 +46,7 @@ import { Slider, SliderSchema } from "./schemas/slider.schema";
 import { Advertisement, AdvertisementSchema } from "./schemas/advertisement.schema";
 import { PopularCategory, PopularCategorySchema } from "./schemas/popular-category.schema";
 import { FlashSale, FlashSaleSchema } from "./schemas/flash_sale.schema";
+import { FeaturedCategory, FeaturedCategorySchema } from "./schemas/featured-category.schema";
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { FlashSale, FlashSaleSchema } from "./schemas/flash_sale.schema";
       { name: Advertisement.name, schema: AdvertisementSchema },
       { name: PopularCategory.name, schema: PopularCategorySchema },
       { name: FlashSale.name, schema: FlashSaleSchema },
+      { name: FeaturedCategory.name, schema: FeaturedCategorySchema },
     ]),
     UsersModule,
     ProductsModule,

@@ -20,6 +20,10 @@ import {
   PopularCategoryDocument,
 } from "./schemas/popular-category.schema";
 import { FlashSale, FlashSaleDocument } from "./schemas/flash_sale.schema";
+import {
+  FeaturedCategory,
+  FeaturedCategoryDocument,
+} from "./schemas/featured-category.schema";
 
 @Injectable()
 export class AppService {
@@ -43,7 +47,9 @@ export class AppService {
     @InjectModel(PopularCategory.name)
     private readonly popularCategoryModel: Model<PopularCategoryDocument>,
     @InjectModel(FlashSale.name)
-    private readonly flashSaleModel: Model<FlashSaleDocument>
+    private readonly flashSaleModel: Model<FlashSaleDocument>,
+    @InjectModel(FeaturedCategory.name)
+    private readonly featuredCategoryModel: Model<FeaturedCategoryDocument>
   ) {}
 
   getHello(): string {
@@ -235,6 +241,26 @@ export class AppService {
       c1();
     });
 
+    const getFeatCats = new Promise((resolve, reject) => {
+      const c1 = async () => {
+        const popCats = await this.featuredCategoryModel.aggregate([
+          {
+            $lookup: {
+              from: "categories",
+              localField: "cat_slug",
+              foreignField: "cat_slug",
+              as: "categoriesData",
+            },
+          },
+          {
+            $unwind: "$categoriesData",
+          },
+        ]);
+        resolve(popCats);
+      };
+      c1();
+    });
+
     const getAdTwo = new Promise((resolve, reject) => {
       const c1 = async () => {
         const ad = await this.advertisementModel.findOne({
@@ -263,6 +289,7 @@ export class AppService {
       getSliderTwo,
       getPopCats,
       getFlashSale,
+      getFeatCats,
       getAdTwo,
       getAdThree,
     ]);
@@ -273,8 +300,9 @@ export class AppService {
       sliderTwo: allData[2],
       popularCategories: allData[3],
       flashSale: allData[4],
-      adOne: allData[5],
-      adTwo: allData[6],
+      featuredCategories: allData[5],
+      adOne: allData[6],
+      adTwo: allData[7],
     };
   }
 }
