@@ -1,12 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get } from "@nestjs/common";
+import { AppService } from "./app.service";
+import { CategoriesService } from "./modules/categories/categories.service";
+import { BrandsService } from "./modules/brands/brands.service";
+import { SubCategoriesService } from "./modules/sub-categories/sub-categories.service";
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+  ) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Get("wo-user")
+  getAllDataWoUser() {
+    return this.appService.getAllDataWoUser();
+  }
+
+  @Get("with-user")
+  getAllDataWithUser(): string {
+    return this.appService.getAllDataWithUser();
   }
 }

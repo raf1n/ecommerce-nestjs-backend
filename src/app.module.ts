@@ -33,11 +33,28 @@ import { SeoModule } from "./modules/seo/seo.module";
 import { BlogCategoryModule } from "./modules/blog-category/blog-category.module";
 import { SubscriberModule } from "./modules/subscriber/subscriber.module";
 import { MailgunService } from "./modules/mailgun/mailgun.service";
+import { CategoriesService } from "./modules/categories/categories.service";
+import { BrandsService } from "./modules/brands/brands.service";
+import { SubCategoriesService } from "./modules/sub-categories/sub-categories.service";
+import { Category, CategorySchema } from "./schemas/category.schema";
+import { User, UserSchema } from "./schemas/user.schema";
+import { Brand, BrandSchema } from "./schemas/brand.schema";
+import { SubCategories, SubCategoriesSchema } from "./schemas/sub-category.schema";
+import { Cart, CartSchema } from "./schemas/cart.schema";
+import { Wishlist, WishlistSchema } from "./schemas/wishlist.schema";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.DATABASE_URL ?? ""),
+    MongooseModule.forFeature([
+      { name: Category.name, schema: CategorySchema },
+      { name: Brand.name, schema: BrandSchema },
+      { name: SubCategories.name, schema: SubCategoriesSchema },
+      { name: Cart.name, schema: CartSchema },
+      { name: Wishlist.name, schema: WishlistSchema },
+      { name: User.name, schema: UserSchema },
+    ]),
     UsersModule,
     ProductsModule,
     PopularCategoriesModule,
