@@ -17,4 +17,9 @@ export class AppController {
   getAllDataWithUser(@Param("slug") slug: string) {
     return this.appService.getAllDataWithUser(slug);
   }
+
+  @Get("home")
+  getHomePageData() {
+    return this.appService.getHomePageData();
+  }
 }

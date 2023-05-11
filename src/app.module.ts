@@ -42,6 +42,10 @@ import { Brand, BrandSchema } from "./schemas/brand.schema";
 import { SubCategories, SubCategoriesSchema } from "./schemas/sub-category.schema";
 import { Cart, CartSchema } from "./schemas/cart.schema";
 import { Wishlist, WishlistSchema } from "./schemas/wishlist.schema";
+import { Slider, SliderSchema } from "./schemas/slider.schema";
+import { Advertisement, AdvertisementSchema } from "./schemas/advertisement.schema";
+import { PopularCategory, PopularCategorySchema } from "./schemas/popular-category.schema";
+import { FlashSale, FlashSaleSchema } from "./schemas/flash_sale.schema";
 
 @Module({
   imports: [
@@ -54,6 +58,10 @@ import { Wishlist, WishlistSchema } from "./schemas/wishlist.schema";
       { name: Cart.name, schema: CartSchema },
       { name: Wishlist.name, schema: WishlistSchema },
       { name: User.name, schema: UserSchema },
+      { name: Slider.name, schema: SliderSchema },
+      { name: Advertisement.name, schema: AdvertisementSchema },
+      { name: PopularCategory.name, schema: PopularCategorySchema },
+      { name: FlashSale.name, schema: FlashSaleSchema },
     ]),
     UsersModule,
     ProductsModule,

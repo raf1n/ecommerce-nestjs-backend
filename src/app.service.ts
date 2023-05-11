@@ -10,6 +10,16 @@ import {
 import { Cart, CartDocument } from "./schemas/cart.schema";
 import { Wishlist, WishlistDocument } from "./schemas/wishlist.schema";
 import { User, UserDocument } from "./schemas/user.schema";
+import { Slider, SliderDocument } from "./schemas/slider.schema";
+import {
+  Advertisement,
+  AdvertisementDocument,
+} from "./schemas/advertisement.schema";
+import {
+  PopularCategory,
+  PopularCategoryDocument,
+} from "./schemas/popular-category.schema";
+import { FlashSale, FlashSaleDocument } from "./schemas/flash_sale.schema";
 
 @Injectable()
 export class AppService {
@@ -25,7 +35,15 @@ export class AppService {
     @InjectModel(Wishlist.name)
     private readonly wishlistModel: Model<WishlistDocument>,
     @InjectModel(User.name)
-    private readonly userModel: Model<UserDocument>
+    private readonly userModel: Model<UserDocument>,
+    @InjectModel(Slider.name)
+    private readonly sliderModel: Model<SliderDocument>,
+    @InjectModel(Advertisement.name)
+    private advertisementModel: Model<AdvertisementDocument>,
+    @InjectModel(PopularCategory.name)
+    private readonly popularCategoryModel: Model<PopularCategoryDocument>,
+    @InjectModel(FlashSale.name)
+    private readonly flashSaleModel: Model<FlashSaleDocument>
   ) {}
 
   getHello(): string {
@@ -145,7 +163,7 @@ export class AppService {
       getUserCart,
       getUserWishlist,
     ]);
-    
+
     return {
       categories: allData[0],
       brands: allData[1],
@@ -153,6 +171,110 @@ export class AppService {
       user: allData[3],
       cart: allData[4],
       wishlist: allData[5],
+    };
+  }
+
+  async getHomePageData() {
+    const getSliders = new Promise((resolve, reject) => {
+      const c1 = async () => {
+        const sliders = await this.sliderModel
+          .find({ status: "active" })
+          .sort({ serial: 1 });
+        resolve(sliders);
+      };
+      c1();
+    });
+
+    const getSliderOne = new Promise((resolve, reject) => {
+      const c1 = async () => {
+        const ad = await this.advertisementModel.findOne({
+          adName: "Slider Banner One",
+          status: "active",
+        });
+        resolve(ad);
+      };
+      c1();
+    });
+
+    const getSliderTwo = new Promise((resolve, reject) => {
+      const c1 = async () => {
+        const ad = await this.advertisementModel.findOne({
+          adName: "Slider Banner Two",
+          status: "active",
+        });
+        resolve(ad);
+      };
+      c1();
+    });
+
+    const getPopCats = new Promise((resolve, reject) => {
+      const c1 = async () => {
+        const popCats = await this.popularCategoryModel.aggregate([
+          {
+            $lookup: {
+              from: "categories",
+              localField: "cat_slug",
+              foreignField: "cat_slug",
+              as: "categoriesData",
+            },
+          },
+          {
+            $unwind: "$categoriesData",
+          },
+        ]);
+        resolve(popCats);
+      };
+      c1();
+    });
+
+    const getFlashSale = new Promise((resolve, reject) => {
+      const c1 = async () => {
+        const fs = await this.flashSaleModel.findOne({ name: "flashcontnet" });
+        resolve(fs);
+      };
+      c1();
+    });
+
+    const getAdTwo = new Promise((resolve, reject) => {
+      const c1 = async () => {
+        const ad = await this.advertisementModel.findOne({
+          adName: "Homepage Single Banner One",
+          status: "active",
+        });
+        resolve(ad);
+      };
+      c1();
+    });
+
+    const getAdThree = new Promise((resolve, reject) => {
+      const c1 = async () => {
+        const ad = await this.advertisementModel.findOne({
+          adName: "Homepage Single Banner Two",
+          status: "active",
+        });
+        resolve(ad);
+      };
+      c1();
+    });
+
+    const allData = await Promise.all([
+      getSliders,
+      getSliderOne,
+      getSliderTwo,
+      getPopCats,
+      getFlashSale,
+      getAdTwo,
+      getAdThree,
+    ]);
+
+    return {
+      sliders: allData[0],
+      sliderOne: allData[1],
+      sliderTwo: allData[2],
+      popularCategories: allData[3],
+      flashSale: allData[4],
+      adOne: allData[5],
+      adTwo: allData[6],
     };
   }
 }
