@@ -29,7 +29,7 @@ export class Coupon {
   @Prop()
   items_number: number;
 
-  @Prop({ default: 2 })
+  @Prop({ default: 0 })
   apply_qty: number;
 
   @Prop()
