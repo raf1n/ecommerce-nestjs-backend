@@ -170,7 +170,7 @@ export class UsersService {
       }
 
 
-      if (user.role === "admin" || user.role === "seller") {
+      if (user?.role === "admin" || user?.role === "seller") {
         return {
           slug: loginUserDto["slug"],
           access_token: null,
