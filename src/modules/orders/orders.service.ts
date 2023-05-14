@@ -12,6 +12,7 @@ import { Product, ProductDocument } from "src/schemas/product.schema";
 //@ts-ignore
 import * as SSLCommerz from "sslcommerz-nodejs";
 import { Cart, CartDocument } from "src/schemas/cart.schema";
+import { Coupon, CouponDocument } from "src/schemas/coupon.schema";
 
 @Injectable()
 export class OrdersService {
@@ -25,7 +26,9 @@ export class OrdersService {
     @InjectModel(Product.name)
     private readonly productModel: Model<ProductDocument>,
     @InjectModel(Cart.name)
-    private readonly cartModel: Model<CartDocument>
+    private readonly cartModel: Model<CartDocument>,
+    @InjectModel(Coupon.name)
+    private readonly couponModel: Model<CouponDocument>
   ) {
     this.sslcommerz = new SSLCommerz({
       store_id: process.env.STORE_ID,
@@ -195,6 +198,18 @@ export class OrdersService {
         }
       );
     };
+
+    // const couponApplyUpdate = async (couponSlug: string) => {
+    //   await this.couponModel.findOneAndUpdate(
+    //     { code: couponSlug },
+    //     {
+    //       $inc: {
+    //         apply_qty: +1,
+    //       },
+    //     }
+    //   );
+    // };
+    // couponApplyUpdate("happy_new_year");
 
     let stockProducts = [];
 
