@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+//@ts-ignore
 import * as mailgun from "mailgun-js";
 
 @Injectable()
