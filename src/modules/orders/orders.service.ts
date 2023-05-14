@@ -524,7 +524,7 @@ export class OrdersService {
               },
             },
           },
-          total_price: {
+          total: {
             $sum: {
               $map: {
                 input: {
@@ -581,7 +581,7 @@ export class OrdersService {
       },
     ]);
     console.log(orderDataBySeller);
-    return orderDataBySeller;
+    return orderDataBySeller[0];
   }
 
   // ---------------------------
