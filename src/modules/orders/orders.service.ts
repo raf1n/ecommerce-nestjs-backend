@@ -437,6 +437,153 @@ export class OrdersService {
     return orderDataBySeller;
   }
 
+  // async findSingleOrderOfSeller(query: {
+  //   seller_slug: string;
+  //   order_slug: string;
+  // }) {
+  //   // console.log(slug, "slug from or ser");
+  //   const orderDataBySeller = await this.orderModel.aggregate([
+  //     {
+  //       $match: {
+  //         "product_list.seller_slug": query.seller_slug,
+  //         slug: query.order_slug,
+  //       },
+  //     },
+  //     {
+  //       $project: {
+  //         slug: 1,
+  //         order_status: 1,
+  //         payment_status: 1,
+  //         createdAt: 1,
+  //         discount: 1,
+  //         shippingCost: 1,
+  //         payment_method: 1,
+  //         transaction_id: 1,
+  //         address: 1,
+  //         seller_slug: 1,
+  //         user_slug: 1,
+  //         // price: 1,
+  //         // offerPrice: 1,
+  //         product_list: {
+  //           $filter: {
+  //             input: "$product_list",
+  //             as: "products",
+  //             cond: {
+  //               $eq: ["$$products.seller_slug", query.seller_slug],
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //     {
+  //       $lookup: {
+  //         from: "users",
+  //         localField: "user_slug",
+  //         foreignField: "slug",
+  //         as: "userData",
+  //       },
+  //     },
+  //     {
+  //       $unwind: "$userData",
+  //     },
+  //   ]);
+  //   console.log(orderDataBySeller);
+  //   return orderDataBySeller;
+  // }
+
+  async findSingleOrderOfSeller(query: {
+    seller_slug: string;
+    order_slug: string;
+  }) {
+    const orderDataBySeller = await this.orderModel.aggregate([
+      {
+        $match: {
+          "product_list.seller_slug": query.seller_slug,
+          slug: query.order_slug,
+        },
+      },
+      {
+        $project: {
+          slug: 1,
+          order_status: 1,
+          payment_status: 1,
+          createdAt: 1,
+          discount: 1,
+          shippingCost: 1,
+          payment_method: 1,
+          transaction_id: 1,
+          address: 1,
+          seller_slug: 1,
+          user_slug: 1,
+          product_list: {
+            $filter: {
+              input: "$product_list",
+              as: "products",
+              cond: {
+                $eq: ["$$products.seller_slug", query.seller_slug],
+              },
+            },
+          },
+          total_price: {
+            $sum: {
+              $map: {
+                input: {
+                  $filter: {
+                    input: "$product_list",
+                    as: "products",
+                    cond: {
+                      $and: [
+                        { $eq: ["$$products.seller_slug", query.seller_slug] },
+                        {
+                          $ifNull: [
+                            "$$products.offerPrice",
+                            { $ne: ["$$products.offerPrice", null] },
+                          ],
+                        },
+                      ],
+                    },
+                  },
+                },
+                as: "p",
+                in: {
+                  $cond: {
+                    if: { $eq: ["$$p.offerPrice", null] },
+                    then: "$$p.price",
+                    else: "$$p.offerPrice",
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "product_list.seller_slug",
+          foreignField: "slug",
+          as: "sellerData",
+        },
+      },
+      {
+        $unwind: "$sellerData",
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_slug",
+          foreignField: "slug",
+          as: "userData",
+        },
+      },
+      {
+        $unwind: "$userData",
+      },
+    ]);
+    console.log(orderDataBySeller);
+    return orderDataBySeller;
+  }
+
   // ---------------------------
   async findOne(slug: string) {
     return await this.orderModel.findOne({ slug });
