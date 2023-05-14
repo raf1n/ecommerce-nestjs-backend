@@ -7,6 +7,7 @@ import { Inventory, InventorySchema } from "src/schemas/inventory.schema";
 import { Product } from "../products/entities/product.entity";
 import { ProductSchema } from "src/schemas/product.schema";
 import { Cart, CartSchema } from "src/schemas/cart.schema";
+import { Coupon, CouponSchema } from "src/schemas/coupon.schema";
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { Cart, CartSchema } from "src/schemas/cart.schema";
       { name: Inventory.name, schema: InventorySchema },
       { name: Product.name, schema: ProductSchema },
       { name: Cart.name, schema: CartSchema },
+      { name: Coupon.name, schema: CouponSchema },
     ]),
   ],
   controllers: [OrdersController],
