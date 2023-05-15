@@ -1,3 +1,4 @@
+import { UtilSlug } from "./../../utils/UtilSlug";
 import { Injectable } from "@nestjs/common";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -6,7 +7,6 @@ import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
 import { LoginUserDto } from "./dto/login-user.dto";
 import { TokenVerifier } from "src/utils/TokenVerifier";
-import { UtilSlug } from "src/utils/UtilSlug";
 import { JwtService } from "@nestjs/jwt";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
 import { SellerApplicationDto } from "./dto/seller-application.dto";
@@ -125,7 +125,7 @@ export class UsersService {
         userId?: string;
       }>
   > {
-    console.log("loginUserDto", loginUserDto);
+    // console.log("loginUserDto", loginUserDto);
     const { token, tokenType } = loginUserDto;
     let isVerified = false;
     const accessToken = null;
@@ -144,16 +144,33 @@ export class UsersService {
       } catch {}
     }
 
-    console.log({ isVerified, token, tokenType });
+    // console.log({ isVerified, token, tokenType });
 
     if (isVerified) {
       const { email, fullName, role } = loginUserDto;
 
-      console.log(`email: ${email}`);
-      console.log(`fullName: ${fullName}`);
-      console.log(`role: ${role}`);
+      // console.log(`email: ${email}`);
+      // console.log(`fullName: ${fullName}`);
+      // console.log(`role: ${role}`);
 
-      const user = await this.userModel.findOne({ email: email });
+      let user = await this.userModel.findOne({ email: email });
+      console.log(
+        "🚀 ~ file: users.service.ts:157 ~ UsersService ~ user:",
+        user
+      );
+
+      if (!user) {
+        user = await this.userModel.findOneAndUpdate(
+          { email: email },
+          {
+            $set: {
+              ...loginUserDto,
+              slug: UtilSlug.getUniqueId(),
+            },
+          },
+          { upsert: true, new: true }
+        );
+      }
 
       if (user?.role === "admin" || user?.role === "seller") {
         return {
@@ -177,36 +194,27 @@ export class UsersService {
         loginUserDto["slug"] = UtilSlug.getUniqueId(fullName);
       }
 
-      const createUser = await this.userModel.findOneAndUpdate(
-        { email: email },
-        {
-          $set: {
-            ...loginUserDto,
-          },
-        },
-        { upsert: true, new: true }
-      );
-      console.log(
-        "🚀 ~ file: users.service.ts:179 ~ UsersService ~ login ~ createUser:",
-        createUser
-      );
+      // console.log(
+      //   "🚀 ~ file: users.service.ts:179 ~ UsersService ~ login ~ createUser:",
+      //   createUser
+      // );
 
       const accessToken = this.jwtService.sign({
-        _id: createUser._id as string,
-        email: createUser.email,
-        role: createUser.role,
+        _id: user._id as string,
+        email: user.email,
+        role: user.role,
       });
 
       return {
         slug: loginUserDto["slug"],
         access_token: accessToken,
-        userId: createUser._id as string,
-        role: createUser.role as string,
-        email: createUser.email as string,
-        avatar: createUser.avatar as string,
-        fullName: createUser.fullName as string,
-        phone: createUser.phone || "",
-        address: createUser.address,
+        userId: user._id as string,
+        role: user.role as string,
+        email: user.email as string,
+        avatar: user.avatar as string,
+        fullName: user.fullName as string,
+        phone: user.phone || "",
+        address: user.address,
       };
     }
 
@@ -256,7 +264,7 @@ export class UsersService {
 
       const user = await this.userModel.findOne({ email: email });
 
-      if (user.role === "buyer") {
+      if (user?.role === "buyer") {
         return {
           slug: loginUserDto["slug"],
           access_token: null,

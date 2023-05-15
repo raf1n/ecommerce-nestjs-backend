@@ -10,14 +10,13 @@ import { Model } from "mongoose";
 import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
 import { Product, ProductDocument } from "src/schemas/product.schema";
 //@ts-ignore
-import * as SSLCommerz from "sslcommerz-nodejs";
+// import * as SSLCommerz from "sslcommerz-nodejs";
+const SSLCommerzPayment = require("sslcommerz-lts");
 import { Cart, CartDocument } from "src/schemas/cart.schema";
 import { Coupon, CouponDocument } from "src/schemas/coupon.schema";
 
 @Injectable()
 export class OrdersService {
-  private sslcommerz: SSLCommerz;
-
   constructor(
     @InjectModel(Order.name)
     private readonly orderModel: Model<OrderDocument>,
@@ -29,21 +28,20 @@ export class OrdersService {
     private readonly cartModel: Model<CartDocument>,
     @InjectModel(Coupon.name)
     private readonly couponModel: Model<CouponDocument>
-  ) {
-    this.sslcommerz = new SSLCommerz({
-      store_id: process.env.STORE_ID,
-      store_passwd: process.env.STORE_PASSWORD,
-      isSandboxMode: true, // Set to false in production
-    });
-  }
+  ) {}
 
   // ------------------post order--------------------- //
-  async createSSL(createOrderDto: CreateOrderDto): Promise<Object> {
+  async createSSL(createOrderDto: CreateOrderDto) {
+    const store_id = process.env.STORE_ID;
+    const store_passwd = process.env.STORE_PASSWORD;
+    const is_live = false;
+
     const slug = `order_${createOrderDto.user_slug}`;
     createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
+
     let trans_id = UtilSlug.getUniqueId("transaction");
     const sslcommerzParams = {
-      total_amount: createOrderDto.subTotal,
+      total_amount: createOrderDto.total,
       currency: "BDT",
       tran_id: trans_id,
       success_url: `${process.env.API_URL}/orders/payment/success/${trans_id}`,
@@ -71,61 +69,69 @@ export class OrdersService {
       billing_phone: createOrderDto.user_phone,
       billing_state: createOrderDto.address.state,
     };
-    const response = await this.sslcommerz.init_transaction(sslcommerzParams);
-    console.log(response);
 
-    if (response && response.status === "SUCCESS") {
-      const result = await new this.orderModel({
-        ...createOrderDto,
-        transaction_id: trans_id,
-      }).save();
+    const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
 
-      const updateProductStock = async (data) => {
-        await this.productModel.findOneAndUpdate(
-          { slug: data.slug },
-          {
-            $inc: {
-              stock: -data.quantity,
-            },
-          }
-        );
-      };
+    const returnData: { data: string; message: string } = {
+      data: "",
+      message: "",
+    };
 
-      let stockProducts = [];
+    await sslcz.init(sslcommerzParams).then(async (apiResponse) => {
+      // Redirect the user to payment gateway
+      let GatewayPageURL = apiResponse.GatewayPageURL;
+      console.log({ apiResponse });
 
-      for (let product of createOrderDto.product_list) {
-        let p = {
-          slug: UtilSlug.getUniqueId("stock"),
-          //@ts-ignore
-          product_slug: product.slug,
-          //@ts-ignore
-          quantity: product.quantity,
-          type: "stockOut",
+      if (apiResponse && apiResponse.status === "SUCCESS") {
+        const result = await new this.orderModel({
+          ...createOrderDto,
+          transaction_id: trans_id,
+        }).save();
+
+        const updateProductStock = async (data) => {
+          await this.productModel.findOneAndUpdate(
+            { slug: data.slug },
+            {
+              $inc: {
+                stock: -data.quantity,
+              },
+            }
+          );
         };
 
-        stockProducts.push(p);
+        let stockProducts = [];
 
-        await updateProductStock(product);
-      }
+        for (let product of createOrderDto.product_list) {
+          let p = {
+            slug: UtilSlug.getUniqueId("stock"),
+            //@ts-ignore
+            product_slug: product.slug,
+            //@ts-ignore
+            quantity: product.quantity,
+            type: "stockOut",
+          };
 
-      await this.inventoryModel.create(stockProducts);
-      if (result) {
-        // console.log(response.GatewayPageURL);
-        return {
-          data: response.GatewayPageURL,
-          message: "SSL Order successful",
-        };
+          stockProducts.push(p);
+
+          await updateProductStock(product);
+        }
+
+        await this.inventoryModel.create(stockProducts);
+        if (result) {
+          // console.log(response.GatewayPageURL);
+          returnData.data = GatewayPageURL;
+          returnData.message = "SSL Order successful";
+        } else {
+          returnData.data = apiResponse.redirectGatewayURL;
+          returnData.message = "Order  failed !";
+        }
       } else {
-        return {
-          message: "Order  failed !",
-        };
+        returnData.data = apiResponse.redirectGatewayURL;
+        returnData.message = "SSL Order successful";
       }
-    } else {
-      return {
-        status: "FAILED",
-        errorMessage: "Unable to initiate payment",
-      };
-    }
+    });
+
+    return returnData;
   }
 
   async createCOD(createOrderDto: CreateOrderDto): Promise<Object> {
