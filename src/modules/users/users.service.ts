@@ -1,4 +1,4 @@
-import { UtilSlug } from './../../utils/UtilSlug';
+import { UtilSlug } from "./../../utils/UtilSlug";
 import { Injectable } from "@nestjs/common";
 import { RegisterUserDto } from "./dto/register-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -154,21 +154,23 @@ export class UsersService {
       // console.log(`role: ${role}`);
 
       let user = await this.userModel.findOne({ email: email });
-      console.log("🚀 ~ file: users.service.ts:157 ~ UsersService ~ user:", user)
+      console.log(
+        "🚀 ~ file: users.service.ts:157 ~ UsersService ~ user:",
+        user
+      );
 
       if (!user) {
-       user = await this.userModel.findOneAndUpdate(
+        user = await this.userModel.findOneAndUpdate(
           { email: email },
           {
             $set: {
               ...loginUserDto,
-              slug: UtilSlug.getUniqueId()
+              slug: UtilSlug.getUniqueId(),
             },
           },
           { upsert: true, new: true }
         );
       }
-
 
       if (user?.role === "admin" || user?.role === "seller") {
         return {
@@ -191,7 +193,6 @@ export class UsersService {
       } else {
         loginUserDto["slug"] = UtilSlug.getUniqueId(fullName);
       }
-
 
       // console.log(
       //   "🚀 ~ file: users.service.ts:179 ~ UsersService ~ login ~ createUser:",
@@ -263,7 +264,7 @@ export class UsersService {
 
       const user = await this.userModel.findOne({ email: email });
 
-      if (user.role === "buyer") {
+      if (user?.role === "buyer") {
         return {
           slug: loginUserDto["slug"],
           access_token: null,
