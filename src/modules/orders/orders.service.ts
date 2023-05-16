@@ -123,11 +123,11 @@ export class OrdersService {
           returnData.message = "SSL Order successful";
         } else {
           returnData.data = apiResponse.redirectGatewayURL;
-          returnData.message = "Order  failed !";
+          returnData.message = "Order failed!";
         }
       } else {
         returnData.data = apiResponse.redirectGatewayURL;
-        returnData.message = "SSL Order successful";
+        returnData.message = "SSL Order Unsuccessful";
       }
     });
 
