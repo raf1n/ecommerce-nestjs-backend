@@ -34,7 +34,7 @@ export class OrdersService {
   async createSSL(createOrderDto: CreateOrderDto) {
     const store_id = process.env.STORE_ID;
     const store_passwd = process.env.STORE_PASSWORD;
-    const is_live = false;
+    const is_live = true;
 
     const slug = `order_${createOrderDto.user_slug}`;
     createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
