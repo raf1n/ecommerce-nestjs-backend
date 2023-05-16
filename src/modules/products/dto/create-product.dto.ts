@@ -30,6 +30,7 @@ export class CreateProductDto {
   description: string;
 
   @IsString()
+  @IsOptional()
   status: string;
 
   @IsArray()
