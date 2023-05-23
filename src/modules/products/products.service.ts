@@ -362,7 +362,7 @@ export class ProductsService {
   async findAll(
     query: any // : Promise<ProductDocument[]>
   ) {
-    const allProductData = await this.productModel.find();
+    const allProductData = await this.productModel.find({ status: "active" });
     // let limit: number = parseInt(query.limit) || 3
     // const page: number = parseInt(query.page) || 1
 

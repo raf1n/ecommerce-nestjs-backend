@@ -45,9 +45,7 @@
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
-    "ssl-commerz-node": "^1.0.4",
-    "sslcommerz-lts": "^1.1.0",
-    "sslcommerz-nodejs": "^1.0.8"
+    "sslcommerz-lts": "^1.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

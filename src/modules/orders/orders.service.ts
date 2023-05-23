@@ -1,4 +1,3 @@
-import { CreateAddressDto } from "./../addresses/dto/create-address.dto";
 import { UtilSlug } from "./../../utils/UtilSlug";
 import { OrderDocument } from "./../../schemas/order.schema";
 import { Injectable } from "@nestjs/common";
@@ -9,8 +8,6 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
 import { Product, ProductDocument } from "src/schemas/product.schema";
-//@ts-ignore
-// import * as SSLCommerz from "sslcommerz-nodejs";
 const SSLCommerzPayment = require("sslcommerz-lts");
 import { Cart, CartDocument } from "src/schemas/cart.schema";
 import { Coupon, CouponDocument } from "src/schemas/coupon.schema";
@@ -34,7 +31,7 @@ export class OrdersService {
   async createSSL(createOrderDto: CreateOrderDto) {
     const store_id = process.env.STORE_ID;
     const store_passwd = process.env.STORE_PASSWORD;
-    const is_live = true;
+    const is_live = false;
 
     const slug = `order_${createOrderDto.user_slug}`;
     createOrderDto["slug"] = UtilSlug.getUniqueId(slug);
@@ -123,11 +120,11 @@ export class OrdersService {
           returnData.message = "SSL Order successful";
         } else {
           returnData.data = apiResponse.redirectGatewayURL;
-          returnData.message = "Order  failed !";
+          returnData.message = "Order failed!";
         }
       } else {
         returnData.data = apiResponse.redirectGatewayURL;
-        returnData.message = "SSL Order successful";
+        returnData.message = "SSL Order Unsuccessful";
       }
     });
 

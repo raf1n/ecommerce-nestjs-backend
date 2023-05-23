@@ -144,20 +144,10 @@ export class UsersService {
       } catch {}
     }
 
-    // console.log({ isVerified, token, tokenType });
-
     if (isVerified) {
       const { email, fullName, role } = loginUserDto;
 
-      // console.log(`email: ${email}`);
-      // console.log(`fullName: ${fullName}`);
-      // console.log(`role: ${role}`);
-
       let user = await this.userModel.findOne({ email: email });
-      console.log(
-        "🚀 ~ file: users.service.ts:157 ~ UsersService ~ user:",
-        user
-      );
 
       if (!user) {
         user = await this.userModel.findOneAndUpdate(

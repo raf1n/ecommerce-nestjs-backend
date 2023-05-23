@@ -26,7 +26,7 @@ export class Product {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ required: true })
+  @Prop({ default: "inactive" })
   status: string;
 
   @Prop({ required: true })
