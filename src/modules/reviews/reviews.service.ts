@@ -6,6 +6,7 @@ import { UtilSlug } from "src/utils/UtilSlug";
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { UpdateReviewDto } from "./dto/update-review.dto";
 import { Product, ProductDocument } from "src/schemas/product.schema";
+import { User, UserDocument } from "src/schemas/user.schema";
 
 @Injectable()
 export class ReviewsService {
@@ -13,44 +14,71 @@ export class ReviewsService {
     @InjectModel(Review.name)
     private readonly reviewModel: Model<ReviewDocument>,
     @InjectModel(Product.name)
-    private readonly productModel: Model<ProductDocument>
+    private readonly productModel: Model<ProductDocument>,
+    @InjectModel(User.name)
+    private readonly userModel: Model<UserDocument>
   ) {}
 
   async create(
     createReviewDto: CreateReviewDto // : Promise<Object>
   ) {
-    const slug = `review_${createReviewDto.product_slug}`;
-    createReviewDto["slug"] = UtilSlug.getUniqueId(slug);
+    createReviewDto["slug"] = UtilSlug.getUniqueId();
 
-    const reviewsCounts = await this.reviewModel.countDocuments({
-      product_slug: createReviewDto.product_slug,
-    });
+    const result = await new this.reviewModel(createReviewDto).save();
 
-    const product = await this.productModel.findOne({
+    const [{ avg_val }] = await this.reviewModel.aggregate([
+      {
+        $match: {
+          product_slug: createReviewDto.product_slug,
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          avg_val: { $avg: "$rating" },
+        },
+      },
+    ]);
+
+    const { seller_slug, addedBy } = await this.productModel.findOne({
       slug: createReviewDto.product_slug,
     });
 
-    console.log({ product, reviewsCounts });
+    if (seller_slug && addedBy === "seller") {
+      const [{ avg_val: seller_avg_rating }] = await this.reviewModel.aggregate(
+        [
+          {
+            $match: {
+              seller_slug: createReviewDto.seller_slug,
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              avg_val: { $avg: "$rating" },
+            },
+          },
+        ]
+      );
 
-    const getRating = async () => {
-      let newRating =
-        //@ts-ignore
-        (createReviewDto.rating + product.rating * reviewsCounts) /
-        (reviewsCounts + 1);
-      if (!newRating) {
-        newRating = 0;
-      }
-      return newRating;
-    };
+      await this.userModel.findOneAndUpdate(
+        {
+          slug: seller_slug,
+        },
+        {
+          $set: {
+            "shop.rating": seller_avg_rating,
+          },
+        },
+        { upsert: true, new: true }
+      );
+    }
 
-    const rating = await getRating();
-
-    const result = await new this.reviewModel(createReviewDto).save();
     await this.productModel.findOneAndUpdate(
       {
         slug: createReviewDto.product_slug,
       },
-      { rating },
+      { rating: avg_val },
       { new: true }
     );
     return result;
