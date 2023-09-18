@@ -26,7 +26,7 @@ export class Product {
   @Prop({ required: true })
   description: string;
 
-  @Prop({ default: "inactive" })
+  @Prop({ default: "active" })
   status: string;
 
   @Prop({ required: true })
@@ -38,7 +38,7 @@ export class Product {
   @Prop({ required: true })
   stock: number;
 
-  @Prop({ required: true })
+  @Prop()
   weight: number;
 
   @Prop()

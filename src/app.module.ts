@@ -39,14 +39,27 @@ import { SubCategoriesService } from "./modules/sub-categories/sub-categories.se
 import { Category, CategorySchema } from "./schemas/category.schema";
 import { User, UserSchema } from "./schemas/user.schema";
 import { Brand, BrandSchema } from "./schemas/brand.schema";
-import { SubCategories, SubCategoriesSchema } from "./schemas/sub-category.schema";
+import {
+  SubCategories,
+  SubCategoriesSchema,
+} from "./schemas/sub-category.schema";
 import { Cart, CartSchema } from "./schemas/cart.schema";
 import { Wishlist, WishlistSchema } from "./schemas/wishlist.schema";
 import { Slider, SliderSchema } from "./schemas/slider.schema";
-import { Advertisement, AdvertisementSchema } from "./schemas/advertisement.schema";
-import { PopularCategory, PopularCategorySchema } from "./schemas/popular-category.schema";
+import {
+  Advertisement,
+  AdvertisementSchema,
+} from "./schemas/advertisement.schema";
+import {
+  PopularCategory,
+  PopularCategorySchema,
+} from "./schemas/popular-category.schema";
 import { FlashSale, FlashSaleSchema } from "./schemas/flash_sale.schema";
-import { FeaturedCategory, FeaturedCategorySchema } from "./schemas/featured-category.schema";
+import {
+  FeaturedCategory,
+  FeaturedCategorySchema,
+} from "./schemas/featured-category.schema";
+import { FileUploadModule } from "./modules/file-upload/file-upload.module";
 
 @Module({
   imports: [
@@ -94,6 +107,7 @@ import { FeaturedCategory, FeaturedCategorySchema } from "./schemas/featured-cat
     BlogCommentsModule,
     BlogCategoryModule,
     SubscriberModule,
+    FileUploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
