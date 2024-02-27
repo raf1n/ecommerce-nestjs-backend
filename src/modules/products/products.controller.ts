@@ -43,7 +43,7 @@ export class ProductsController {
     },
     @Request() req: Request
   ) {
-    console.log("🚀 ~ file: products.controller.ts:46 ~ ProductsController ~ query:", query)
+    // console.log("🚀 ~ file: products.controller.ts:46 ~ ProductsController ~ query:", query)
     return this.productsService.findFilteredProducts(query);
   }
 
