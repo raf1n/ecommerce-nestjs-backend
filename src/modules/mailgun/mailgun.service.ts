@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 //@ts-ignore
-import * as mailgun from "mailgun-js";
+import mailgun from "mailgun-js";
 
 @Injectable()
 export class MailgunService {
