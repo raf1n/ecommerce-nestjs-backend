@@ -11,7 +11,7 @@ import {
 import { MegaMenuCategoriesService } from "./mega_menu_categories.service";
 import { CreateMegaMenuCategoryDto } from "./dto/create-mega_menu_category.dto";
 import { UpdateMegaMenuCategoryDto } from "./dto/update-mega_menu_category.dto";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 
 @Controller("mega-menu-categories")
 export class MegaMenuCategoriesController {

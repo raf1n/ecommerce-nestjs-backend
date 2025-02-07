@@ -5,7 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import {
   PopularCategory,
   PopularCategorySchema,
-} from "src/schemas/popular-category.schema";
+} from "../../../src/schemas/popular-category.schema";
 
 @Module({
   imports: [

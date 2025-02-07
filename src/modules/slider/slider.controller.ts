@@ -11,7 +11,7 @@ import {
 import { SliderService } from "./slider.service";
 import { CreateSliderDto } from "./dto/create-slider.dto";
 import { UpdateSliderDto } from "./dto/update-slider.dto";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 import { Query } from "@nestjs/common/decorators";
 
 @Controller("slider")

@@ -4,11 +4,11 @@ import { Model } from "mongoose";
 import {
   BlogCategory,
   BlogCategoryDocument,
-} from "src/schemas/blog-category.schema";
-import { UtilSlug } from "src/utils/UtilSlug";
+} from "../../../src/schemas/blog-category.schema";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 import { CreateBlogCategoryDto } from "./dto/create-blog-category.dto";
 import { UpdateBlogCategoryDto } from "./dto/update-blog-category.dto";
-import { Blog, BlogDocument } from "src/schemas/blog.schema";
+import { Blog, BlogDocument } from "../../../src/schemas/blog.schema";
 
 @Injectable()
 export class BlogCategoryService {

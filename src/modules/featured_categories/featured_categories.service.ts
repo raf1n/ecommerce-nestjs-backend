@@ -4,10 +4,10 @@ import { UpdateFeaturedCategoryDto } from "./dto/update-featured_category.dto";
 import {
   FeaturedCategory,
   FeaturedCategoryDocument,
-} from "src/schemas/featured-category.schema";
+} from "../../../src/schemas/featured-category.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 
 @Injectable()
 export class FeaturedCategoriesService {

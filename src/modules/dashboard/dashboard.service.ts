@@ -1,16 +1,19 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Brand, BrandDocument } from "src/schemas/brand.schema";
-import { Category, CategoryDocument } from "src/schemas/category.schema";
-import { Order, OrderDocument } from "src/schemas/order.schema";
-import { Product, ProductDocument } from "src/schemas/product.schema";
+import { Brand, BrandDocument } from "../../../src/schemas/brand.schema";
+import {
+  Category,
+  CategoryDocument,
+} from "../../../src/schemas/category.schema";
+import { Order, OrderDocument } from "../../../src/schemas/order.schema";
+import { Product, ProductDocument } from "../../../src/schemas/product.schema";
 import {
   ReportedItem,
   ReportedItemDocument,
-} from "src/schemas/reported-item.schema";
-import { Review, ReviewDocument } from "src/schemas/review.schema";
-import { User, UserDocument } from "src/schemas/user.schema";
+} from "../../../src/schemas/reported-item.schema";
+import { Review, ReviewDocument } from "../../../src/schemas/review.schema";
+import { User, UserDocument } from "../../../src/schemas/user.schema";
 import { CreateDashboardDto } from "./dto/create-dashboard.dto";
 import { UpdateDashboardDto } from "./dto/update-dashboard.dto";
 

@@ -11,7 +11,7 @@ import { SubCategoriesService } from "./sub-categories.service";
 import { CreateSubCategoryDto } from "./dto/create-sub-category.dto";
 import { UpdateSubCategoryDto } from "./dto/update-sub-category.dto";
 import { Query, Request } from "@nestjs/common/decorators";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 
 @Controller("sub-categories")
 export class SubCategoriesController {

@@ -4,7 +4,7 @@ import { CreateWithdrawDto } from "./dto/create-withdraw.dto";
 import { UpdateWithdrawDto } from "./dto/update-withdraw.dto";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 
 @Injectable()
 export class WithdrawsService {

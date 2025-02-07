@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Seller, SellerDocument } from "src/schemas/seller.schema";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { Seller, SellerDocument } from "../../../src/schemas/seller.schema";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 import { CreateSellerDto } from "./dto/create-seller.dto";
 import { UpdateSellerDto } from "./dto/update-seller.dto";
 

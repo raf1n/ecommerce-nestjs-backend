@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { AddressDocument } from "src/schemas/address.schema";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { AddressDocument } from "../../../src/schemas/address.schema";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 import { CreateAddressDto } from "./dto/create-address.dto";
 import { UpdateAddressDto } from "./dto/update-address.dto";
 import { Address } from "./entities/address.entity";

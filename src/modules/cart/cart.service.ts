@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { CreateCartDto } from "./dto/create-cart.dto";
 import { UpdateCartDto } from "./dto/update-cart.dto";
-import { Cart, CartDocument } from "src/schemas/cart.schema";
+import { Cart, CartDocument } from "../../../src/schemas/cart.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 
 @Injectable()
 export class CartService {

@@ -7,7 +7,7 @@ import {
 import { Injectable } from "@nestjs/common";
 import { CreateWithdrawMethodDto } from "./dto/create-withdraw_method.dto";
 import { UpdateWithdrawMethodDto } from "./dto/update-withdraw_method.dto";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 
 @Injectable()
 export class WithdrawMethodsService {

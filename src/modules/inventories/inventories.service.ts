@@ -3,10 +3,13 @@ import { Injectable } from "@nestjs/common";
 import { CreateInventoryDto } from "./dto/create-inventory.dto";
 import { UpdateInventoryDto } from "./dto/update-inventory.dto";
 import { InjectModel } from "@nestjs/mongoose";
-import { Inventory, InventoryDocument } from "src/schemas/inventory.schema";
+import {
+  Inventory,
+  InventoryDocument,
+} from "../../../src/schemas/inventory.schema";
 import { Model } from "mongoose";
-import { Product, ProductDocument } from "src/schemas/product.schema";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { Product, ProductDocument } from "../../../src/schemas/product.schema";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 
 @Injectable()
 export class InventoriesService {

@@ -12,7 +12,7 @@ import {
 import { FlashSaleService } from "./flash_sale.service";
 import { CreateFlashSaleDto } from "./dto/create-flash_sale.dto";
 import { UpdateFlashSaleDto } from "./dto/update-flash_sale.dto";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 
 @Controller("flash-sale")
 export class FlashSaleController {

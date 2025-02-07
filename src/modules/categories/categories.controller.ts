@@ -8,7 +8,7 @@ import {
   Delete,
 } from "@nestjs/common";
 import { Put, Query, Request } from "@nestjs/common/decorators";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 import { CategoriesService } from "./categories.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";

@@ -1,5 +1,5 @@
 import { SellerApplicationDto } from "./dto/seller-application.dto";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 import {
   Controller,
   Get,

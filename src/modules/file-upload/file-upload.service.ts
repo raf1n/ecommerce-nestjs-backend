@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { CreateFileUploadDto } from "./dto/create-file-upload.dto";
 import { UpdateFileUploadDto } from "./dto/update-file-upload.dto";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 import { ProductsService } from "../products/products.service";
 import { InjectModel } from "@nestjs/mongoose";
-import { Product, ProductDocument } from "src/schemas/product.schema";
+import { Product, ProductDocument } from "../../../src/schemas/product.schema";
 import { Model } from "mongoose";
 const csvtojson = require("csvtojson");
 

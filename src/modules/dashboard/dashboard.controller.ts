@@ -11,7 +11,7 @@ import {
 import { DashboardService } from "./dashboard.service";
 import { CreateDashboardDto } from "./dto/create-dashboard.dto";
 import { UpdateDashboardDto } from "./dto/update-dashboard.dto";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 
 @Controller("dashboard")
 export class DashboardController {

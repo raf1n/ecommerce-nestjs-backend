@@ -8,7 +8,7 @@ import {
   Delete,
 } from "@nestjs/common";
 import { Query, Request, UseGuards } from "@nestjs/common/decorators";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 import { CouponService } from "./coupon.service";
 import { CreateCouponDto } from "./dto/create-coupon.dto";
 import { UpdateCouponDto } from "./dto/update-coupon.dto";

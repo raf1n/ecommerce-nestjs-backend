@@ -4,11 +4,11 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
-import { Product, ProductDocument } from "src/schemas/product.schema";
+import { Product, ProductDocument } from "../../../src/schemas/product.schema";
 import { Model } from "mongoose";
 import { UtilSlug } from "./../../utils/UtilSlug";
-import { SearchSortDto } from "src/utils/all-queries.dto";
-import { User, UserDocument } from "src/schemas/user.schema";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
+import { User, UserDocument } from "../../../src/schemas/user.schema";
 
 @Injectable()
 export class ProductsService {

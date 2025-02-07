@@ -4,10 +4,10 @@ import { Model } from "mongoose";
 import {
   SubCategories,
   SubCategoriesDocument,
-} from "src/schemas/sub-category.schema";
+} from "../../../src/schemas/sub-category.schema";
 import { CreateSubCategoryDto } from "./dto/create-sub-category.dto";
 import { UpdateSubCategoryDto } from "./dto/update-sub-category.dto";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 
 @Injectable()
 export class SubCategoriesService {

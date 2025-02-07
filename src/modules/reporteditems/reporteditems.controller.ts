@@ -12,7 +12,7 @@ import {
 import { ReporteditemsService } from "./reporteditems.service";
 import { CreateReporteditemDto } from "./dto/create-reporteditem.dto";
 import { UpdateReporteditemDto } from "./dto/update-reporteditem.dto";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 
 @Controller("reporteditems")
 export class ReporteditemsController {

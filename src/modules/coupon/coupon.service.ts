@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Coupon, CouponDocument } from "src/schemas/coupon.schema";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { Coupon, CouponDocument } from "../../../src/schemas/coupon.schema";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 import { CreateCouponDto } from "./dto/create-coupon.dto";
 import { UpdateCouponDto } from "./dto/update-coupon.dto";
 

@@ -4,7 +4,7 @@ import { Model } from "mongoose";
 import {
   PopularCategory,
   PopularCategoryDocument,
-} from "src/schemas/popular-category.schema";
+} from "../../../src/schemas/popular-category.schema";
 import { CreatePopularCategoryDto } from "./dto/create-popular_category.dto";
 import { UpdatePopularCategoryDto } from "./dto/update-popular_category.dto";
 import { UtilSlug } from "./../../utils/UtilSlug";

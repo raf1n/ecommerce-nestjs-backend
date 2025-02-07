@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { CreateSeoDto } from "./dto/create-seo.dto";
 import { UpdateSeoDto } from "./dto/update-seo.dto";
-import { Seo, SeoDocument } from "src/schemas/seo.schema";
+import { Seo, SeoDocument } from "../../../src/schemas/seo.schema";
 import { Model } from "mongoose";
 import { InjectModel } from "@nestjs/mongoose";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 
 @Injectable()
 export class SeoService {

@@ -5,9 +5,9 @@ import { InjectModel } from "@nestjs/mongoose";
 import {
   ReportedItem,
   ReportedItemDocument,
-} from "src/schemas/reported-item.schema";
+} from "../../../src/schemas/reported-item.schema";
 import { Model } from "mongoose";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 
 @Injectable()
 export class ReporteditemsService {

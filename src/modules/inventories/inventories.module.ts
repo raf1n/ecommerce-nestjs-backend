@@ -2,8 +2,11 @@ import { Module } from "@nestjs/common";
 import { InventoriesService } from "./inventories.service";
 import { InventoriesController } from "./inventories.controller";
 import { MongooseModule } from "@nestjs/mongoose";
-import { Inventory, InventorySchema } from "src/schemas/inventory.schema";
-import { Product, ProductSchema } from "src/schemas/product.schema";
+import {
+  Inventory,
+  InventorySchema,
+} from "../../../src/schemas/inventory.schema";
+import { Product, ProductSchema } from "../../../src/schemas/product.schema";
 
 @Module({
   imports: [

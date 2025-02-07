@@ -11,7 +11,7 @@ import {
 import { WithdrawMethodsService } from "./withdraw_methods.service";
 import { CreateWithdrawMethodDto } from "./dto/create-withdraw_method.dto";
 import { UpdateWithdrawMethodDto } from "./dto/update-withdraw_method.dto";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 
 @Controller("withdraw-methods")
 export class WithdrawMethodsController {

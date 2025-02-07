@@ -11,7 +11,7 @@ import {
 import { InventoriesService } from "./inventories.service";
 import { CreateInventoryDto } from "./dto/create-inventory.dto";
 import { UpdateInventoryDto } from "./dto/update-inventory.dto";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 
 @Controller("inventories")
 export class InventoriesController {

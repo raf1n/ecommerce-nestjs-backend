@@ -4,8 +4,8 @@ import { Model } from "mongoose";
 import {
   MegaCategories,
   MegaCategoriesDocument,
-} from "src/schemas/mega_menu_categories.schema";
-import { UtilSlug } from "src/utils/UtilSlug";
+} from "../../../src/schemas/mega_menu_categories.schema";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 import { CreateMegaMenuCategoryDto } from "./dto/create-mega_menu_category.dto";
 import { UpdateMegaMenuCategoryDto } from "./dto/update-mega_menu_category.dto";
 

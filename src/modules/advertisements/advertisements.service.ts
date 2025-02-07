@@ -5,9 +5,9 @@ import { InjectModel } from "@nestjs/mongoose";
 import {
   Advertisement,
   AdvertisementDocument,
-} from "src/schemas/advertisement.schema";
+} from "../../../src/schemas/advertisement.schema";
 import { Model } from "mongoose";
-import { UtilSlug } from "src/utils/UtilSlug";
+import { UtilSlug } from "../../../src/utils/UtilSlug";
 
 @Injectable()
 export class AdvertisementsService {

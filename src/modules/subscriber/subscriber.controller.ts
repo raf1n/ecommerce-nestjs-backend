@@ -11,7 +11,7 @@ import {
 import { SubscriberService } from "./subscriber.service";
 import { CreateSubscriberDto } from "./dto/create-subscriber.dto";
 import { UpdateSubscriberDto } from "./dto/update-subscriber.dto";
-import { SearchSortDto } from "src/utils/all-queries.dto";
+import { SearchSortDto } from "../../../src/utils/all-queries.dto";
 import { MailgunService } from "../mailgun/mailgun.service";
 
 @Controller("subscriber")

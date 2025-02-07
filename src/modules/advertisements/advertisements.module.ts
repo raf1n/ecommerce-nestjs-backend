@@ -5,7 +5,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import {
   Advertisement,
   AdvertisementSchema,
-} from "src/schemas/advertisement.schema";
+} from "../../../src/schemas/advertisement.schema";
 
 @Module({
   imports: [

@@ -1,6 +1,6 @@
 import { Model, SortOrder } from "mongoose";
 import { SearchSortDto } from "./all-queries.dto";
-import { ISearchSortQuery } from "src/interfaces/SearchSortQuery";
+import { ISearchSortQuery } from "./../interfaces/SearchSortQuery";
 
 export class ServiceHandler {
   static async queryHandler<T1>(
